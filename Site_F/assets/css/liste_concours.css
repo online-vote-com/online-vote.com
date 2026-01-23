@@ -1,0 +1,222 @@
+
+    /* Conteneur principal */
+.container {
+    max-width: 1200px;
+    margin: 40px auto;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-title {
+    color: #4A0080;
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Barre de recherche */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.search-input {
+    width: 300px;
+    padding: 10px 25px;
+    border: 1px solid #333;
+    border-radius: 25px;
+    outline: none;
+}
+
+.btn-search {
+    background: linear-gradient(to right, #8A00C4, #4A0080);
+    color: white;
+    border: none;
+    padding: 10px 35px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+/* Grille de cartes */
+.competitions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 25px;
+    padding: 20px;
+}
+
+.comp-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+}
+
+.comp-card:hover {
+    transform: translateY(-8px);
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Overlay dégradé sur l'image */
+.card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(138, 0, 196, 0.9), transparent);
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+}
+
+.card-content {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+.card-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: left;
+}
+
+.btn-more {
+    border: 1.5px solid white;
+    color: white;
+    text-decoration: none;
+    padding: 5px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.btn-more:hover {
+    background: white;
+    color: #8A00C4;
+}
+
+
+
+
+
+
+
+
+
+
+/* détails cincours */
+.candidate-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.candidate-card:hover {
+    transform: translateY(-8px);
+}
+
+.card-image-container {
+    width: 100%;
+    padding: 10px; /* Espace autour de l'image comme sur la photo */
+}
+
+.candidate-card .card-img {
+    border-radius: 15px;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.candidate-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.candidate-info h3 {
+    margin: 0 0 10px;
+    font-size: 1.1rem;
+    color: #333;
+    text-transform: uppercase;
+}
+
+/* Badge de rang jaune */
+.rank-badge {
+    background-color: #FFC107;
+    color: #000;
+    display: inline-block;
+    padding: 5px 20px;
+    border-radius: 15px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+}
+
+/* Groupe de boutons d'action */
+.card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-action-outline {
+    border: 1.5px solid #8A00C4;
+    color: #8A00C4;
+    text-decoration: none;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-action-solid {
+    background-color: #8A00C4;
+    color: white;
+    text-decoration: none;
+    padding: 6px 20px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: opacity 0.3s;
+}
+
+/* Style spécifique pour le filtre à côté de la recherche */
+.filter-group-alt {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-right: auto; /* Pousse la recherche à droite */
+}
+
+.filter-select-alt {
+    background-color: #D191FF;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    color: #000;
+    cursor: pointer;
+}
