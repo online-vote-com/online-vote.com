@@ -1,0 +1,113 @@
+/* Container de la Modale / Formulaire */
+.modal-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: var(--primary-color);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 20px;
+    text-align: center;
+}
+
+.modal-header h2 {
+    font-size: 1.8rem;
+    text-transform: capitalize;
+}
+
+.modal-body {
+    padding: 30px;
+    color: var(--white);
+}
+
+.form-instruction {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
+}
+
+/* Grille et Champs */
+.form-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-row-btn {
+    display: grid;
+    grid-template-columns: 1fr 0.8fr;
+    gap: 15px;
+    align-items: center;
+}
+
+input, select, .file-input-wrapper {
+    background-color: #D6A2E8; /* Couleur lilas des champs sur l'image */
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    color: var(--black);
+    outline: none;
+}
+
+input::placeholder {
+    color: #555;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.file-input-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Bouton Confirmer (Jaune) */
+.btn-confirm-action {
+    background-color: var(--yellow);
+    color: var(--black);
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-confirm-action:hover {
+    background-color: var(--white);
+}
+
+/* Liens du bas */
+.modal-footer-links {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.modal-footer-links a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-home {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.9rem;
+}

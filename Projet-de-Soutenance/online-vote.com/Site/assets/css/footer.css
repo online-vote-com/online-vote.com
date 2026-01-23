@@ -1,0 +1,119 @@
+.site-footer {
+    background-color: var(--black);
+    color: var(--white);
+    padding: 60px 10% 20px;
+    font-family: Arial, sans-serif;
+}
+
+.footer-main {
+    display: flex;
+    justify-content: space-between;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.footer-col {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.footer-col.border-left {
+    border-left: 2px solid var(--white);
+}
+
+.footer-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+    text-decoration: underline;
+    text-underline-offset: 10px;
+}
+
+.footer-list {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-list li {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.footer-list a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+/* Newsletter Form */
+.footer-newsletter {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.newsletter-input {
+    background-color: var(--yellow);
+    border: none;
+    padding: 15px;
+    color: var(--black);
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+}
+
+.newsletter-input::placeholder {
+    color: rgba(0,0,0,0.6);
+}
+
+.newsletter-btn {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+}
+
+.newsletter-btn:hover {
+    filter: brightness(1.2);
+}
+
+/* Bottom Bar */
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.copyright {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.social-icons {
+    display: flex;
+    gap: 15px;
+}
+
+.social-link {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+/* Couleurs spécifiques icônes (facultatif si vous utilisez FontAwesome) */
+.social-link.fb { background-color: #3b5998; }
+.social-link.ig { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+.social-link.yt { background-color: #ff0000; }

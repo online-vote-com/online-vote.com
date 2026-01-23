@@ -60,6 +60,8 @@ create table vote (
     foreign key (id_paiement) references paiement(id_paiement) on delete set null
 );
 
+
+/*éetudier les moteurs de stockages */
 /*Faire un lien unique par candidats, 
 revoirs la structure de la table user pour les organisateurs 
 faire en sorte que les liens qui s'affichent au navigateurs soient personnalisé sans l'extention du fichier php

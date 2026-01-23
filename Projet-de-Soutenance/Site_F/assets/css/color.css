@@ -1,0 +1,102 @@
+:root {
+        --main-purple: #9C04DA;
+        --light-purple-bg: #E7C6FF;
+        --light-purple: #E7C6FF;
+        --dark-purple-gradient: #530274;
+        --accent-yellow: #FFEB3B;
+        --white: #FFFFFF;
+        --bg-light: #F8F9FA;
+        --text-dark: #000000;
+        --gray-border: #E0E0E0;
+}
+
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: var(--light-purple-bg);
+}
+
+.img-placeholder {
+    background-color: #CCCCCC;
+    display: block;
+}
+/* =========================
+   Utilitaires de texte
+   ========================= */
+.purple-text {
+    color: var(--primary-color);
+}
+
+.yellow-text {
+    color: var(--yellow);
+}
+
+/* =========================
+   Utilitaires de boutons
+   ========================= */
+.btn-stats {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-delete {
+    background-color: var(--yellow);
+    color: var(--black);
+}
+
+.btn-edit {
+    background-color: var(--black);
+    color: var(--white);
+}
+
+.btn-add {
+    background-color: var(--dark-purple);
+    color: var(--white);
+}
+
+/* =========================
+   Police globale du site
+   ========================= */
+body {
+    margin: 0;
+    font-family: 'Poppins', 'Segoe UI', sans-serif;
+    font-size: 16px;
+    color: var(--text-dark);
+    line-height: 1.6;
+    background-color: var(--bg-light);
+}
+
+/* =========================
+   Titres
+   ========================= */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
+/* =========================
+   Boutons
+   ========================= */
+button,
+.btn {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+/* =========================
+   Navbar
+   ========================= */
+.navbar .nav-link {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* =========================
+   Images placeholder
+   ========================= */
+.img-placeholder {
+    background-color: #CCCCCC;
+    display: block;
+}
