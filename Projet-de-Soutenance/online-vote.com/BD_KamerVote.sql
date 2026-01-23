@@ -62,6 +62,7 @@ create table vote (
 
 
 /*éetudier les moteurs de stockages */
+/* on doit voir l'id de l'oorganisateur dans la yable candidat
 /*Faire un lien unique par candidats, 
 revoirs la structure de la table user pour les organisateurs 
 faire en sorte que les liens qui s'affichent au navigateurs soient personnalisé sans l'extention du fichier php
