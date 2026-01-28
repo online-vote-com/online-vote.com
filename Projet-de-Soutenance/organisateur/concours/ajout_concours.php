@@ -11,10 +11,10 @@
             <div class="form-row">
                 <input type="text" name="titre" placeholder="Titre *" required>
                 <div class="file-input">
-                    <input type="file" id="photoConcours" name="photo_concours" hidden>
+                    <input type="file" id="photoConcours" name="photo_concours" hidden accept="image/png,image/jpeg">
                     <label for="photoConcours">Photo concours</label>
                 </div>
-            </div>
+            </div>  
             
             <div class="form-row">
                 <div class="select-wrapper">

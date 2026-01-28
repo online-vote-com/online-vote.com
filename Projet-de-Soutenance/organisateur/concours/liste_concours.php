@@ -29,59 +29,26 @@
                     <th>Type de vote</th>
                     <th>Prix du vote</th>
                     <th>Status</th>
-                    <th>Date création</th>
+                    <th>Date début</th>
+                     <th>Date fin</th>
                     <th>Actions</th>
                 </tr>
             </thead>
+            <?php foreach ($concours as $con){ ?>
             <tbody>
                 <tr>
-                    <td>Concours Miss 2026</td>
-                    <td>Concours annuel de beauté</td>
-                    <td>
-                        <div class="img-placeholder mini-circle">
-                            <img src="../assets/images/concours/miss2026.jpg" alt="Concours Miss 2026">
-                        </div>
-                    </td>
-                    <td>Payant</td>
-                    <td>5000.00 Fcfa</td>
-                    <td class=" ">Ouvert</td>
-                    <td>08/01/2026 10:30</td>
-                    <td class="actions">
-                        <span class="badge black">Stats</span>
-                        <span class="badge yellow">Supprimer</span>
-                        <span class="badge purple">Modifier</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Master Music 2026</td>
-                    <td>Concours de chant national</td>
-                    <td>
-                        <div class="img-placeholder mini-circle">
-                            <img src="../assets/images/concours/master2026.jpg" alt="Master Music 2026">
-                        </div>
-                    </td>
-                    <td>Gratuit</td>
-                    <td>0.00 Fcfa</td>
-                    <td class="">Attente</td>
-                    <td>05/01/2026 14:15</td>
-                    <td class="actions">
-                         <span class="badge black">Stats</span>
-                        <span class="badge yellow">Supprimer</span>
-                        <span class="badge purple">Modifier</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Concours Art 2026</td>
-                    <td>Exposition des meilleurs artistes</td>
+                    <td><?= $con['titre'] ?></td>
+                    <td><?= $con['description_concours'] ?></td>
                     <td>
                         <div class="img-placeholder mini-circle">
                             <img src="../assets/images/concours/art2026.jpg" alt="Concours Art 2026">
                         </div>
                     </td>
-                    <td>Payant</td>
-                    <td>10000.00 Fcfa</td>
-                    <td class="">Fermé</td>
-                    <td>02/01/2026 09:00</td>
+                    <td><?= $con['type_vote'] ?></td>
+                    <td><?= $con['prix_vote'] ?></td>
+                    <td class=""><?= $con['status_concours'] ?></td>
+                    <td><?= $con['date_debut'] ?></td>
+                    <td><?= $con['date_fin'] ?></td>
                     <td class="actions">
                         <span class="badge black"> <i class="fa-solid fa-chart-line"></i> </span>
                         <span class="badge yellow"><i class="fa-solid fa-trash"></i> </span>
@@ -89,6 +56,7 @@
                     </td>
                 </tr>
             </tbody>
+            <?php }?>
         </table>
 
         <div class="table-footer">

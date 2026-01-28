@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/formulaire_nouveau.css">
-
 <div id="modalCandidat" class="modal">
     <div class="modal-content">
 
@@ -41,3 +40,4 @@
         </form>
     </div>
 </div>
+

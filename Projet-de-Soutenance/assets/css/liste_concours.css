@@ -126,125 +126,125 @@
 
 
 /* détails cincours */
+/* ==================== GRID ==================== */
+.competitions-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* ==================== CARD CANDIDAT ==================== */
 .candidate-card {
-background: var(--white);
-    border-radius: 24px;
-    padding: 12px;
-    box-shadow: var(--shadow-card);
-    transition: var(--transition);
-    border: 1px solid rgba(0,0,0,0.03);
+    position: relative;
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .candidate-card:hover {
-  transform: translateY(-10px);
-    border-color: var(--light-purple);
-    box-shadow: var(--shadow-card);
+    transform: translateY(-6px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
+/* ==================== IMAGE (MISE EN AVANT) ==================== */
 .card-image-container {
-    width: 100%;
     position: relative;
-    border-radius: 18px;
+    height: 280px; /* plus grand que les infos */
     overflow: hidden;
-    padding: 10px; /* Espace autour de l'image comme sur la photo */
 }
 
-.candidate-card .card-img {
-    border-radius: 15px;
+.card-img {
     width: 100%;
-    height: auto;
+    height: 100%;
     object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
+/* Zoom photo */
+.candidate-card:hover .card-img {
+    transform: scale(1.08);
+}
+
+/* Overlay sombre comme les concours */
+.card-image-container::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.25);
+    transition: background 0.3s ease;
+    pointer-events: none;
+}
+
+.candidate-card:hover .card-image-container::before {
+    background: rgba(0, 0, 0, 0.4);
+}
+
+/* ==================== INFOS ==================== */
 .candidate-info {
-    padding: 15px;
+    padding: 20px;
     text-align: center;
 }
 
 .candidate-info h3 {
-    margin: 0 0 10px;
+    margin-bottom: 10px;
     font-size: 1.1rem;
+    font-weight: bold;
     color: #333;
     text-transform: uppercase;
 }
-.candidate-card .card-img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    transition: var(--transition);
-}
 
-.candidate-card:hover .card-img {
-    transform: scale(1.2);
-}
-/* Badge de rang jaune */
+/* ==================== BADGE RANG ==================== */
 .rank-badge {
-    background-color: #FFC107;
-    color: #000;
     display: inline-block;
-    padding: 5px 20px;
-    border-radius: 15px;
-    font-weight: bold;
-    font-size: 0.85rem;
     margin-bottom: 15px;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background: var(--accent-yellow);
+    color: #000;
 }
 
-/* Groupe de boutons d'action */
-/* --- BOUTONS D'ACTION --- */
+/* ==================== ACTIONS ==================== */
 .card-actions {
     display: flex;
-    gap: 8px;
+    gap: 10px;
 }
 
 .btn-action-outline {
     flex: 1;
-    border: 2px solid var(--light-purple);
-    color: var(--main-purple);
     padding: 10px;
     border-radius: 12px;
-    font-size: 0.8rem;
+    border: 1px solid var(--main-purple);
+    background: transparent;
+    color: var(--main-purple);
+    font-size: 0.75rem;
     font-weight: 700;
     text-decoration: none;
-    transition: var(--transition);
+    transition: all 0.3s ease;
 }
 
 .btn-action-outline:hover {
-    background: var(--light-purple);
-    border-color: var(--light-purple);
+    background: var(--main-purple);
+    color: white;
 }
 
 .btn-action-solid {
     flex: 1.2;
-    background: var(--main-purple);
-    color: white;
     padding: 10px;
     border-radius: 12px;
-    font-size: 0.8rem;
+    background: var(--main-purple);
+    color: white;
+    font-size: 0.75rem;
     font-weight: 700;
     text-decoration: none;
-    box-shadow: 0 4px 12px rgba(156, 4, 218, 0.2);
-    transition: var(--transition);
+    box-shadow: 0 4px 12px rgba(156, 4, 218, 0.25);
+    transition: all 0.3s ease;
 }
 
 .btn-action-solid:hover {
     background: black;
-    transform: scale(1.02);
-    color: white;
-
-} 
-
-.filter-group-alt {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-right: auto; /* Pousse la recherche à droite */
-}
-
-.filter-select-alt {
-    background-color: #D191FF;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 5px;
-    color: #000;
-    cursor: pointer;
+    transform: scale(1.03);
 }

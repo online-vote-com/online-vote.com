@@ -1,3 +1,4 @@
+
 <div id="section-candidats" class="content-section">
     <header class="top-header">
         <h1>Gestion des Candidats</h1>
@@ -30,25 +31,27 @@
                     <th>Actions</th>
                 </tr>
             </thead>
+        <?php foreach($candidats as $can): ?>
             <tbody>
                 <tr>
-                    <td>Chakoualeu</td>
-                    <td>Arthur</td>
-                    <td>arthur@gmail.com</td>
-                    <td>
-                        <div class="img-container-table">
-                            <img src="../assets/images/organisateur/art.jpg" alt="Arthur Chakoualeu" class="mini-circle">
-                        </div>
-                    </td>
-                    <td>@gmail.com</td>
-                    <td>Miss/Master</td>
-                    <td class="actions">
-                        <span class="badge black"> <i class="fa-solid fa-chart-line"></i> </span>
-                        <span class="badge yellow"><i class="fa-solid fa-trash"></i> </span>
-                        <span class="badge purple"> <i class="fa-solid fa-pen-to-square"></i> </span>
-                    </td>
+                        <td><?= $can['nom_candidat'] ?></td>
+                        <td><?= $can['prenom_candidat'] ?></td>
+                        <td><?= $can['email_candidat'] ?></td>
+                        <td>
+                            <div class="img-container-table">
+                                <img src="<?php echo $can['photo_candidat'] ?? '../assets/images/organisateur/art.jpg'; ?>" alt="Arthur Chakoualeu" class="mini-circle">
+                                </div>
+                            </td>
+                        <td><?= $can['biography'] ?></td>
+                        <td><?= $can['titre'] ?></td>
+                        <td class="actions">
+                            <span class="badge black"> <i class="fa-solid fa-chart-line"></i> </span>
+                            <span class="badge yellow"><i class="fa-solid fa-trash"></i> </span>
+                            <span class="badge purple"> <i class="fa-solid fa-pen-to-square"></i> </span>
+                        </td>
                 </tr>
             </tbody>
+        <?php endforeach; ?>
         </table>
         
         <div class="table-footer">

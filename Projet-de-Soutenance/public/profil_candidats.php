@@ -1,84 +1,103 @@
-<!-- Liens CSS -->
-<link rel="stylesheet" href="../assets/css/profile_candidat.css">
-<link rel="stylesheet" href="../assets/css/color.css">
+    <!-- Liens CSS -->
+    <link rel="stylesheet" href="../assets/css/profile_candidat.css">
+    <link rel="stylesheet" href="../assets/css/color.css">
 
-<main class="container detail-container">
-    <div class="detail-wrapper">
+    <?php
+    include '../includes/link.php';
+    include '../includes/navbar.php';
+    include '../config/database.php';
 
-        <!-- Image du candidat -->
-        <div class="detail-image-box">
-            <img src="../assets/images/organisateur/art.jpg" alt="Affiche" class="img-fluid-rounded">
-        </div>
+    if(!isset($_GET['id_candidat'])){
+        die("Aucun candidat trouvé !");
+    }
 
-        <!-- Contenu principal -->
-        <div class="detail-content-box">
+    $idC = (int) $_GET['id_candidat'];
 
-            <!-- Informations du candidat -->
-            <div class="detail-info-box">
-                <div class="info-meta">
-                    <p>
-                        <strong>Rang :</strong> 01 | 
-                        <strong>Candidat :</strong> #001
-                    </p>
-                    <h2 class="candidate-full-name">Chakoualeu Arthur</h2>
-                    <p class="contest-name"><strong>Concours :</strong> NOM CONCOURS</p>
-                </div>
+    $cans = "SELECT con.*, can.* 
+            FROM concours con, candidats can
+            WHERE can.id_candidat = :id_concours";
+    $st = $pdo->prepare($cans);
+    $st->execute(['id_concours' => $idC]);
+    $listC = $st->fetchAll();
+    ?>
 
-                <!-- Description du candidat -->
-                <div class="description-section">
-                    <h3>Ma Description</h3>
-                    <p class="description-text">
-                        La Méthode du Marché ("Approche par comparaison") est une technique d'évaluation 
-                        financière et technique. Elle consiste à déterminer la valeur d'un logiciel...
-                    </p>
-                </div>
+    <main class="container profile-page">
+        <div class="profile-card">
+
+            <!-- Image du candidat -->
+            <div class="profile-image">
+                <img src="../assets/images/organisateur/art.jpg" alt="Candidat">
             </div>
 
-            <hr class="separator">
+            <!-- Contenu principal -->
+            <div class="profile-content">
 
-            <!-- Section vote -->
-            <div class="vote-form-box">
+                <h1 class="candidate-name"><?php echo $listC[0]['nom_candidat']; ?></h1>
+                <p class="contest-title"><?php echo $listC[0]['titre']; ?></p>
 
-                <div class="vote-header-info">
-                    <span class="nb-info">NB : Montant Vote (unitaire) = 1 Vote</span>
-                    <span class="rank-info">Votes actuels : 345</span>
+                <!-- Description -->
+                <div class="candidate-description">
+                    <h3>À propos de moi</h3>
+                    <p><?php echo $listC[0]['biography']; ?></p>
                 </div>
 
-               <form class="vote-inputs-grid">
-    <!-- Sélection du mode de paiement -->
-    <div class="form-row">
-        <div class="select-wrapper">
-            <select name="paiement" required>
-                <option value="" disabled selected>Mode paiement</option>
-                <option value="om">Orange Money</option>
-                <option value="momo">MTN Mobile Money</option>
-            </select>
+                <!-- Votes -->
+                <div class="vote-section">
+                    <div class="vote-info">
+                        <span>Montant vote = 1</span>
+                        <span>Votes actuels : <strong>345</strong></span>
+                    </div>
+
+                    <form class="vote-form">
+                        <div class="form-group">
+                            <select name="paiement" >
+                                <option value="" disabled selected>Mode paiement</option>
+                                <option value="om">Orange Money</option>
+                                <option value="momo">MTN Mobile Money</option>
+                            </select>
+                            <input type="number" name="montant" placeholder="Montant" >
+                            <input type="tel" name="telephone" placeholder="Numéro" >
+                        </div>
+
+                        <div class="vote-footer">
+                            <div class="vote-total">Vote total = <span>1000</span></div>
+                            <button type="submit" name="vote_submit">Voter</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
         </div>
+    </main>
 
-        <!-- Montant (champ texte) -->
-        <div class="full-width-field purple-gradient-field">
-            <input type="number" name="montant" placeholder="Entrer le montant" class="transparent-input" required>
-        </div>
-    </div>
+    <?php include '../includes/footer.php'; 
+    
+    if(isset($_POST['vote_submit'])) {
+    $idCandidat = (int) $_POST['id_candidat'];
+    $nomVotant = trim($_POST['nom']);
+    $emailVotant = trim($_POST['email']);
+    $ipVotant = $_SERVER['REMOTE_ADDR'];
 
-    <!-- Numéro de téléphone (champ texte) -->
-    <div class="full-width-field purple-gradient-field">
-        <input type="tel" name="telephone" placeholder="Entrer votre numéro de téléphone" class="transparent-input" required>
-    </div>
+    // Vérifier si l'email a déjà voté pour ce candidat (optionnel)
+    $checkVote = $pdo->prepare("SELECT COUNT(*) FROM Vote WHERE id_candidat = :idC AND id_votant IS NULL AND adr_ip = :ip");
+    $checkVote->execute([
+        'idC' => $idCandidat,
+        'ip' => $ipVotant
+    ]);
 
-    <!-- Total votes + bouton -->
-    <div class="form-row align-center">
-        <div class="total-box">
-            Vote total = <span class="vote-count">1000</span>
-        </div>
-        <button type="submit" class="btn-vote-submit">Voter</button>
-    </div>
-</form>
+    if($checkVote->fetchColumn() > 0) {
+        echo "<p style='color:red'>Vous avez déjà voté pour ce candidat depuis cet appareil.</p>";
+    } else {
+        // Insertion du vote
+        $insertVote = $pdo->prepare("INSERT INTO Vote (id_candidat, id_concours, adr_ip) VALUES (:idC, :idConcours, :ip)");
+        $insertVote->execute([
+            'idC' => $idCandidat,
+            'idConcours' => $listC[0]['id_concours'],
+            'ip' => $ipVotant
+        ]);
 
-
-            </div> <!-- Fin section vote -->
-
-        </div> <!-- Fin contenu principal -->
-
-    </div> <!-- Fin wrapper -->
-</main>
+        echo "<p style='color:green'>Merci pour votre vote !</p>";
+    }
+}
+?>

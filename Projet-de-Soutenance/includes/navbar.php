@@ -9,7 +9,7 @@
 
         <nav class="nav-menu">
             <ul>
-                <li><a href="#">Acceuil</a></li>
+                <li><a href="index.php">Acceuil</a></li>
                 <li><a href="#">A propos</a></li>
                 <li><a href="#">Contact</a></li>
                 <li><a href="concours.php">concours</a></li>

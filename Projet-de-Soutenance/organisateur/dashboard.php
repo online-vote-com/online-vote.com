@@ -1,4 +1,36 @@
-<?php include '../includes/link.php'; ?>
+<?php 
+    include '../includes/link.php'; 
+    include '../config/database.php';
+  
+       
+    $sqlCon = "SELECT COUNT(*) FROM concours"; 
+    $pdo_sta = $pdo->query($sqlCon);
+    $nbrConcours = $pdo_sta->fetchColumn();
+
+    $sql_concours = "SELECT con.*, org.nom_user 
+    FROM concours con, users org
+    WHERE con.id_organisateur = org.id_user";
+    $pdo_concours =$pdo->query($sql_concours);
+    $concours = $pdo_concours->fetchAll();
+
+
+   $sql = "SELECT COUNT(*) FROM candidats"; 
+   // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
+    $pdo_C = $pdo->query($sql); 
+    $nbrC = $pdo_C->fetchColumn();
+
+    $sqlP = "SELECT SUM(montant) AS montantTotal FROM paiement"; 
+    $pdo_P = $pdo->query($sqlP);
+    $total_P = $pdo_P->fetchColumn();
+   
+    $sql_candidat= "SELECT can.*, concours.titre
+    FROM candidats can, concours
+    WHERE can.id_concours = concours.id_concours";
+    $pdo_candidat = $pdo->query($sql_candidat);
+    $candidats = $pdo_candidat->fetchAll();
+
+
+?>
 <link rel="stylesheet" href="../assets/css/grid-card.css">
 <style>
     
@@ -59,21 +91,21 @@
         <div class="stat-card">
             <div class="stat-icon-bg purple-light"><i class="fas fa-flag"></i></div>
             <div class="stat-info">
-                <strong>20</strong>
+                <strong><?php echo $nbrConcours; ?></strong>
                 <p>Concours</p>
             </div>
         </div>
         <div class="stat-card purple-solid">
             <div class="stat-icon-bg white-alpha"><i class="fas fa-user-friends"></i></div>
             <div class="stat-info">
-                <strong>300</strong>
+                <strong><?php echo $nbrC; ?></strong>
                 <p>Candidats</p>
             </div>
         </div>
         <div class="stat-card">
             <div class="stat-icon-bg yellow-light"><i class="fas fa-wallet"></i></div>
             <div class="stat-info">
-                <strong>20,000</strong>
+                <strong><?php echo  $total_P; ?></strong>
                 <p>FCFA récoltés</p>
             </div>
         </div>
@@ -91,28 +123,7 @@
         <button class="btn-text-only">Tout voir <i class="fas fa-arrow-right"></i></button>
     </div>
 
-    <div class="contests-row">
-        <div class="contest-card">
-            <div class="contest-banner gradient-bg">
-                <span class="status-badge">Actif</span>
-            </div>
-            <div class="contest-details">
-                <h4>Concours de Miss et Masters</h4>
-                <button class="btn-more-minimal">Gérer le concours</button>
-            </div>
-        </div>
-
-        <div class="contest-card">
-            <div class="contest-banner">
-                <img src="../assets/images/organisateur/art.jpg" alt="Concours Banner">
-                <span class="status-badge">En attente</span>
-            </div>
-            <div class="contest-details">
-                <h4>Élection Bureau Étudiant</h4>
-                <button class="btn-more-minimal">Gérer le concours</button>
-            </div>
-        </div>
-    </div>
+     
 </div>
           <?php
 

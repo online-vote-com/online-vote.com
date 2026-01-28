@@ -1,1 +1,26 @@
 ndnld
+
+ <!--  <div class="contests-row">
+        <?php foreach ($concours as $concours) {   ?>
+        <div class="contest-card">
+            <div class="contest-banner gradient-bg">
+                
+            </div>
+            <div class="contest-details">
+                <h4><?php echo $concours['titre']; ?></h4>
+                <button class="btn-more-minimal">Gérer le concours</button>
+            </div>
+        </div>
+        <?php } ?>
+
+        <div class="contest-card">
+            <div class="contest-banner">
+                <img src="../assets/images/organisateur/art.jpg" alt="Concours Banner">
+                <span class="status-badge"><?php echo $concours['status_concours']; ?></span>
+            </div>
+            <div class="contest-details">
+                <h4><?php echo $concours['titre']; ?></h4>
+                <button class="btn-more-minimal">Gérer le concours</button>
+            </div>
+        </div>
+    </div> -->
