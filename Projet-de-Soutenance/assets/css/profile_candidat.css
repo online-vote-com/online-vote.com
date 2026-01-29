@@ -1,31 +1,40 @@
 
+/* ==========================
+   Container
+========================== */
 .container {
-    max-width: 1200px;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    background: var(--bg-light);
 }
 
-/* ------------------------
+/* ==========================
    Profile Card
------------------------- */
+========================== */
 .profile-card {
     display: flex;
     flex-direction: row;
     background: var(--white);
-    backdrop-filter: blur(10px);
-    border-radius: var(--border-radius);
-    box-shadow: 0 10px 30px var(--soft-shadow);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .profile-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 15px 40px var(--soft-shadow);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
 }
 
+/* ==========================
+   Profile Image
+========================== */
 .profile-image {
     flex: 1;
+    min-width: 300px;
     overflow: hidden;
 }
 
@@ -33,64 +42,71 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 20px 0 0 20px;
     transition: transform 0.4s ease, filter 0.4s ease;
-    border-radius: var(--border-radius) 0 0 var(--border-radius);
 }
 
 .profile-image img:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
     filter: brightness(1.05);
 }
 
+/* ==========================
+   Profile Content
+========================== */
 .profile-content {
     flex: 2;
     padding: 40px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 
 /* ------------------------
    Typographie
 ------------------------ */
 .candidate-name {
-    font-size: 2.5rem;
+    font-size: 2.4rem;
     font-weight: 700;
     color: var(--main-purple);
-    margin: 0 0 10px 0;
+    margin-bottom: 5px;
 }
 
 .contest-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
-    color: var(--main-purple);
+    color: var(--dark-purple-gradient);
     text-transform: uppercase;
-    margin-bottom: 20px;
     letter-spacing: 1px;
+    margin-bottom: 20px;
 }
 
 .candidate-description h3 {
     font-size: 1.4rem;
-    margin-bottom: 10px;
     color: var(--dark-purple-gradient);
+    margin-bottom: 10px;
 }
 
 .candidate-description p {
     font-size: 1rem;
-    line-height: 1.6;
+    line-height: 1.7;
     color: var(--text-dark);
 }
 
-/* ------------------------
+/* ==========================
    Vote Section
------------------------- */
+========================== */
 .vote-section {
     margin-top: 30px;
     background: var(--light-purple-bg);
-    padding: 25px;
-    border-radius: var(--border-radius);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 8px 25px var(--soft-shadow);
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+}
+
+.vote-section:hover {
+    transform: translateY(-2px);
 }
 
 .vote-info {
@@ -98,34 +114,28 @@
     justify-content: space-between;
     font-weight: 600;
     color: var(--text-dark);
-    margin-bottom: 15px;
-}
-
-.vote-form .form-group {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
     margin-bottom: 20px;
+    font-size: 1rem;
 }
 
-.vote-form select,
-.vote-form input {
-    flex: 1;
-    border-radius: 30px;
-    padding: 14px 18px;
+/* ------------------------
+   Form Inputs
+------------------------ */
+.vote-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
 
+.vote-form input,
+.vote-form select {
+    padding: 14px 18px;
+    border-radius: 30px;
     border: 1px solid var(--gray-border);
     outline: none;
-    font-weight: 500;
+    font-size: 1rem;
     transition: all 0.3s ease;
-    background: var(--white);
-    color: var(--text-dark);
-}
-
-.vote-form select {
-    border-radius: 30px;
-    background: linear-gradient(90deg, var(--main-purple), var(--dark-purple-gradient));
-    color: var(--white);
+    width: 100%;
 }
 
 .vote-form input:focus,
@@ -134,22 +144,17 @@
     box-shadow: 0 0 10px var(--main-purple);
 }
 
-/* Footer vote */
-.vote-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.vote-form select {
+    background: linear-gradient(90deg, var(--main-purple), var(--dark-purple-gradient));
+    color: var(--white);
+    font-weight: 600;
 }
 
-.vote-total {
-    font-weight: bold;
-    font-size: 1.1rem;
-    color: var(--main-purple);
-}
-
-.vote-footer button {
-    
-    padding: 15px 30px;
+/* ------------------------
+   Buttons
+------------------------ */
+.vote-form button {
+    padding: 15px 0;
     border-radius: 30px;
     border: none;
     font-weight: 700;
@@ -160,28 +165,51 @@
     transition: all 0.3s ease;
 }
 
-.vote-footer button:hover {
+.vote-form button:hover {
     transform: scale(1.03);
     background: linear-gradient(90deg, var(--light-purple), var(--main-purple));
 }
 
 /* ------------------------
-   Responsive
+   Message Feedback
 ------------------------ */
-@media(max-width: 900px) {
+.vote-section p {
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin-top: 5px;
+}
+
+.vote-section p[style*="color:red"] {
+    color: #FF3B3B;
+}
+
+.vote-section p[style*="color:green"] {
+    color: #4CAF50;
+}
+
+/* ==========================
+   Responsive
+========================== */
+@media (max-width: 900px) {
     .profile-card {
         flex-direction: column;
     }
 
     .profile-image {
-        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        border-radius: 20px 20px 0 0;
+        min-height: 200px;
     }
 
     .profile-content {
-        padding: 30px 20px;
+        padding: 25px 20px;
     }
 
-    .vote-form .form-group {
+    .vote-form {
         flex-direction: column;
+        gap: 10px;
+    }
+
+    .vote-form button {
+        width: 100%;
     }
 }

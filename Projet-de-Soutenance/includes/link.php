@@ -18,7 +18,8 @@
     <link rel="stylesheet" href="<? BASE_URL ?>assets/css/formulaire_nouveau.css">
    
    <link rel="stylesheet" href="<? BASE_URL ?>assets/css/navbar.css">
-    <link rel="stylesheet" href="<? BASE_URL ?>assets/css/liste_concours.css">    
+   <link rel="stylesheet" href="../assets/css/concours_detail.css">
+
 
     <script src="<? BASE_URL ?>assets/js/modal.js"></script>
     </head>
