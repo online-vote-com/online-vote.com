@@ -1,0 +1,164 @@
+
+
+/* ==================== BOUTON NOUVEAU ==================== */
+.table-controls {
+    display: flex;
+    justify-content: space-between; /* pousse les enfants aux extrémités */
+    align-items: center; /* même niveau vertical */
+    margin-top: 15px; /* espace par rapport au haut */
+}
+
+/* Bouton Nouveau */
+.btn-new {
+    background: var(--main-purple);
+    color: white;
+    border: none;
+    padding: 12px 45px;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.btn-new:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+/* Groupe de filtres */
+.filter-group {
+    display: flex;
+    align-items: center; /* même niveau vertical */
+    gap: 15px;
+    margin-top: 0; /* inutile, flex s’aligne déjà */
+}
+
+.filter-label {
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.filter-select, .btn-category {
+    background-color: var(--light-purple);
+    color: #222;
+    border: 1px solid var(--light-purple);
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    min-width: 120px;
+    height: 40px;
+    cursor: pointer;
+}
+
+/* Conteneur pour flèche du select */
+.select-wrapper { position: relative; }
+.filter-select { appearance: none; padding-right: 30px; }
+.select-wrapper::after {
+    content: '▼';
+    font-size: 0.7rem;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+.btn-category { display: flex; align-items: center; text-align: left; }
+
+/* ==================== TABLEAU ==================== */
+.table-wrapper {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow-x: auto;
+    margin-top: 20px;
+}
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    transition: all 0.3s ease;
+}
+.data-table thead { background-color: var(--main-purple); color: white; }
+.data-table th, .data-table td {
+    padding: 15px;
+    text-align: left;
+    font-size: 14px;
+    border-bottom: 1px solid #eee;
+    transition: background 0.3s ease;
+}
+.data-table tbody tr:hover { background-color: rgba(156, 4, 218, 0.1); }
+
+/* ==================== IMAGES DANS LE TABLEAU ==================== */
+.data-table td .img-placeholder {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    background-color: #ddd;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.3s ease;
+    overflow: hidden;
+}
+.data-table td .img-placeholder:hover { transform: scale(1.1); }
+.data-table td:nth-child(4) { text-align: center; }
+/* Si image <img> */
+.data-table td .img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+}
+
+.img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 100%;
+    display: block;
+}
+
+/* ==================== BADGES ==================== */
+.badge {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    color: white;
+    margin-right: 2px;
+    display: inline-block;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.badge.yellow { background: var(--accent-yellow); cursor: pointer; color: var(--text-dark); }
+.badge.purple { background: var(--main-purple); cursor: pointer;}
+.badge.black { background: #333; cursor: pointer;}
+
+/* ==================== FOOTER ==================== */
+.table-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.btn-outline {
+    border: 2px solid var(--main-purple);
+    background: none;
+    border-radius: 20px;
+    padding: 5px 20px;
+    color: var(--main-purple);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-outline:hover {
+    background: var(--main-purple);
+    color: white;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.pagination { font-weight: bold; font-size: 14px; }

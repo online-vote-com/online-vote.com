@@ -1,0 +1,140 @@
+/* ==================== MODALE (FOND) ==================== */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+}
+
+
+/* ==================== CONTENU MODALE ==================== */
+.modal-content {
+    width: 90%;
+    max-width: 500px;
+    margin: 5% auto;
+    background-color: #fff;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.4s ease;
+}
+
+/* ==================== HEADER ==================== */
+.modal-header {
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    background: linear-gradient(to right, #8A00C4, #4A0080);
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.modal-header p {
+    margin-top: 5px;
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+/* ==================== FORMULAIRE ==================== */
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px;
+}
+
+/* Ligne double */
+.form-row {
+    display: flex;
+    gap: 15px;
+}
+
+.form-row input,
+.form-row .select-wrapper,
+.form-row .file-input {
+    flex: 1;
+}
+
+/* Champs */
+input,
+select,
+textarea,
+.file-input label {
+    padding: 12px 20px;
+    font-size: 14px;
+    border: 1px solid #333;
+    border-radius: 20px;
+    outline: none;
+}
+
+.full-width {
+    width: 100%;
+}
+
+textarea {
+    height: 80px;
+    resize: none;
+    border-radius: 15px;
+}
+
+/* ==================== FILE INPUT ==================== */
+.file-input label {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: background 0.3s ease;
+}
+
+.file-input label:hover {
+    background-color: #eee;
+}
+
+/* ==================== FOOTER ==================== */
+.form-footer {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Bouton */
+.btn-submit {
+    padding: 10px 40px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(to right, #A000D0, #6000A0);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ==================== ANIMATION ==================== */
+@keyframes fadeIn {
+    from {
+        transform: translateY(-40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ==================== IMAGE MINIATURE ==================== */
+.mini-circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--main-purple);
+}

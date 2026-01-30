@@ -1,0 +1,142 @@
+/* ========================= */
+/* ===== CONTEST LIST ===== */
+/* ========================= */
+
+.contest-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 24px;
+    margin-top: 30px;
+}
+
+/* ========================= */
+/* ===== CONTEST CARD ===== */
+/* ========================= */
+
+.contest-item {
+    background: var(--white);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 12px 28px rgba(83, 2, 116, 0.15);
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--gray-border);
+}
+
+.contest-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 45px rgba(83, 2, 116, 0.25);
+}
+
+/* ========================= */
+/* ===== COVER ===== */
+/* ========================= */
+
+.contest-cover {
+    position: relative;
+    height: 140px;
+    background: linear-gradient(
+        135deg,
+        var(--main-purple),
+        var(--dark-purple-gradient)
+    );
+    padding: 16px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+/* Badge type de vote */
+.contest-tag {
+    background: var(--accent-yellow);
+    color: var(--text-dark);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 6px 14px;
+    border-radius: 999px;
+    text-transform: uppercase;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ========================= */
+/* ===== BODY ===== */
+/* ========================= */
+
+.contest-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    flex-grow: 1;
+    background: var(--bg-light);
+}
+
+.contest-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.4;
+    text-align: left;
+}
+
+/* ========================= */
+/* ===== ACTION ===== */
+/* ========================= */
+
+.contest-action {
+    margin-top: auto;
+    text-align: center;
+    padding: 12px;
+    border-radius: 14px;
+    border: 2px solid var(--light-purple);
+    background: transparent;
+    color: var(--main-purple);
+    font-weight: 800;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contest-action:hover {
+    background: var(--main-purple);
+    color: var(--white);
+    border-color: var(--main-purple);
+    transform: translateY(-1px);
+}
+
+/* ========================= */
+/* ===== RESPONSIVE ===== */
+/* ========================= */
+
+/* TABLETTE */
+@media (max-width: 1024px) {
+    .contest-cover {
+        height: 120px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .contest-list {
+        grid-template-columns: 1fr;
+    }
+
+    .contest-item {
+        border-radius: 18px;
+    }
+
+    .contest-cover {
+        height: 110px;
+    }
+
+    .contest-title {
+        font-size: 0.95rem;
+    }
+
+    .contest-action {
+        padding: 14px;
+        font-size: 0.85rem;
+    }
+}
