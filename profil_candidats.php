@@ -46,7 +46,7 @@
             $idVotant = $_SESSION['user_id'];
 
             // Vérifier double vote
-            $check = $pdo->prepare("SELECT COUNT(*) FROM Vote WHERE id_candidat = ? AND id_votant = ?");
+            $check = $pdo->prepare("SELECT COUNT(*) FROM vote WHERE id_candidat = ? AND id_votant = ?");
             $check->execute([$idC, $idVotant]);
 
             if ($check->fetchColumn() > 0) {
