@@ -4,7 +4,7 @@
     </header>
 
     <div class="table-controls">
-        <button class="btn-new" id="openModalBtnConcours"><i class="fa-solid fa-file-circle-plus"></i> Nouveau
+        <button class="btn-new"><i class="fa-solid fa-file-circle-plus"></i> Nouveau
 </button>
         <div class="filter-group">
             <span class="filter-label">Filtre</span>

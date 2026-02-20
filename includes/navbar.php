@@ -17,7 +17,7 @@
         </nav>
 
         <div class="header-actions">
-            <a href="#" class="btn-connect">Se connecter</a>
+            <a href="login.php" class="btn-connect">Se connecter</a>
         </div>
     </div>
 </header>
