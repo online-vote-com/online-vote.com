@@ -1,0 +1,268 @@
+/* ============================= */
+/* RESET + BASE */
+/* ============================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--white);
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* ============================= */
+/* CONTAINER */
+/* ============================= */
+
+.main-container {
+    display: flex;
+    flex-direction: column; /* Mobile first */
+    width: 100%;
+    max-width: 1000px;
+    min-height: 650px;
+    background: var(--white);
+    border-radius: 32px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+/* ============================= */
+/* SECTION GAUCHE */
+/* ============================= */
+
+.sidebar {
+    position: relative;
+    background: linear-gradient(135deg, #0f021a 0%, var(--dark-purple-gradient) 100%);
+    padding: clamp(30px, 6vw, 60px);
+    display: flex;
+    align-items: flex-start;
+    color: var(--white);
+    overflow: hidden;
+}
+
+/* Effet glow */
+.sidebar::before {
+    content: '';
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    background: #00f2ff;
+    filter: blur(90px);
+    opacity: 0.35;
+    top: 20%;
+    right: -60px;
+}
+
+/* Glow secondaire subtil */
+.sidebar::after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    background: var(--main-purple);
+    filter: blur(100px);
+    opacity: 0.25;
+    bottom: -40px;
+    left: -40px;
+}
+
+.sidebar h1 {
+    font-size: clamp(1.4rem, 2vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.4;
+    position: relative;
+    z-index: 2;
+}
+
+/* ============================= */
+/* SECTION DROITE */
+/* ============================= */
+
+.form-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: clamp(30px, 5vw, 60px);
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 420px;
+}
+
+h2 {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.divider {
+    width: 100%;
+    border: 0.5px solid #ddd;
+    margin-bottom: 30px;
+}
+
+/* ============================= */
+/* INPUTS */
+/* ============================= */
+
+.input-group {
+    margin-bottom: 18px;
+}
+
+.input-group label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--gray-border);
+    border-radius: 14px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.2s ease;
+    background: rgba(0,0,0,0.02);
+}
+
+.input-group input:focus {
+    border-color: var(--main-purple);
+    box-shadow: 0 0 0 3px rgba(200,80,192,0.1);
+    background: var(--white);
+}
+
+/* ============================= */
+/* BOUTON */
+/* ============================= */
+
+.btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(to right, #C850C0, var(--main-purple));
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.25s ease;
+    box-shadow: 0 10px 25px rgba(200,80,192,0.25);
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(200,80,192,0.35);
+}
+
+.btn-submit:active {
+    transform: scale(0.98);
+}
+
+/* ============================= */
+/* SOCIAL */
+/* ============================= */
+
+.social-login {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-top: 35px;
+}
+
+.social-icon {
+    width: 48px;
+    height: 42px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: rgba(0,0,0,0.02);
+}
+
+.social-icon:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+.social-icon img {
+    width: 20px;
+}
+
+/* ============================= */
+/* FOOTER */
+/* ============================= */
+
+.footer-text {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.footer-text a {
+    color: var(--main-purple);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.footer-text a:hover {
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* TABLET */
+/* ============================= */
+
+@media (min-width: 768px) {
+    .main-container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        flex: 0 0 42%;
+    }
+}
+
+/* ============================= */
+/* DESKTOP */
+/* ============================= */
+
+@media (min-width: 1024px) {
+    .sidebar {
+        flex: 0 0 40%;
+    }
+}
+
+/* ============================= */
+/* PETITS MOBILES */
+/* ============================= */
+
+@media (max-width: 380px) {
+    .form-section {
+        padding: 25px 15px;
+    }
+
+    .sidebar h1 {
+        font-size: 1.2rem;
+    }
+
+    h2 {
+        font-size: 1.3rem;
+    }
+}
