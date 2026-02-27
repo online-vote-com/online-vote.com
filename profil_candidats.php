@@ -214,7 +214,7 @@ if (form) {
 
         try {
 
-            const response = await fetch("api/paiement.php", {
+            const response = await fetch("api/paiement", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

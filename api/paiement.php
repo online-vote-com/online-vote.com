@@ -71,11 +71,9 @@ $response = callMesomb($phone, $montant, $transaction_id, $operator);
 
 if (!$response || isset($response['status']) && $response['status'] === 'error') {
 
-    echo json_encode([
-        "status" => "error",
-        "message" => "Erreur paiement Mobile Money"
-    ]);
-    exit;
+echo "<pre>";
+print_r($response);
+exit;
 }
 
 echo json_encode([

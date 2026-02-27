@@ -43,7 +43,7 @@ foreach ($ranks as $r) {
 ?>
 
 <link rel="stylesheet" href="assets/css/concours_detail.css">
-
+<link rel="stylesheet" href="assets/css/color.css">
 <main class="container">
 
     <h1 class="main-title">

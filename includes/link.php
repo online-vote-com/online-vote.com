@@ -1,4 +1,6 @@
-<?php define('BASE_URL', 'http://localhost/online-vote.com/') ?>
+<?php //  define('BASE_URL', 'http://localhost/online-vote.com/') 
+define('BASE_URL', 'https://online-vote.com/') ?>
+
 
     <!DOCTYPE html>
     <html lang="en">

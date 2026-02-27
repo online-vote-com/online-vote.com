@@ -1,6 +1,4 @@
-<link rel="stylesheet" href="assets/css/concours_detail.css">
 
-<link rel="stylesheet" href="assets/css/grid-card.css">
 <?php
     include 'includes/link.php';
     include 'includes/navbar.php';
@@ -22,6 +20,9 @@
     */
 
 ?>
+<link rel="stylesheet" href="assets/css/concours_detail.css">
+<link rel="stylesheet" href="assets/css/color.css">
+<link rel="stylesheet" href="assets/css/grid-card.css">
 
 <main class="container">
     <h1 class="main-title">Liste De Tous Les Concours</h1>
