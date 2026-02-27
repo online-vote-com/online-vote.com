@@ -1,154 +1,249 @@
-    <?php
-    session_start();
+<?php
+/**
+ * PAGE PROFIL CANDIDAT
+ * - Affiche candidat
+ * - Gère vote gratuit (auth requis)
+ * - Vote payant via API AJAX
+ */
 
-    include 'config/database.php';
-    include 'includes/link.php';
-    include 'includes/navbar.php';
+session_start();
 
-    if (!isset($_GET['id_candidat']) || !is_numeric($_GET['id_candidat'])) {
-        die("Aucun candidat trouvé !");
+require 'config/database.php';
+
+if (!isset($_GET['id_candidat']) || !is_numeric($_GET['id_candidat'])) {
+    die("Candidat invalide.");
+}
+
+$idC = (int) $_GET['id_candidat'];
+
+/* Récupération candidat + concours*/
+$sql = "
+    SELECT con.*, can.* 
+    FROM concours con
+    JOIN candidats can ON can.id_concours = con.id_concours
+    WHERE can.id_candidat = ?
+";
+
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$idC]);
+$candidat = $stmt->fetch();
+
+if (!$candidat) {
+    die("Candidat introuvable.");
+}
+
+/* Compteur total votes*/
+$stmtVote = $pdo->prepare("
+    SELECT COUNT(*) FROM votes WHERE id_candidat = ?
+");
+$stmtVote->execute([$idC]);
+$voteCount = $stmtVote->fetchColumn();
+
+$message = "";
+
+/**
+ * ==================================================
+ *  GESTION VOTE GRATUIT UNIQUEMENT
+ * ==================================================
+ */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote_gratuit'])) {
+
+    if (!isset($_SESSION['id_user'])) {
+        header("Location: login.php");
+        exit;
     }
 
-    $idC = (int) $_GET['id_candidat'];
+    $idVotant = $_SESSION['id_user'];
+    $idConc = $candidat['id_concours'];
+    $ip = $_SERVER['REMOTE_ADDR'];
 
-    // Récupérer les infos du candidat et du concours
-    $sql = "SELECT con.*, can.* 
-            FROM concours con
-            JOIN candidats can ON can.id_concours = con.id_concours
-            WHERE can.id_candidat = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$idC]);
-    $candidat = $stmt->fetch();
+    // Vérifier si déjà voté pour ce concours
+    $check = $pdo->prepare("
+        SELECT COUNT(*) 
+        FROM votes 
+        WHERE id_votant=? 
+        AND id_concours=? 
+        AND source='gratuit'
+    ");
+    $check->execute([$idVotant, $idConc]);
 
-    if (!$candidat) {
-        die("Candidat introuvable !");
+    //if ($check->fetchColumn() > 0 && $_SESSION['role'] === 'votant') 
+    if ($check->fetchColumn() > 0) {
+        $message = "<p style='color:red'>Vous avez déjà voté.</p>";
+    } else {
+
+        $insert = $pdo->prepare("
+            INSERT INTO votes 
+            (id_candidat, id_concours, id_votant, source, adr_ip)
+            VALUES (?, ?, ?, 'gratuit', ?)
+        ");
+
+        $insert->execute([
+            $idC,
+            $idConc,
+            $idVotant,
+            $ip
+        ]);
+
+        $message = "<p style='color:green'>Vote enregistré !</p>";
+        $voteCount++;
     }
+}
+?>
+    <?php include 'includes/link.php'; ?>
 
-    $stmtVote = $pdo->prepare("SELECT COUNT(*) FROM Vote WHERE id_candidat = ?");
-    $stmtVote->execute([$idC]);
-    $voteCount = $stmtVote->fetchColumn();
+  <?php include 'includes/navbar.php'; ?>
 
-    $message = "";
+<link rel="stylesheet" href="assets/css/profile_candidat.css">
+<link rel="stylesheet" href="assets/css/color.css">
 
-  
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote_submit'])) {
+<main class="candidate-wrapper">
 
-        $ip = $_SERVER['REMOTE_ADDR'];
-        $idConc = $candidat['id_concours'];
+    <div class="candidate-card">
 
-        if ($candidat['type_vote'] !== 'payant') {
-           
-            if (!isset($_SESSION['user_id'])) {
-                header("Location: login.php");
-                exit;
-            }
+        <!-- IMAGE -->
+        <div class="candidate-media">
+            <img src="uploads/candidats/<?= htmlspecialchars($candidat['photo_candidat'] ?? 'uploads/12.png') ?>" 
+                 alt="<?= htmlspecialchars($candidat['nom_candidat']) ?>">
+                  <img src="uploads/12.png" >
+        </div>
 
-            $idVotant = $_SESSION['user_id'];
+        <!-- contennu -->
+        <div class="candidate-info">
 
-            // Vérifier double vote
-            $check = $pdo->prepare("SELECT COUNT(*) FROM vote WHERE id_candidat = ? AND id_votant = ?");
-            $check->execute([$idC, $idVotant]);
+            <div class="candidate-header">
+                <h1>
+                    <?= htmlspecialchars($candidat['nom_candidat']) ?>
+                    <?= htmlspecialchars($candidat['prenom_candidat']) ?>
+                </h1>
 
-            if ($check->fetchColumn() > 0) {
-                $message = "<p style='color:red'>Vous avez déjà voté pour ce candidat.</p>";
-            } else {
-                $insert = $pdo->prepare("INSERT INTO Vote (id_candidat, id_concours, id_votant, adr_ip) VALUES (?, ?, ?, ?)");
-                $insert->execute([$idC, $idConc, $idVotant, $ip]);
-                $message = "<p style='color:green'>Vote enregistré !</p>";
-                $voteCount++;
-            }
-
-        } else {
-            // Concours payant
-            if (!isset($_POST['montant'], $_POST['methode'], $_POST['telephone']) 
-                || !is_numeric($_POST['montant']) 
-                || empty($_POST['methode']) 
-                || empty($_POST['telephone'])) 
-            {
-                $message = "<p style='color:red'>Veuillez remplir tous les champs correctement.</p>";
-            } else {
-                $montant = floatval($_POST['montant']);
-                $prixVote = floatval($candidat['prix_vote']);
-                $nbVotes = floor($montant / $prixVote);
-
-                if ($nbVotes <= 0) {
-                    $message = "<p style='color:red'>Le montant est inférieur au prix d'un vote.</p>";
-                } else {
-                    $methode = $_POST['methode'];
-                    $tel = $_POST['telephone'];
-
-                    // Insérer le paiement
-                    $stmtPay = $pdo->prepare("INSERT INTO paiement (montant, methode, status_paiement) VALUES (?, ?, 'succes')");
-                    $stmtPay->execute([$montant, $methode]);
-                    $idPaiement = $pdo->lastInsertId();
-
-                    // Insérer les votes correspondants
-                    $insertVote = $pdo->prepare("INSERT INTO Vote (id_candidat, id_concours, id_paiement, adr_ip) VALUES (?, ?, ?, ?)");
-                    for ($i = 0; $i < $nbVotes; $i++) {
-                        $insertVote->execute([$idC, $idConc, $idPaiement, $ip]);
-                    }
-
-                    $voteCount += $nbVotes;
-                    $message = "<p style='color:green'>Merci ! $nbVotes vote(s) enregistré(s) pour $montant FCFA.</p>";
-                   // header('location: concours.php?id_concours=' . $idC);
-                }
-            }
-        }
-    }
-    ?>
-
-    <link rel="stylesheet" href="assets/css/profile_candidat.css">
-    <link rel="stylesheet" href="assets/css/color.css">
-
-    <main class="container profile-page">
-        <div class="profile-card">
-
-            <div class="profile-image">
-                <img src="assets/images/organisateur/art.jpg" alt="Candidat">
+                <span class="contest-name">
+                    <?= htmlspecialchars($candidat['titre']) ?>
+                </span>
             </div>
 
-            <div class="profile-content">
+            <p class="candidate-bio">
+                <?= nl2br(htmlspecialchars($candidat['biography'])) ?>
+            </p>
 
-                <h1 class="candidate-name"><?= htmlspecialchars($candidat['nom_candidat']) ?></h1>
-                <p class="contest-title"><?= htmlspecialchars($candidat['titre']) ?></p>
+            <div class="vote-box">
 
-                <div class="candidate-description">
-                    <h3>À propos de moi</h3>
-                    <p><?= nl2br(htmlspecialchars($candidat['biography'])) ?></p>
+                <div class="vote-meta">
+                    <span class="votes-count">
+                        <?= $voteCount ?> votes
+                    </span>
+  <!-- payant -->
+                    <?php if ($candidat['type_vote'] === 'payant'): ?>
+                        <span class="vote-price">
+                            <?= number_format($candidat['prix_vote'],0,',',' ') ?> FCFA
+                        </span>
+                    <?php else: ?>
+                        <span class="vote-free">Vote gratuit</span>
+                    <?php endif; ?>
                 </div>
 
-                <div class="vote-section">
-                    <div class="vote-info">
-                        <span>
-                            Montant vote : <?= $candidat['type_vote'] === 'payant' ? $candidat['prix_vote'] . ' FCFA' : 'Gratuit'; ?>
-                        </span>
-                        <span>Votes actuels : <strong><?= $voteCount ?></strong></span>
-                    </div>
+                <?= $message ?>
 
-                    <?= $message ?>
+  <!-- gratuit -->
+                <?php if ($candidat['type_vote'] === 'gratuit'): ?>
 
-                    <?php if ($candidat['type_vote'] === 'payant'): ?>
-                        <form method="POST" class="vote-form">
-                            <input type="number" name="montant" placeholder="Montant à payer" required>
-                            <input type="tel" name="telephone" placeholder="Numéro" required>
-                            <select name="methode" required placeholder="Mode de paiement">
-                                <option value="Orange">Orange Money</option>
-                                <option value="MTN">MTN Mobile Money</option>
-                            </select>
-                            <button type="submit" name="vote_submit">Payer & Voter</button>
-                        </form>
-                    <?php elseif (isset($_SESSION['user_id'])): ?>
-                        <form method="POST" class="vote-form">
-                            <button type="submit" name="vote_submit">Voter</button>
+                    <?php if (isset($_SESSION['id_user'])): ?>
+                        <form method="POST">
+                            <button class="btn-vote" name="vote_gratuit">
+                                Voter
+                            </button>
                         </form>
                     <?php else: ?>
-                        <p style="color:red">Vous devez être connecté pour voter à ce concours gratuit.</p>
-                        <a href="login.php" class="btn">Se connecter</a>
+                        <a href="login" class="btn-vote-outline">
+                            Se connecter pour voter
+                        </a>
                     <?php endif; ?>
 
-                </div>
-            </div>
-        </div>
-    </main>
+                <?php endif; ?>
 
-    <?php include 'includes/footer.php'; ?>
+                <?php if ($candidat['type_vote'] === 'payant'): ?>
+
+                    <form id="payForm" class="pay-form" >
+
+                        <input type="number"
+                               name="montant"
+                               placeholder="Montant"
+                               min="<?= $candidat['prix_vote'] ?>"
+                               required>
+
+                        <input type="tel"
+                               name="telephone"
+                               placeholder="Téléphone"
+                               required>
+
+                        <select name="operator" required>
+                            <option value="ORANGE">Orange Money</option>
+                            <option value="MTN">MTN MoMo</option>
+                        </select>
+
+                        <button type="submit" class="btn-vote">
+                            Payer & voter
+                        </button>
+
+                    </form>
+                    <div id="paymentMessage"></div>
+                <?php endif; ?>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</main>
+
+<?php include 'includes/footer.php'; ?>
+
+
+<script>
+const form = document.getElementById("payForm");
+
+if (form) {
+
+    form.addEventListener("submit", async function(e) {
+
+        e.preventDefault();
+
+        const messageBox = document.getElementById("paymentMessage");
+        messageBox.innerHTML = "Traitement du paiement...";
+
+        try {
+
+            const response = await fetch("api/paiement.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    id_candidat: <?= $idC ?>,
+                    id_concours: <?= $candidat['id_concours'] ?>,
+                    montant: form.montant.value,
+                    phone: form.telephone.value,
+                    operator: form.operator.value
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.status !== "success") {
+                messageBox.innerHTML =
+                    "<span style='color:red'>" + data.message + "</span>";
+                return;
+            }
+
+            messageBox.innerHTML =
+                "<span style='color:green'>Demande envoyée. Confirmez sur votre téléphone.</span>";
+
+        } catch (error) {
+
+            messageBox.innerHTML =
+                "<span style='color:red'>Erreur serveur.</span>";
+
+            console.error(error);
+        }
+    });
+}
+</script>

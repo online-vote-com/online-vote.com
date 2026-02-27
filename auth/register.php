@@ -1,40 +1,65 @@
-<div class="modal-container">
-    <div class="modal-header">
-        <h2>Inscription</h2>
-    </div>
-    <div class="modal-body">
-        <p class="form-instruction">Tous les champs marqués avec * sont obligatoires</p>
-        
-        <form action="#" method="POST" class="form-grid">
-            <div class="form-row">
-                <input type="text" placeholder="Nom *" name="nom" required>
-                <input type="text" placeholder="Prénom *" name="prenom" required>
-            </div>
+<?php
+require '../config/database.php'; // connexion PDO
 
-            <input type="email" placeholder="Email *" name="email" required class="full-width">
+if($_SERVER["REQUEST_METHOD"] == "POST"){
 
-            <div class="form-row">
-                <input type="password" placeholder="Mot de passe *" name="password" required>
-                <div class="file-input-wrapper">
-                    <span>Photo</span>
-                </div>
-            </div>
+    $nom = htmlspecialchars($_POST['nom']);
+    $prenom = htmlspecialchars($_POST['prenom']);
+    $email = htmlspecialchars($_POST['email']);
+    $password = $_POST['mdp'];
 
-            <input type="password" placeholder="Confirmation de Mot de passe *" name="confirm_password" required class="full-width">
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-            <div class="form-row-btn">
-                <select name="role" class="select-input">
-                    <option value="">Role *</option>
-                    <option value="organisateur">Organisateur</option>
-                    <option value="electeur">Électeur</option>
-                </select>
-                <button type="submit" class="btn-confirm-action">Confirmer</button>
-            </div>
-        </form>
+ 
+    $photo_name = null; // valeur par défaut
 
-        <div class="modal-footer-links">
-            <p>Vous avez déjà un compte ? <a href="#">Connexion</a></p>
-            <a href="index.php" class="back-home">Acceuil</a>
-        </div>
-    </div>
-</div>
+    if(isset($_FILES['photo']) && $_FILES['photo']['error'] === 0){
+
+        $allowed_types = ['image/jpeg', 'image/png', 'image/webp'];
+       // $max_size = 2 * 1024 * 1024; // 2MB
+$max_size = 30* 1024 * 1024; // 2MB
+        if(in_array($_FILES['photo']['type'], $allowed_types)){
+
+            if($_FILES['photo']['size'] <= $max_size){
+
+                $upload_dir = "../uploads/";
+
+                if(!is_dir($upload_dir)){
+                    mkdir($upload_dir, 0755, true);
+                }
+
+                $extension = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+                $photo_name = uniqid("user_", true) . "." . $extension;
+
+                move_uploaded_file(
+                    $_FILES['photo']['tmp_name'],
+                    $upload_dir . $photo_name
+                );
+
+            } else {
+                die("Image trop volumineuse (max 2MB)");
+            }
+
+        } else {
+            die("Format d'image non autorisé");
+        }
+    }
+    
+    $stmt = $pdo->prepare("
+        INSERT INTO users 
+        (nom_user, prenom_user, email, pwd, photo_user) 
+        VALUES (?, ?, ?, ?, ?)
+    ");
+
+    $stmt->execute([
+        $nom,
+        $prenom,
+        $email,
+        $hashed_password,
+        $photo_name
+    ]);
+
+    header("Location: ../login");
+    exit();
+}
+?>

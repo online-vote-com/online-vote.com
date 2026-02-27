@@ -19,7 +19,7 @@
         $pdo_C = $pdo->query($sql); 
         $nbrC = $pdo_C->fetchColumn();
 
-        $sqlP = "SELECT SUM(montant) AS montantTotal FROM paiement"; 
+        $sqlP = "SELECT SUM(montant) AS montantTotal FROM paiements"; 
         $pdo_P = $pdo->query($sqlP);
         $total_P = $pdo_P->fetchColumn();
     
@@ -62,8 +62,8 @@
             </nav>
 
             <button class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i>
-                <!--<i class="fas fa-sign-out-alt"></i> Déconnexion-->
+                <i class="fas fa-sign-out-alt" ></i>
+                <a href="../auth/logout"> <i class="" ></i> Déconnexion</a>
             </button>
         </aside>
 
@@ -75,7 +75,7 @@
                 <h1>Tableau de Bord</h1>
                 <p class="date-now">Content de vous revoir !</p>
             </div>
-            <a href="../index.php" class="btn-home-circle" title="Retour à l'accueil">
+            <a href="../index" class="btn-home-circle" title="Retour à l'accueil">
                 <i class="fas fa-home"></i>
             </a>
         </header>

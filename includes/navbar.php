@@ -1,3 +1,5 @@
+
+
 <link rel="stylesheet" href="assets/css/navbar.css">
 
 <header class="main-header">
@@ -8,16 +10,20 @@
         </div>
 
         <nav class="nav-menu">
-            <ul>
-                <li><a href="index.php">Acceuil</a></li>
+            <ul> 
+                <li><a href="index">Acceuil</a></li>
                 <li><a href="#">A propos</a></li>
                 <li><a href="#">Contact</a></li>
-                <li><a href="concours.php">concours</a></li>
+                <li><a href="concours">concours</a></li>
             </ul>
         </nav>
 
-        <div class="header-actions">
-            <a href="login.php" class="btn-connect">Se connecter</a>
+        <?php if(isset($_SESSION['id_user'])) { ?>
+            <div class="header-actions">
+                <a href="profil_user" class="btn-connect">Mon Profil</a>
+         <?php } else { ?>
+                <a href="login" class="btn-connect">Se connecter</a>
+         <?php } ?>
         </div>
     </div>
 </header>

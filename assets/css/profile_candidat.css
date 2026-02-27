@@ -1,215 +1,173 @@
+/* ======================
+   LAYOUT
+====================== */
 
-/* ==========================
-   Container
-========================== */
-.container {
-    max-width: 1100px;
-    margin: 0 auto;
+.candidate-wrapper {
+    max-width: 1200px;
+    margin: 60px auto;
     padding: 20px;
     font-family: 'Poppins', sans-serif;
-    color: var(--text-dark);
-    background: var(--bg-light);
 }
 
-/* ==========================
-   Profile Card
-========================== */
-.profile-card {
-    display: flex;
-    flex-direction: row;
-    background: var(--white);
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+.candidate-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #ffffff;
+    border-radius: 24px;
     overflow: hidden;
-    transition: all 0.3s ease;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.06);
 }
 
-.profile-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+/* ======================
+   IMAGE
+====================== */
+
+.candidate-media {
+    height: 100%;
 }
 
-/* ==========================
-   Profile Image
-========================== */
-.profile-image {
-    flex: 1;
-    min-width: 300px;
-    overflow: hidden;
-}
-
-.profile-image img {
+.candidate-media img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 20px 0 0 20px;
-    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-.profile-image img:hover {
-    transform: scale(1.05);
-    filter: brightness(1.05);
-}
+/* ======================
+   INFO
+====================== */
 
-/* ==========================
-   Profile Content
-========================== */
-.profile-content {
-    flex: 2;
-    padding: 40px;
+.candidate-info {
+    padding: 60px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
-/* ------------------------
-   Typographie
------------------------- */
-.candidate-name {
-    font-size: 2.4rem;
-    font-weight: 700;
-    color: var(--main-purple);
-    margin-bottom: 5px;
+.candidate-header h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1a1a1a;
 }
 
-.contest-title {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--dark-purple-gradient);
+.contest-name {
+    font-size: 0.9rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
+    color: #9C04DA;
+    opacity: 0.7;
 }
 
-.candidate-description h3 {
-    font-size: 1.4rem;
-    color: var(--dark-purple-gradient);
-    margin-bottom: 10px;
-}
-
-.candidate-description p {
+.candidate-bio {
+    margin: 30px 0;
     font-size: 1rem;
-    line-height: 1.7;
-    color: var(--text-dark);
+    line-height: 1.8;
+    color: #555;
 }
 
-/* ==========================
-   Vote Section
-========================== */
-.vote-section {
-    margin-top: 30px;
-    background: var(--light-purple-bg);
-    padding: 25px 30px;
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease;
+/* ======================
+   VOTE BOX
+====================== */
+
+.vote-box {
+    margin-top: 20px;
+    padding-top: 30px;
+    border-top: 1px solid #eee;
 }
 
-.vote-section:hover {
-    transform: translateY(-2px);
-}
-
-.vote-info {
+.vote-meta {
     display: flex;
     justify-content: space-between;
-    font-weight: 600;
-    color: var(--text-dark);
     margin-bottom: 20px;
-    font-size: 1rem;
+    font-weight: 500;
+    color: #444;
 }
 
-/* ------------------------
-   Form Inputs
------------------------- */
-.vote-form {
+.vote-price {
+    color: #9C04DA;
+    font-weight: 600;
+}
+
+.vote-free {
+    color: #4CAF50;
+}
+
+/* ======================
+   FORM
+====================== */
+
+.pay-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
-.vote-form input,
-.vote-form select {
-    padding: 14px 18px;
-    border-radius: 30px;
-    border: 1px solid var(--gray-border);
-    outline: none;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    width: 100%;
-}
-
-.vote-form input:focus,
-.vote-form select:focus {
-    transform: scale(1.02);
-    box-shadow: 0 0 10px var(--main-purple);
-}
-
-.vote-form select {
-    background: linear-gradient(90deg, var(--main-purple), var(--dark-purple-gradient));
-    color: var(--white);
-    font-weight: 600;
-}
-
-/* ------------------------
-   Buttons
------------------------- */
-.vote-form button {
-    padding: 15px 0;
-    border-radius: 30px;
-    border: none;
-    font-weight: 700;
-    font-size: 1.05rem;
-    color: var(--white);
-    background: linear-gradient(90deg, var(--main-purple), var(--dark-purple-gradient));
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.vote-form button:hover {
-    transform: scale(1.03);
-    background: linear-gradient(90deg, var(--light-purple), var(--main-purple));
-}
-
-/* ------------------------
-   Message Feedback
------------------------- */
-.vote-section p {
-    font-weight: 500;
+.pay-form input,
+.pay-form select {
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid #e5e5e5;
     font-size: 0.95rem;
-    margin-top: 5px;
+    background: #fafafa;
+    transition: all 0.2s ease;
 }
 
-.vote-section p[style*="color:red"] {
-    color: #FF3B3B;
+.pay-form input:focus,
+.pay-form select:focus {
+    border-color: #9C04DA;
+    background: #fff;
+    outline: none;
 }
 
-.vote-section p[style*="color:green"] {
-    color: #4CAF50;
+/* ======================
+   BUTTONS
+====================== */
+
+.btn-vote {
+    padding: 14px;
+    border-radius: 12px;
+    border: none;
+    background: #9C04DA;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
 }
 
-/* ==========================
-   Responsive
-========================== */
+.btn-vote:hover {
+    background: #7a03b0;
+}
+
+.btn-vote-outline {
+    display: inline-block;
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 1px solid #9C04DA;
+    color: #9C04DA;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-vote-outline:hover {
+    background: #9C04DA;
+    color: white;
+}
+
+/* ======================
+   RESPONSIVE
+====================== */
+
 @media (max-width: 900px) {
-    .profile-card {
-        flex-direction: column;
+    .candidate-card {
+        grid-template-columns: 1fr;
     }
 
-    .profile-image {
-        border-radius: 20px 20px 0 0;
-        min-height: 200px;
+    .candidate-info {
+        padding: 40px 25px;
     }
 
-    .profile-content {
-        padding: 25px 20px;
-    }
-
-    .vote-form {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .vote-form button {
-        width: 100%;
+    .candidate-media {
+        height: 350px;
     }
 }

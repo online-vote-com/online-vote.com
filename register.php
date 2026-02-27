@@ -20,7 +20,7 @@
                 }
             ?>
 
-            <form action="authen/register.php" 
+            <form action="auth/register.php" 
                   method="post" 
                   enctype="multipart/form-data" 
                   id="registerForm">
@@ -78,6 +78,7 @@
                            name="cmdp" 
                            required>
                 </div>
+            <input type="radio" required>Vous acceptez nos <a href="#">Politique de confidentialités</a>
 
                 <button type="submit" class="btn-submit">
                     Créer mon compte
@@ -100,9 +101,9 @@
 
             <p class="footer-text">
                 J'ai déjà un compte : 
-                <a href="login.php">Connexion</a>
+                <a href="login">Connexion</a>
             </p>
-
+            <p class="footer-text">Retour à <a href="index">l'acceuil</a></p>
         </div>
     </div>
 </div>

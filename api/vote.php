@@ -1,0 +1,2 @@
+<?php
+//Enregistrer vote gratuit?>

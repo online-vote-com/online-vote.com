@@ -1,5 +1,8 @@
 
-<?php include 'includes/link.php'; ?>
+<?php 
+include 'includes/link.php'; 
+
+?>
 <link rel="stylesheet" href="assets/css/register.css">
 
 <div class="main-container">
@@ -11,13 +14,12 @@
         echo "<p class='error-msg'>$msg</p>";
        }
    ?>
-    <form class="form-section" method="post" action = "authen/login.php">
+    <form class="form-section" method="post" action = "auth/login.php">
         <div class="form-wrapper">
             <h2>Connexion</h2>
             <hr class="divider">
 
          
-
                 <div class="input-group">
                     <label>Email :</label>
                     <input type="email" placeholder="" name="email" required>
@@ -28,9 +30,11 @@
                     <input type="password" placeholder="" name="mdp" required>
                 </div>
                 <button type="submit" class="btn-submit">Se connecter</button>
+                
             </form> 
 
-            <p class="footer-text">Pas de compte ? <a href="register.php">inscription</a></p>
+            <p class="footer-text">Pas de compte ? <a href="register">inscription</a></p>
+            <p class="footer-text">Retour à <a href="index">l'acceuil</a></p>
         </div>
     </div>
 </div>
