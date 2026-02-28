@@ -25,6 +25,20 @@ function generateSignature($method, $endpoint, $body, $date, $nonce)
 }
 
 /**
+ * Générer signature HMAC
+ */
+function generateSignature($method, $endpoint, $body, $date, $nonce)
+{
+    $message = $method . "\n" .
+               $endpoint . "\n" .
+               $body . "\n" .
+               $date . "\n" .
+               $nonce;
+
+    return hash_hmac('sha256', $message, MESOMB_SECRET);
+}
+
+/**
  * Appel API MeSomb
  */
 function callMesomb($phone, $amount, $transaction_id, $operator)
@@ -65,7 +79,7 @@ function callMesomb($phone, $amount, $transaction_id, $operator)
         "X-MeSomb-Date: $date",
         "X-MeSomb-Nonce: $nonce",
         "X-MeSomb-ApiKey: " . MESOMB_API_KEY,
-        "X-MeSomb-Signature: $signature
+        "X-MeSomb-Signature: $signature"
     ];
 
     $ch = curl_init($url);
