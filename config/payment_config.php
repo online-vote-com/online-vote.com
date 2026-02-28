@@ -13,7 +13,7 @@ define('MESOMB_CALLBACK_URL', 'https://online-vote.com/api/notify.php');
 
 
 /**
- * Générer signature HMAC
+ * Générer signature HMAC Hash-based Message Authentication Code
  */
 function generateSignature($method, $endpoint, $body, $date, $nonce)
 {
@@ -21,7 +21,7 @@ function generateSignature($method, $endpoint, $body, $date, $nonce)
                $endpoint . "\n" .
                $body . "\n" .
                $date . "\n" .
-               $nonce;
+               $nonce; //identifiant unique pour éviter les répétitions de requêtes
 
     return hash_hmac('sha256', $message, MESOMB_SECRET);
 }
