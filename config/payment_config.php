@@ -25,30 +25,12 @@ function generateSignature($method, $endpoint, $body, $date, $nonce)
 }
 
 /**
- * Générer signature HMAC
- */
-function generateSignature($method, $endpoint, $body, $date, $nonce)
-{
-    $message = $method . "\n" .
-               $endpoint . "\n" .
-               $body . "\n" .
-               $date . "\n" .
-               $nonce;
-
-    return hash_hmac('sha256', $message, MESOMB_SECRET);
-}
-
-/**
  * Appel API MeSomb
  */
 function callMesomb($phone, $amount, $transaction_id, $operator)
 {
-    // Nettoyage numéro
     $phone = preg_replace('/[^0-9]/', '', $phone);
-
-    if (strlen($phone) === 9) {
-        $phone = "237" . $phone;
-    }
+    if (strlen($phone) === 9) $phone = "237" . $phone;
 
     $endpoint = "/payment/mobilemoney";
     $url = MESOMB_BASE_URL . $endpoint;
@@ -62,17 +44,9 @@ function callMesomb($phone, $amount, $transaction_id, $operator)
     ];
 
     $body = json_encode($payload);
-
     $date = gmdate('D, d M Y H:i:s') . ' GMT';
     $nonce = uniqid();
-
-    $signature = generateSignature(
-        "POST",
-        $endpoint,
-        $body,
-        $date,
-        $nonce
-    );
+    $signature = generateSignature("POST", $endpoint, $body, $date, $nonce);
 
     $headers = [
         "Content-Type: application/json",
@@ -83,7 +57,6 @@ function callMesomb($phone, $amount, $transaction_id, $operator)
     ];
 
     $ch = curl_init($url);
-
     curl_setopt_array($ch, [
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
@@ -95,22 +68,13 @@ function callMesomb($phone, $amount, $transaction_id, $operator)
     $response = curl_exec($ch);
 
     if (curl_errno($ch)) {
-        return [
-            "success" => false,
-            "message" => curl_error($ch)
-        ];
+        return ["success" => false, "message" => curl_error($ch)];
     }
 
     curl_close($ch);
 
     $decoded = json_decode($response, true);
-
-    if (!$decoded) {
-        return [
-            "success" => false,
-            "message" => $response
-        ];
-    }
+    if (!$decoded) return ["success" => false, "message" => $response];
 
     return $decoded;
 }

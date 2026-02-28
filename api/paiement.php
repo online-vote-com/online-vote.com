@@ -6,104 +6,62 @@
  */
 
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
 require_once("../config/database.php");
 require_once("../config/payment_config.php");
 
 header("Content-Type: application/json");
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    echo json_encode(["status" => "error", "message" => "Méthode invalide"]);
-    exit;
+    echo json_encode(["status"=>"error","message"=>"Méthode invalide"]); exit;
 }
 
 $data = json_decode(file_get_contents("php://input"), true);
+if (!$data) { echo json_encode(["status"=>"error","message"=>"JSON invalide"]); exit; }
 
-if (!$data) {
-    echo json_encode(["status" => "error", "message" => "JSON invalide"]);
-    exit;
-}
-
-if (
-    empty($data['id_candidat']) ||
-    empty($data['id_concours']) ||
-    empty($data['montant']) ||
-    empty($data['phone']) ||
-    empty($data['operator'])
-) {
-    echo json_encode(["status" => "error", "message" => "Données manquantes"]);
-    exit;
+if (empty($data['id_candidat']) || empty($data['id_concours']) || empty($data['montant']) || empty($data['phone']) || empty($data['operator'])) {
+    echo json_encode(["status"=>"error","message"=>"Données manquantes"]); exit;
 }
 
 $idCandidat = (int)$data['id_candidat'];
 $idConcours = (int)$data['id_concours'];
-$montant    = (int)$data['montant'];
-$phone      = $data['phone'];
-$operator   = strtoupper(trim($data['operator']));
+$montant = (int)$data['montant'];
+$phone = preg_replace('/[^0-9]/', '', $data['phone']);
+$operator = strtoupper(trim($data['operator']));
 
-/* Vérifier concours ouvert */
-$stmt = $pdo->prepare("
-    SELECT prix_vote 
-    FROM concours 
-    WHERE id_concours = ? 
-    AND status_concours = 'ouvert'
-");
+// Vérifier concours ouvert
+$stmt = $pdo->prepare("SELECT prix_vote FROM concours WHERE id_concours=? AND status_concours='ouvert'");
 $stmt->execute([$idConcours]);
 $concours = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$concours) {
-    echo json_encode(["status" => "error", "message" => "Concours fermé"]);
-    exit;
-}
+if (!$concours) { echo json_encode(["status"=>"error","message"=>"Concours fermé ou invalide"]); exit; }
 
 $prixVote = (int)$concours['prix_vote'];
-$nbVotes  = floor($montant / $prixVote);
+$nbVotes = floor($montant / $prixVote);
+if ($nbVotes <= 0) { echo json_encode(["status"=>"error","message"=>"Montant insuffisant"]); exit; }
 
-if ($nbVotes <= 0) {
-    echo json_encode(["status" => "error", "message" => "Montant insuffisant"]);
-    exit;
-}
-
+// Générer transaction ID
 $transaction_id = uniqid("VOTE_");
 
-/* Enregistrer paiement en attente */
-$stmtInsert = $pdo->prepare("
-    INSERT INTO paiements
-    (transaction_id, montant, quantite_vote, operator, phone_number,
-     status_paiement, id_candidat, id_concours)
-    VALUES (?, ?, ?, ?, ?, 'attente', ?, ?)
-");
+// Enregistrer paiement en attente
+$stmtInsert = $pdo->prepare("INSERT INTO paiements (transaction_id, montant, quantite_vote, operator, phone_number, status_paiement, id_candidat, id_concours) VALUES (?,?,?,?,?,'attente',?,?)");
+$stmtInsert->execute([$transaction_id, $montant, $nbVotes, $operator, $phone, $idCandidat, $idConcours]);
 
-$stmtInsert->execute([
-    $transaction_id,
-    $montant,
-    $nbVotes,
-    $operator,
-    $phone,
-    $idCandidat,
-    $idConcours
-]);
-
-/* Appel MeSomb */
-
+// Appel MeSomb
 $response = callMesomb($phone, $montant, $transaction_id, $operator);
 
-if (!$response || isset($response['error'])) {
-
+if (!$response || (isset($response['success']) && $response['success']===false)) {
     echo json_encode([
-        "status" => "error",
-        "message" => $response['message'] ?? "Erreur paiement"
+        "status"=>"error",
+        "message"=>$response['message'] ?? "Erreur paiement",
+        "mesomb_debug"=>$response
     ]);
     exit;
 }
 
-
+// Paiement lancé correctement
 echo json_encode([
-    "status" => "success",
-    "message" => "Demande envoyée. Confirmez sur votre téléphone.",
-    "transaction_id" => $transaction_id
+    "status"=>"success",
+    "message"=>"Demande envoyée. Confirmez sur votre téléphone.",
+    "transaction_id"=>$transaction_id
 ]);
 exit;
 ?>
