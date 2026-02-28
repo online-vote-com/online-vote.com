@@ -1,18 +1,11 @@
 <?php
 
-/**
- * Webhook Mesomb
- * Appelé automatiquement par Mesomb
- */
-
 require_once("../config/database.php");
 
 $content = file_get_contents("php://input");
 $data = json_decode($content, true);
 
-/**
- * Log brut
- */
+/* Log brut */
 $pdo->prepare("
     INSERT INTO logs_paiement(transaction_id, payload)
     VALUES(?,?)
@@ -31,26 +24,25 @@ $status = strtoupper($data['status']);
 
 if ($status === "SUCCESS") {
 
-    $stmt = $pdo->prepare("SELECT * FROM paiements WHERE transaction_id=?");
+    $stmt = $pdo->prepare("
+        SELECT * FROM paiements 
+        WHERE transaction_id=?
+    ");
     $stmt->execute([$transaction_id]);
-    $paiement = $stmt->fetch();
+    $paiement = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$paiement || $paiement['status_paiement'] === 'succes') {
         exit;
     }
 
-    /**
-     * Mettre paiement en succès
-     */
+    /* Mettre en succès */
     $pdo->prepare("
         UPDATE paiements
         SET status_paiement='succes'
         WHERE transaction_id=?
     ")->execute([$transaction_id]);
 
-    /**
-     * Ajouter les votes
-     */
+    /* Ajouter les votes */
     for ($i=0; $i < $paiement['quantite_vote']; $i++) {
 
         $pdo->prepare("
@@ -66,4 +58,5 @@ if ($status === "SUCCESS") {
 }
 
 http_response_code(200);
+
 ?>

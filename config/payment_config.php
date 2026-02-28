@@ -10,46 +10,44 @@ define('MESOMB_BASE_URL', 'https://api.mesomb.com');
 define('MESOMB_CALLBACK_URL', 'https://online-vote.com/api/notify.php');
 
 
-
 /**
- * Appel API MeSomb
+ * Appel MeSomb sécurisé
  */
-function callMesomb($phone, $amount, $transaction_id, $operator) {
+function callMesomb($phone, $amount, $transaction_id, $operator)
+{
+    // Nettoyage numéro
+    $phone = preg_replace('/[^0-9]/', '', $phone);
 
-    $url = MESOMB_BASE_URL . "/v1/payment/mobilemoney";
-
-    $payload = [
-        "amount" => (int) $amount,
-        "phoneNumber" => $phone,
-        "service" => $operator, // ORANGE ou MTN
-        "externalReference" => $transaction_id,
-        "callbackUrl" => MESOMB_CALLBACK_URL
-    ];
-
-    $headers = [
-        "Content-Type: application/json",
-        "X-MeSomb-ApiKey: " . MESOMB_API_KEY,
-        "X-MeSomb-Secret: " . MESOMB_SECRET
-    ];
-
-    $ch = curl_init($url);
-
-    curl_setopt_array($ch, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => json_encode($payload),
-        CURLOPT_HTTPHEADER => $headers,
-        CURLOPT_TIMEOUT => 30
-    ]);
-
-    $response = curl_exec($ch);
-
-    if (curl_errno($ch)) {
-        return ["status" => "error", "message" => curl_error($ch)];
+    if (strlen($phone) === 9) {
+        $phone = "237" . $phone; // Format Cameroun
     }
 
-    curl_close($ch);
+    try {
 
-    return json_decode($response, true);
+        $client = new MeSomb(
+            MESOMB_API_KEY,
+            MESOMB_SECRET
+        );
+
+        $response = $client->payment->makeCollect([
+            "amount" => (int) $amount,
+            "service" => strtoupper($operator), // ORANGE ou MTN
+            "payer" => $phone,
+            "externalReference" => $transaction_id,
+            "callbackUrl" => MESOMB_CALLBACK_URL
+        ]);
+
+        return [
+            "success" => true,
+            "data" => $response
+        ];
+
+    } catch (Exception $e) {
+
+        return [
+            "success" => false,
+            "message" => $e->getMessage()
+        ];
+    }
 }
 ?>
