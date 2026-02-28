@@ -1,0 +1,9 @@
+{
+    "name": "arthu/online-vote.com",
+    "autoload": {
+        "psr-4": {
+            "Arthu\\OnlineVoteCom\\": "src/"
+        }
+    },
+    "require": {}
+}

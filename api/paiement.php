@@ -87,16 +87,18 @@ $stmtInsert->execute([
 ]);
 
 /* Appel MeSomb */
+
 $response = callMesomb($phone, $montant, $transaction_id, $operator);
 
-if (!$response['success']) {
+if (!$response || isset($response['error'])) {
 
     echo json_encode([
         "status" => "error",
-        "message" => $response['message']
+        "message" => $response['message'] ?? "Erreur paiement"
     ]);
     exit;
 }
+
 
 echo json_encode([
     "status" => "success",
