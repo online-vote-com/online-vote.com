@@ -7,8 +7,8 @@
 define('MESOMB_API_KEY', 'a6558348a1e30f0ade1756b0a0c3a43fba987886 ');
 //define('MESOMB_API_KEY', '7b13ea2f688e8bc4ad6783e424dcfccaabd6be4b');
 define('MESOMB_SECRET', 'fd4ee29c-9193-4b8b-a201-ebc03306aac8');
-define('MESOMB_BASE_URL', 'https://api.mesomb.com');
-//define('MESOMB_BASE_URL', 'https://52.28.127.147');
+//define('MESOMB_BASE_URL', 'https://api.mesomb.com');
+define('MESOMB_BASE_URL', 'https://52.28.127.147');
 define('MESOMB_CALLBACK_URL', 'https://online-vote.com/api/notify.php');
 
 
