@@ -1,5 +1,8 @@
-<?php include 'includes/link.php'; ?>
+<?php include 'includes/link.php'; 
+include 'auth/register.php';
+?>
 <link rel="stylesheet" href="assets/css/register.css">
+<link rel="stylesheet" href="assets/css/color.css">
 <div class="main-container">
     
     <!-- SECTION GAUCHE -->
@@ -20,7 +23,7 @@
                 }
             ?>
 
-            <form action="auth/register.php" 
+            <form action="register.php" 
                   method="post" 
                   enctype="multipart/form-data" 
                   id="registerForm">

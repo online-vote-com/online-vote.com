@@ -22,7 +22,7 @@ $max_size = 30* 1024 * 1024; // 2MB
 
             if($_FILES['photo']['size'] <= $max_size){
 
-                $upload_dir = "../uploads/";
+                $upload_dir = "uploads/";
 
                 if(!is_dir($upload_dir)){
                     mkdir($upload_dir, 0755, true);
@@ -59,7 +59,7 @@ $max_size = 30* 1024 * 1024; // 2MB
         $photo_name
     ]);
 
-    header("Location: ../login");
+    header("Location: login");
     exit();
 }
 ?>

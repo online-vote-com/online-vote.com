@@ -1,10 +1,11 @@
 
 <?php 
 include 'includes/link.php'; 
+include 'auth/login.php';
 
 ?>
 <link rel="stylesheet" href="assets/css/register.css">
-
+<link rel="stylesheet" href="assets/css/color.css">
 <div class="main-container">
     <div class="sidebar">
         <h1>Donne une nouvelle tournure à ton concours, compétition</h1>
@@ -14,7 +15,7 @@ include 'includes/link.php';
         echo "<p class='error-msg'>$msg</p>";
        }
    ?>
-    <form class="form-section" method="post" action = "auth/login.php">
+    <form class="form-section" method="post" action = "login.php">
         <div class="form-wrapper">
             <h2>Connexion</h2>
             <hr class="divider">

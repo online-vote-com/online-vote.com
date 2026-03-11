@@ -177,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote_gratuit'])) {
                                required>
 
                         <select name="operator" required>
-                            <option value="ORANGE">Orange Money</option>
-                            <option value="MTN">MTN MoMo</option>
+                            <option value="Orange_Cameroon">Orange Money</option>
+                            <option value="MTN_Cameroon">MTN MoMo</option>
                         </select>
 
                         <button type="submit" class="btn-vote">
@@ -207,14 +207,15 @@ if (form) {
 
     form.addEventListener("submit", async function(e) {
 
-        e.preventDefault();
+        e.preventDefault(); //epeche recharge de la page
 
         const messageBox = document.getElementById("paymentMessage");
         messageBox.innerHTML = "Traitement du paiement...";
 
         try {
 
-            const response = await fetch("api/paiement.php", {
+            const response = await fetch("api/paiement.php", { 
+                //envoyer delande au serveur après le clique et envoie les données json au serveur
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -226,15 +227,17 @@ if (form) {
                 })
             });
 
-            const data = await response.json();
+                // format de données {"id_candidat": 10,"id_concours": 2,"montant": 500,"phone": "699112233","operator": "MTN"}
 
-            if (data.status !== "success") {
+            const data = await response.json(); //attend la réponse du serveur et la converti en json
+
+            if (data.status !== "success") { //si succès est différent de success alors affiche le message d'erreur
                 messageBox.innerHTML =
                     "<span style='color:red'>" + data.message + "</span>";
                 return;
             }
-
-            messageBox.innerHTML =
+                    // Si succès, affiche message de confirmation
+            messageBox.innerHTML = 
                 "<span style='color:green'>Demande envoyée. Confirmez sur votre téléphone.</span>";
 
         } catch (error) {

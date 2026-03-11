@@ -1,83 +1,77 @@
 <?php
-/**
- * Configuration Mesomb Production
- */
-
-
-define('MESOMB_API_KEY', 'a6558348a1e30f0ade1756b0a0c3a43fba987886 ');
-//define('MESOMB_API_KEY', '7b13ea2f688e8bc4ad6783e424dcfccaabd6be4b');
-define('MESOMB_SECRET', 'fd4ee29c-9193-4b8b-a201-ebc03306aac8');
-define('MESOMB_BASE_URL', 'https://api.mesomb.com');
-//define('MESOMB_BASE_URL', 'https://52.28.127.147');
-define('MESOMB_CALLBACK_URL', 'https://online-vote.com/api/notify.php');
-
 
 /**
- * Générer signature HMAC Hash-based Message Authentication Code
+ * CONFIGURATION AANGARAA PAY
+ * Fichier central pour les paiements
  */
-function generateSignature($method, $endpoint, $body, $date, $nonce)
+
+// clé API fournie par Aangaraa
+define('AANGARAA_API_KEY', 'O9GB-5168-OSAT-FS4F');
+
+// endpoint officiel production
+define('AANGARAA_API_URL', 'https://api-production.aangaraa-pay.com/api/v1/no_redirect/payment');
+
+// webhook appelé par Aangaraa après paiement
+define('AANGARAA_NOTIFY_URL', 'https://online-vote.com/api/notify.php');
+
+// url de retour utilisateur (optionnel)
+define('AANGARAA_RETURN_URL', 'https://online-vote.com/payment-return.php');
+
+// devise utilisée
+define('AANGARAA_CURRENCY', 'XAF');
+
+
+/**
+ * Fonction qui lance un paiement Mobile Money
+ */
+function callAangaraa($phone, $amount, $transaction_id, $operator)
 {
-    $message = $method . "\n" .
-               $endpoint . "\n" .
-               $body . "\n" .
-               $date . "\n" .
-               $nonce; //identifiant unique pour éviter les répétitions de requêtes
 
-    return hash_hmac('sha256', $message, MESOMB_SECRET);
-}
+    // conversion opérateur vers format API
+    if($operator == "MTN"){
+        $operator = "MTN_Cameroon";
+    }
 
-/**
- * Appel API MeSomb
- */
-function callMesomb($phone, $amount, $transaction_id, $operator)
-{
-    $phone = preg_replace('/[^0-9]/', '', $phone);
-    if (strlen($phone) === 9) $phone = "237" . $phone;
-
-    $endpoint = "/payment/mobilemoney";
-    $url = MESOMB_BASE_URL . $endpoint;
+    if($operator == "ORANGE"){
+        $operator = "Orange_Cameroon";
+    }
 
     $payload = [
-        "amount" => (int)$amount,
-        "service" => strtoupper($operator), // ORANGE ou MTN
-        "payer" => $phone,
-        "externalReference" => $transaction_id,
-        "callbackUrl" => MESOMB_CALLBACK_URL
+        "phone_number" => $phone,
+        "amount" => (string)$amount,
+        "description" => "Vote en ligne",
+        "app_key" => AANGARAA_API_KEY,
+        "transaction_id" => $transaction_id,
+        "notify_url" => AANGARAA_NOTIFY_URL,
+        "operator" => $operator,
+        "devise_id" => AANGARAA_CURRENCY
     ];
 
-    $body = json_encode($payload);
-    $date = gmdate('D, d M Y H:i:s') . ' GMT';
-    $nonce = uniqid();
-    $signature = generateSignature("POST", $endpoint, $body, $date, $nonce);
+    $ch = curl_init();
 
-    $headers = [
-        "Content-Type: application/json",
-        "X-MeSomb-Date: $date",
-        "X-MeSomb-Nonce: $nonce",
-        "X-MeSomb-ApiKey: " . MESOMB_API_KEY,
-        "X-MeSomb-Signature: $signature"
-    ];
-
-    $ch = curl_init($url);
     curl_setopt_array($ch, [
+        CURLOPT_URL => AANGARAA_API_URL,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
-        CURLOPT_POSTFIELDS => $body,
-        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_POSTFIELDS => json_encode($payload),
+        CURLOPT_HTTPHEADER => [
+            "Content-Type: application/json"
+        ],
         CURLOPT_TIMEOUT => 30
     ]);
 
     $response = curl_exec($ch);
 
     if (curl_errno($ch)) {
-        return ["success" => false, "message" => curl_error($ch)];
+
+        return [
+            "success" => false,
+            "message" => curl_error($ch)
+        ];
     }
 
     curl_close($ch);
 
-    $decoded = json_decode($response, true);
-    if (!$decoded) return ["success" => false, "message" => $response];
-
-    return $decoded;
+    return json_decode($response, true);
 }
 ?>

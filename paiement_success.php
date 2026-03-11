@@ -12,8 +12,8 @@ if (!$paiement) {
 }
 
 if ($paiement['status_paiement'] === 'succes') {
-    echo "<h2>Paiement confirmé ✅</h2>";
+    echo "<h2>Paiement confirmé </h2>";
 } else {
-    echo "<h2>Paiement en attente ⏳</h2>";
+    echo "<h2>Paiement en attente </h2>";
 }
 ?>
