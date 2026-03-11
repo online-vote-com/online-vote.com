@@ -9,7 +9,7 @@
 define('AANGARAA_API_KEY', 'O9GB-5168-OSAT-FS4F');
 
 // endpoint officiel production
-define('AANGARAA_API_URL', 'https://api-production.aangaraa-pay.com/api/v1/no_redirect/payment');
+define('AANGARAA_API_URL', 'https://api-production.aangaraa-pay.com/api');
 
 // webhook appelé par Aangaraa après paiement
 define('AANGARAA_NOTIFY_URL', 'https://online-vote.com/api/notify.php');

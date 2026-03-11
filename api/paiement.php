@@ -2,7 +2,7 @@
 
     /**
      * API PAIEMENT MOBILE MONEY
-     * Production ready - Hostinger compatible
+     
      */
     session_start();
 
@@ -45,7 +45,11 @@
     $idConcours = (int)$data['id_concours'];
     $montant = (int)$data['montant'];
     $phone = preg_replace('/[^0-9]/', '', $data['phone']);
-    $operator = strtoupper(trim($data['operator']));
+    if (strlen($phone) === 9) {
+    $phone = "237".$phone;
+    }
+    //$operator = strtoupper(trim($data['operator']));
+    $operator = trim($data['operator']);
 
     // Vérifier concours ouvert
     $stmt = $pdo->prepare("SELECT prix_vote FROM concours WHERE id_concours=? AND status_concours='ouvert'");
