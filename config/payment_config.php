@@ -27,14 +27,6 @@ define('AANGARAA_CURRENCY', 'XAF');
 function callAangaraa($phone, $amount, $transaction_id, $operator)
 {
 
-    // conversion opérateur vers format API
-    if($operator == "MTN"){
-        $operator = "MTN_Cameroon";
-    }
-
-    if($operator == "ORANGE"){
-        $operator = "Orange_Cameroon";
-    }
 
     $payload = [
         "phone_number" => $phone,
@@ -50,7 +42,7 @@ function callAangaraa($phone, $amount, $transaction_id, $operator)
     $ch = curl_init();
 
     curl_setopt_array($ch, [
-        CURLOPT_URL => AANGARAA_API_URL,
+        CURLOPT_URL => AANGARAA_API_URL . "/v1/no_redirect/payment",
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_POST => true,
         CURLOPT_POSTFIELDS => json_encode($payload),
