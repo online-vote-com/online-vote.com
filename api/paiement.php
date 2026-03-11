@@ -47,10 +47,29 @@ $idCandidat = (int)$data['id_candidat'];
 $idConcours = (int)$data['id_concours'];
 $montant = (int)$data['montant'];
 $phone = preg_replace('/[^0-9]/', '', $data['phone']);
-if (strlen($phone) === 9) {
-    $phone = "237".$phone;
+
+// Si le numéro commence par 237, garder tel quel
+if (substr($phone, 0, 3) !== "237") {
+    // vérifier qu’il a 9 chiffres
+    if (strlen($phone) === 9) {
+        $phone = "237".$phone;
+    } else {
+        echo json_encode([
+            "status"=>"error",
+            "message"=>"Numéro de téléphone invalide"
+        ]);
+        exit;
+    }
 }
 
+// Vérifier que le numéro fait bien 12 chiffres maintenant
+if (strlen($phone) !== 12) {
+    echo json_encode([
+        "status"=>"error",
+        "message"=>"Numéro de téléphone incorrect pour AangaraaPay"
+    ]);
+    exit;
+}
 $operator = trim($data['operator']);
 $allowedOperators = ["MTN_Cameroon","Orange_Cameroon"];
 if (!in_array($operator, $allowedOperators)) {
