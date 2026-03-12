@@ -4,9 +4,9 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require '../vendor/autoload.php';
-    require '../config/database.php';
-    require '../config/mail.php';
+    require 'vendor/autoload.php';
+    require 'config/database.php';
+    require 'config/mail.php';
 
     function sendemail_verify($nom, $email, $verif_token){
 
@@ -149,7 +149,7 @@ try {
             if($stmt){
                 sendemail_verify($nom, $email, $verif_token);
                 $_SESSION['status']="Consulte ta boite mail pour activer ton compte $email";
-                header('location: ../register.php');
+                header('location: register.php');
                 exit();
             }
         } 

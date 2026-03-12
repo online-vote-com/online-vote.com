@@ -1,6 +1,7 @@
 <?php 
 session_start();
 include 'includes/link.php'; 
+include 'auth/register.php'; 
 
 ?>
 <link rel="stylesheet" href="assets/css/register.css">
@@ -27,7 +28,7 @@ include 'includes/link.php';
                     }
                 ?>
             </div>
-            <form action="auth/register.php" 
+            <form action="register.php" 
                   method="post" 
                   enctype="multipart/form-data" 
                   id="registerForm">

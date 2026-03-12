@@ -10,7 +10,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
      if(!$mail){
         $_SESSION['status'] = "Email invalide";
-        header("Location: ../login.php");
+        header("Location: login.php");
         exit();
     }
 
@@ -31,18 +31,18 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
            $_SESSION['photo'] = $user['photo_user'] ;
              $_SESSION['status'] = $user['status_user'] ;
             
-            header("Location: ../index.php");
+            header("Location: index.php");
             exit();
 
         } else {
             $_SESSION['status'] = "Authentification échouée, mot de passe ou email incorrect";
-            header("Location: ../login.php");
+            header("Location: login.php");
             exit();
         }
 
     } else {
            $_SESSION['status'] = "Email incorrect";
-    header("Location: ../login.php");
+    header("Location: login.php");
     exit();
     }
 }
