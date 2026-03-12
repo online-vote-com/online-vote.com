@@ -27,7 +27,7 @@ function sendemail_verify($nom, $email, $verif_token){
 
         // ⚠️ PORT PLUS COMPATIBLE
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port       = 465;
 
         // EMAIL
         $mail->setFrom(SMTP_USER, "Online Vote");
@@ -111,7 +111,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if($stmt){
 
-            sendemail_verify($nom, $email, $verif_token);
+           // sendemail_verify($nom, $email, $verif_token);
+            if(sendemail_verify($nom, $email, $verif_token)){
+    echo "MAIL ENVOYÉ";
+}else{
+    echo "MAIL NON ENVOYÉ";
+}
 
             $_SESSION['status'] = "Consulte ta boite mail pour activer ton compte $email";
 
