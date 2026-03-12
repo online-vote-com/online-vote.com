@@ -1,5 +1,8 @@
 
 <?php 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
 include 'includes/link.php'; 
 
@@ -12,29 +15,28 @@ include 'includes/link.php';
     </div>
         <div class="alert">
             <?php
-                    if (isset($_SESSION['user'])){
-                        echo "<h2>". $_SESSION['user']. "</h2>";
-                        unset($_SESSION['user']);
+                    if (isset($_SESSION['status'])){
+                        echo "<h2>". $_SESSION['status']. "</h2>";
+                        unset($_SESSION['status']);
                     }
                 ?>
             </div>
-    <form class="form-section" method="post" action = "auth/login.php">
-        <div class="form-wrapper">
-            <h2>Connexion</h2>
-            <hr class="divider">
-
-                <div class="input-group">
-                    <label>Email :</label>
-                    <input type="email" placeholder="" name="email" required>
-                </div>
-
-                <div class="input-group">
-                    <label>Mot de passe :</label>
-                    <input type="password" placeholder="" name="mdp" required>
-                </div>
-                <button type="submit" class="btn-submit">Se connecter</button>
+           <div class="form-wrapper">
+    <h2>Connexion</h2>
+    <hr class="divider">
+    <form class="form-section" method="post" action="auth/login.php">
+        <div class="input-group">
+            <label>Email :</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="input-group">
+            <label>Mot de passe :</label>
+            <input type="password" name="mdp" required>
+        </div>
+        <button type="submit" class="btn-submit">Se connecter</button>
+    </form>
+</div>
                 
-            </form> 
 
             <p class="footer-text">Pas de compte ? <a href="register">inscription</a></p>
             <p class="footer-text">Retour à <a href="index">l'acceuil</a></p>

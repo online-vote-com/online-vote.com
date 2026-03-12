@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require '../config/database.php';
 
@@ -28,7 +29,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
             exit();
 
         } else {
-            $_SESSION['user'] = "Authentification échouée, mot de passe ou email incorrect";
+            $_SESSION['status'] = "Authentification échouée, mot de passe ou email incorrect";
             header("Location: ../login.php");
             exit();
         }
