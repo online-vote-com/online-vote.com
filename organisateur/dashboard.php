@@ -22,8 +22,8 @@
         FROM concours con 
         JOIN users org ON con.id_organisateur = org.id_user";
         $pdo_concours =$pdo->prepare($sql_concours);
-        $pdo_concours->execute([':id_org' => $id_org]);
-        $concours = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt_concours->execute([':id_org' => $id_org]);
+        $concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
 
     $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
     // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
