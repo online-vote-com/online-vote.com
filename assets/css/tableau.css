@@ -1,11 +1,11 @@
-
-
-/* ==================== BOUTON NOUVEAU ==================== */
+/* ==================== BOUTON NOUVEAU & FILTRES ==================== */
 .table-controls {
     display: flex;
-    justify-content: space-between; /* pousse les enfants aux extrémités */
-    align-items: center; /* même niveau vertical */
-    margin-top: 15px; /* espace par rapport au haut */
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 /* Bouton Nouveau */
@@ -23,36 +23,42 @@
 }
 
 .btn-new:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
 /* Groupe de filtres */
 .filter-group {
     display: flex;
-    align-items: center; /* même niveau vertical */
+    align-items: center;
     gap: 15px;
-    margin-top: 0; /* inutile, flex s’aligne déjà */
+    flex-wrap: wrap;
 }
 
 .filter-label {
     font-weight: 500;
-    color: var(--text-color);
+    color: var(--text-dark);
 }
 
 .filter-select, .btn-category {
-    background-color: var(--light-purple);
+    background-color: var(--light-purple-bg);
     color: #222;
-    border: 1px solid var(--light-purple);
+    border: 1px solid var(--light-purple-bg);
     padding: 8px 15px;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 0.95rem;
     min-width: 120px;
     height: 40px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* Conteneur pour flèche du select */
+.filter-select:hover, .btn-category:hover {
+    background-color: var(--main-purple);
+    color: white;
+    border-color: var(--main-purple);
+}
+
 .select-wrapper { position: relative; }
 .filter-select { appearance: none; padding-right: 30px; }
 .select-wrapper::after {
@@ -68,27 +74,37 @@
 
 /* ==================== TABLEAU ==================== */
 .table-wrapper {
-    background: white;
+    background: var(--white);
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
     padding: 20px;
     overflow-x: auto;
     margin-top: 20px;
+    transition: all 0.3s ease;
 }
+
 .data-table {
     width: 100%;
     border-collapse: collapse;
     transition: all 0.3s ease;
 }
-.data-table thead { background-color: var(--main-purple); color: white; }
+
+.data-table thead {
+    background-color: var(--main-purple);
+    color: white;
+}
+
 .data-table th, .data-table td {
     padding: 15px;
     text-align: left;
     font-size: 14px;
     border-bottom: 1px solid #eee;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, color 0.3s ease;
 }
-.data-table tbody tr:hover { background-color: rgba(156, 4, 218, 0.1); }
+
+.data-table tbody tr:hover {
+    background-color: rgba(156, 4, 218, 0.1);
+}
 
 /* ==================== IMAGES DANS LE TABLEAU ==================== */
 .data-table td .img-placeholder {
@@ -100,12 +116,19 @@
     background-color: #ddd;
     background-size: cover;
     background-position: center;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
 }
-.data-table td .img-placeholder:hover { transform: scale(1.1); }
-.data-table td:nth-child(4) { text-align: center; }
-/* Si image <img> */
+
+.data-table td .img-placeholder:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.data-table td:nth-child(4) {
+    text-align: center;
+}
+
 .data-table td .img-placeholder img {
     width: 100%;
     height: 100%;
@@ -128,14 +151,31 @@
     border-radius: 4px;
     font-size: 10px;
     color: white;
-    margin-right: 2px;
+    margin-right: 4px;
     display: inline-block;
     font-weight: bold;
     text-transform: uppercase;
+    transition: all 0.3s ease;
 }
-.badge.yellow { background: var(--accent-yellow); cursor: pointer; color: var(--text-dark); }
-.badge.purple { background: var(--main-purple); cursor: pointer;}
-.badge.black { background: #333; cursor: pointer;}
+
+.badge.yellow {
+    background: var(--accent-yellow);
+    cursor: pointer;
+    color: var(--text-dark);
+}
+.badge.purple {
+    background: var(--main-purple);
+    cursor: pointer;
+}
+.badge.black {
+    background: #333;
+    cursor: pointer;
+}
+
+.badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
 
 /* ==================== FOOTER ==================== */
 .table-footer {
@@ -146,6 +186,7 @@
     flex-wrap: wrap;
     gap: 10px;
 }
+
 .btn-outline {
     border: 2px solid var(--main-purple);
     background: none;
@@ -156,9 +197,51 @@
     cursor: pointer;
     transition: all 0.3s ease;
 }
+
 .btn-outline:hover {
     background: var(--main-purple);
     color: white;
     box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
-.pagination { font-weight: bold; font-size: 14px; }
+
+.pagination {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 1024px) {
+    .table-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .filter-group {
+        flex-wrap: wrap;
+    }
+
+    .btn-new {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .data-table th, .data-table td {
+        font-size: 12px;
+        padding: 10px;
+    }
+
+    .filter-select, .btn-category {
+        font-size: 0.85rem;
+        padding: 6px 10px;
+        min-width: 100px;
+        height: 35px;
+    }
+
+    .btn-new {
+        padding: 10px 25px;
+        font-size: 1rem;
+    }
+}
