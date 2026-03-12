@@ -11,7 +11,9 @@
     function sendemail_verify($nom, $email, $verif_token){
 
     $mail = new PHPMailer(true);
-    $nom1 = "Online-vote";
+
+    $mail->SMTPDebug = 2;
+$mail->Debugoutput = 'html';
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
@@ -20,7 +22,7 @@
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
     $mail->Port       = 465;
 
-    $mail->setFrom('arthurtotie@gmail.com', $nom1);
+    $mail->setFrom(SMTP_USER, "Online Vote");
     $mail->addAddress($email);
 
     $mail->isHTML(true);
@@ -91,9 +93,13 @@ https://online-vote.com/email_verif.php?token=$verif_token
     </html>
     ";
 
-    $mail->Body = $mail_template;
+  $mail->Body = $mail_template;
 
+try {
     $mail->send();
+} catch (Exception $e) {
+    echo "Erreur Mail : {$mail->ErrorInfo}";
+}
 
     }
 
@@ -141,7 +147,7 @@ https://online-vote.com/email_verif.php?token=$verif_token
                 ]);
 
             if($stmt){
-                sendemail_verify("$nom", "$email", "$verif_token");
+                sendemail_verify($nom, $email, $verif_token);
                 $_SESSION['status']="Consulte ta boite mail pour activer ton compte $email";
                 header('location: ../register.php');
                 exit();
