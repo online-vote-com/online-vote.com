@@ -4,8 +4,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-//include 'includes/link.php'; 
-include 'auth/login.php'; 
+include 'includes/link.php'; 
+//include 'auth/login.php'; 
 
 ?>
 <link rel="stylesheet" href="assets/css/register.css">
@@ -25,7 +25,7 @@ include 'auth/login.php';
            <div class="form-wrapper">
     <h2>Connexion</h2>
     <hr class="divider">
-    <form class="form-section" method="post" action="login.php">
+    <form class="form-section" method="post" action="loginProcess.php">
         <div class="input-group">
             <label>Email :</label>
             <input type="email" name="email" required>
