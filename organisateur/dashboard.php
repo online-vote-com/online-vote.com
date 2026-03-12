@@ -1,33 +1,55 @@
     <?php 
+    sessions_start();   
         include '../includes/link.php'; 
         include '../config/database.php';
     
-        
-        $sqlCon = "SELECT COUNT(*) FROM concours"; 
-        $pdo_sta = $pdo->query($sqlCon);
+        if(!isset($_SESSION['id_user']) || $_SESSION['role'] != 'organisateur'){
+            header("Location: ../login.php");
+            exit();
+        }
+
+        $id_org = $_SESSION['id_user'];
+        $sqlCon = "SELECT COUNT(*) FROM concours WHERE id_organisateur = :id_org"; 
+        $pdo_sta = $pdo->prepare($sqlCon);
+        $pdo_sta->execute([':id_org' => $id_org]);
         $nbrConcours = $pdo_sta->fetchColumn();
 
+       /*
         $sql_concours = "SELECT con.*, org.nom_user 
-        FROM concours con, users org
-        WHERE con.id_organisateur = org.id_user";
+        FROM concours con JOIN ON users org
+        WHERE con.id_organisateur = org.id_user"; */
+        $sql_concours = "SELECT con.*, org.nom_user 
+        FROM concours con 
+        JOIN users org ON con.id_organisateur = org.id_user";
         $pdo_concours =$pdo->query($sql_concours);
         $concours = $pdo_concours->fetchAll();
 
 
-    $sql = "SELECT COUNT(*) FROM candidats"; 
+    $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
     // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
-        $pdo_C = $pdo->query($sql); 
+        $pdo_C = $pdo->prepare($sql);
+        $pdo_C->execute([':id_org' => $id_org]);
         $nbrC = $pdo_C->fetchColumn();
 
-        $sqlP = "SELECT SUM(montant) AS montantTotal FROM paiements"; 
-        $pdo_P = $pdo->query($sqlP);
-        $total_P = $pdo_P->fetchColumn();
+        $sqlP = "SELECT SUM(p.montant) AS montantTotal
+        FROM paiements p
+        JOIN concours c ON p.id_concours = c.id_concours
+        WHERE c.id_organisateur = :id_org
+        AND p.status_paiement = 'succes'";
+        $stmt = $pdo->prepare($sqlP);
+        $stmt->execute(['id_org' => $id_org]);
+        $total_P = $stmt->fetchColumn();
     
-        $sql_candidat= "SELECT can.*, concours.titre
-        FROM candidats can, concours
-        WHERE can.id_concours = concours.id_concours";
-        $pdo_candidat = $pdo->query($sql_candidat);
-        $candidats = $pdo_candidat->fetchAll();
+
+        $sql_candidat = "SELECT can.*, con.titre
+        FROM candidats can
+        JOIN concours con ON can.id_concours = con.id_concours
+        WHERE con.id_organisateur = :id_org";
+
+        $stmt = $pdo->prepare($sql_candidat);
+        $stmt->execute(['id_org' => $id_org]);
+
+        $candidats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
     ?>

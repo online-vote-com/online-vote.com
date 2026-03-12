@@ -28,71 +28,86 @@
     $mail->isHTML(true);
     $mail->Subject = "Verification Email";
 
-    $mail_template = "
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <meta charset='UTF-8'>
-    <title>Activation de compte</title>
-    </head>
+   $mail_template = "
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='UTF-8'>
+<title>Activation de votre compte</title>
+</head>
 
-    <body style='margin:0; padding:0; background-color:#f4f4f4; font-family:Arial, Helvetica, sans-serif;'>
+<body style='margin:0;padding:0;background-color:#F8F9FA;font-family:Arial,Helvetica,sans-serif;'>
 
-    <table width='100%' cellpadding='0' cellspacing='0'>
-    <tr>
-    <td align='center'>
+<table width='100%' cellpadding='0' cellspacing='0'>
+<tr>
+<td align='center'>
 
-    <table width='500' cellpadding='0' cellspacing='0' style='background:#ffffff; margin-top:40px; border-radius:10px; padding:30px; box-shadow:0 4px 10px rgba(0,0,0,0.1);'>
+<table width='520' cellpadding='0' cellspacing='0' style='background:#FFFFFF;margin-top:40px;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);'>
 
-    <tr>
-    <td align='center'>
+<tr>
+<td style='background:#9C04DA;padding:25px;text-align:center;'>
 
-    <h2 style='color:#333;'>Bienvenue 🎉</h2>
+<h2 style='color:#FFFFFF;margin:0;font-size:24px;'>
+Bienvenue $nom 🎉
+</h2>
 
-    <p style='font-size:16px; color:#555;'>
-    Ton inscription a été enregistrée avec succès.
-    </p>
-
-    <p style='font-size:15px; color:#555;'>
-    Clique sur le bouton ci-dessous pour activer ton compte.
-    </p>
-
-    <br>
-
-    <a href='https://online-vote.com/email_verif.php?token=$verif_token'
-    style='background:#4CAF50; color:#ffffff; padding:12px 25px; text-decoration:none; border-radius:5px; font-size:16px; display:inline-block;'>
-    Activer mon compte
-    </a>
-
-    <br><br>
-
-    <p style='font-size:13px; color:#888;'>
-    Si le bouton ne fonctionne pas, copie et colle ce lien dans ton navigateur :
-    </p>
-
-<p style='font-size:13px; color:#0066cc; word-break:break-all;'>
-https://online-vote.com/email_verif.php?token=$verif_token
+<p style='color:#E7C6FF;margin-top:8px;font-size:14px;'>
+Activation de votre compte
 </p>
 
-    <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
+</td>
+</tr>
 
-    <p style='font-size:12px; color:#999;'>
-     Merci de ne pas y répondre.
-    </p>
+<tr>
+<td style='padding:35px;text-align:center;'>
 
-    </td>
-    </tr>
+<p style='font-size:16px;color:#333;margin-top:0;'>
+Votre inscription a été enregistrée avec succès.
+</p>
 
-    </table>
+<p style='font-size:15px;color:#555;'>
+Cliquez sur le bouton ci-dessous pour activer votre compte.
+</p>
 
-    </td>
-    </tr>
-    </table>
+<br>
 
-    </body>
-    </html>
-    ";
+<a href='https://online-vote.com/email_verif?token=$verif_token'
+style='background:#9C04DA;color:#FFFFFF;padding:14px 30px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;'>
+Activer mon compte
+</a>
 
+<br><br>
+
+<p style='font-size:13px;color:#777;'>
+Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
+</p>
+
+<p style='font-size:13px;color:#9C04DA;word-break:break-all;'>
+https://online-vote.com/email_verif?token=$verif_token
+</p>
+
+<hr style='border:none;border-top:1px solid #EEEEEE;margin:25px 0;'>
+
+<p style='font-size:12px;color:#999;margin:0;'>
+Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
+</p>
+
+<p style='font-size:12px;color:#BBBBBB;margin-top:6px;'>
+© 2026 Online Vote
+</p>
+
+</td>
+</tr>
+
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
+";
   $mail->Body = $mail_template;
 
 try {

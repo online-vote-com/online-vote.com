@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
            $_SESSION['photo'] = $user['photo_user'] ;
              $_SESSION['status'] = $user['status_user'] ;
             
-            header("Location: index.php");
+            header("Location: organisateur/dashboard.php");
             exit();
 
         } else {
