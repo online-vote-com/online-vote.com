@@ -33,38 +33,45 @@
 /* ==========================
    SIDEBAR
 ========================== */
+/* ==========================
+   SIDEBAR MODERNE & UX
+========================== */
 .sidebar {
     background-color: var(--light-purple-bg);
-    padding: 20px;
+    padding: 25px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: width 0.3s ease;
+    transition: width 0.4s ease, box-shadow 0.3s ease;
     position: relative;
     border-radius: 0 20px 20px 0;
+    box-shadow: 2px 0 15px rgba(0,0,0,0.08);
 }
 
 .sidebar.collapsed {
     width: 70px;
-    padding: 20px 10px;
+    padding: 25px 10px;
 }
 
 .sidebar .brand {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 24px;
     color: var(--main-purple);
-    transition: opacity 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .sidebar.collapsed .brand span {
     opacity: 0;
+    pointer-events: none;
 }
 
 .profile-box {
     text-align: center;
-    margin-bottom: 30px;
-    transition: opacity 0.3s;
+    margin-bottom: 40px;
+    transition: all 0.3s ease;
 }
 
 .sidebar.collapsed .profile-box h3,
@@ -72,64 +79,146 @@
     display: none;
 }
 
-.profile-box .circle img {
-    width: 80px;
-    height: 80px;
+.profile-box .circle {
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto 10px;
     border: 3px solid var(--white);
-    object-fit: cover;
-    transition: transform 0.3s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-box .circle img:hover {
-    transform: scale(1.05);
+.profile-box .circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.profile-box .circle:hover {
+    transform: scale(1.08);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+}
+
+.profil-link {
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.profil-link:hover {
+    color: var(--main-purple);
 }
 
 .sidebar-nav {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 10px;
-    transition: all 0.3s;
+    gap: 12px;
+    margin-top: 20px;
 }
 
 .nav-item {
     text-decoration: none;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     padding: 12px 20px;
     border-radius: 0 25px 25px 0;
-    transition: all 0.3s;
     font-weight: 500;
     color: var(--text-dark);
     position: relative;
+    transition: all 0.3s ease;
 }
 
-.sidebar.collapsed .nav-item span {
-    display: none;
+.nav-item i {
+    font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .nav-item:hover,
 .nav-item.active {
     background-color: var(--main-purple);
     color: var(--white);
+    transform: translateX(2px);
+    box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
+.sidebar.collapsed .nav-item span {
+    display: none;
+}
+
+/* Déconnexion */
 .logout-btn {
     background-color: var(--accent-yellow);
     border: none;
-    padding: 15px 40px;
+    padding: 15px 35px;
     border-radius: 30px;
     font-weight: bold;
     cursor: pointer;
     width: 100%;
-    transition: all 0.3s;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.logout-btn a {
+    color: inherit;
+    text-decoration: none;
 }
 
 .logout-btn:hover {
-    transform: translateY(-3px) scale(1.02);
+    transform: translateY(-3px) scale(1.03);
     box-shadow: var(--shadow-strong);
+}
+
+/* ==========================
+   RESPONSIVE SIDEBAR
+========================== */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 220px;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 15px;
+        border-radius: 0 0 20px 20px;
+        box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+    }
+
+    .profile-box {
+        display: none; /* On cache le profil sur mobile pour gagner de l’espace */
+    }
+
+    .sidebar-nav {
+        flex-direction: row;
+        gap: 8px;
+        overflow-x: auto;
+        margin-top: 0;
+    }
+
+    .nav-item {
+        padding: 8px 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+    }
+
+    .logout-btn {
+        padding: 10px 15px;
+        font-size: 0.85rem;
+    }
 }
 
 /* ==========================
