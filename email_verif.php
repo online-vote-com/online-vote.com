@@ -12,7 +12,7 @@ if(isset($_GET['token'])){
 
     if($user){
         if($user['status_user']=="suspendu"){
-        $update = "UPDATE users SET status_user = 'actif' WHERE email_token = ?"; 
+        $update = "UPDATE users SET email_verifie = '1' WHERE email_token = ?"; 
         $stm = $pdo->prepare($update); 
         $stm->execute([$token]);
 
