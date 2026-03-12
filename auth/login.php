@@ -5,13 +5,19 @@ require '../config/database.php';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
 
-    $mail = htmlspecialchars($_POST['email']);
+    $mail = $_POST['email'];
     $mdp  = $_POST['mdp'];
+
+     if(!$mail){
+        $_SESSION['status'] = "Email invalide";
+        header("Location: ../login.php");
+        exit();
+    }
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :mail");
     $stmt->execute([':mail' => $mail]);
 
-    $user = $stmt->fetch();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if($user){
 
@@ -35,7 +41,9 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
     } else {
-        $msg="<p style='color:red'>Email incorrect</p>";
+           $_SESSION['status'] = "Email incorrect";
+    header("Location: ../login.php");
+    exit();
     }
 }
 ?>

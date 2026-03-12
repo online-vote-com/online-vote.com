@@ -4,7 +4,7 @@
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\Exception;
 
-    require 'vendor/autoload.php';
+    require '../vendor/autoload.php';
     require '../config/database.php';
     require '../config/mail.php';
 
@@ -68,9 +68,9 @@
     Si le bouton ne fonctionne pas, copie et colle ce lien dans ton navigateur :
     </p>
 
-    <p style='font-size:13px; color:#0066cc; word-break:break-all;'>
-    https://online-vote.com/register.php/email_verif.php?token=$verif_token
-    </p>
+<p style='font-size:13px; color:#0066cc; word-break:break-all;'>
+https://online-vote.com/email_verif.php?token=$verif_token
+</p>
 
     <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
 
