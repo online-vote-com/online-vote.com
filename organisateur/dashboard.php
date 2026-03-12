@@ -1,5 +1,5 @@
     <?php 
-    sessions_start();   
+    session_start();
         include '../includes/link.php'; 
         include '../config/database.php';
     
@@ -21,9 +21,9 @@
         $sql_concours = "SELECT con.*, org.nom_user 
         FROM concours con 
         JOIN users org ON con.id_organisateur = org.id_user";
-        $pdo_concours =$pdo->query($sql_concours);
-        $concours = $pdo_concours->fetchAll();
-
+        $pdo_concours =$pdo->prepare($sql_concours);
+        $pdo_concours->execute([':id_org' => $id_org]);
+        $concours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
     // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
@@ -65,9 +65,10 @@
             
             <div class="profile-box">
                 <div class="img-placeholder circle">
-                    <img src="../assets/images/organisateur/art.jpg" alt="Arthur Chakoualeu">
+                    <img src="<?php echo $_SESSION['photo_user'] ?? '../assets/images/default-user.png'; ?>" alt="Profil">
+                    <!--<img src="../assets/images/organisateur/art.jpg" alt="Arthur Chakoualeu">-->
                 </div>
-                <h3>Arthur CHAKOUALEU</h3>
+                <h3><?php echo $_SESSION['nom_user']; ?></h3>
                 <a href="#" class="profil-link">Voir mon profil <i class="fas fa-chevron-right"></i></a>
             </div>
 
