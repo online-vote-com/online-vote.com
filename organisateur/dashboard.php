@@ -59,6 +59,7 @@ $concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
 
     ?>
     <link rel="stylesheet" href="../assets/css/grid-card.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
     <style>
         
     </style>
