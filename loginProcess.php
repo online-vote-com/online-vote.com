@@ -30,7 +30,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
            $_SESSION['mail'] = $user['email'] ;
            $_SESSION['photo'] = $user['photo_user'] ;
              $_SESSION['status'] = $user['status_user'] ;
-            
+          
             header("Location: organisateur/dashboard.php");
             exit();
 

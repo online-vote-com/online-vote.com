@@ -7,6 +7,9 @@
             header("Location: ../login.php");
             exit();
         }
+
+
+
 // Nombre de concours
         $id_org = $_SESSION['id_user'];
         $sqlCon = "SELECT COUNT(*) FROM concours WHERE id_organisateur = :id_org"; 
@@ -18,12 +21,14 @@
         $sql_concours = "SELECT con.*, org.nom_user 
         FROM concours con JOIN ON users org
         WHERE con.id_organisateur = org.id_user"; */
-        $sql_concours = "SELECT con.*, org.nom_user 
-        FROM concours con 
-        JOIN users org ON con.id_organisateur = org.id_user";
-        $stmt_concours  =$pdo->prepare($sql_concours);
-        $stmt_concours->execute([':id_org' => $id_org]);
-        $concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
+$sql_concours = "SELECT con.*, org.nom_user
+                 FROM concours con
+                 JOIN users org ON con.id_organisateur = org.id_user
+                 WHERE con.id_organisateur = :id_org";
+
+$stmt_concours = $pdo->prepare($sql_concours);
+$stmt_concours->execute([':id_org' => $id_org]);
+$concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
 // Nombre de candidats
     $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
     // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
@@ -38,7 +43,7 @@
         AND p.status_paiement = 'succes'";
         $stmt = $pdo->prepare($sqlP);
         $stmt->execute(['id_org' => $id_org]);
-        $total_P = $stmt->fetchColumn();
+        $total_P = $stmt->fetchColumn() ?? 0;
     
 // Candidats détaillés
         $sql_candidat = "SELECT can.*, con.titre
@@ -57,6 +62,10 @@
     <style>
         
     </style>
+    <?php  if(isset($_SESSION['status']) && $_SESSION['status'] == 'suspendu'){
+        echo "<div class='alert alert-danger'>Votre compte est suspendu, veuillez contacter l'administrateur pour plus d'informations.</div>";
+                
+             } else { ?>
     <div class="dashboard-container">
         <aside class="sidebar">
             <div class="brand">
@@ -159,6 +168,7 @@
             ?>
         </main>
     </div>
+   <?php } ?>
         <script>
         // Sélectionne tous les éléments ayant la classe 'nav-item' (les liens de la sidebar)
     document.querySelectorAll('.nav-item').forEach(link => {
