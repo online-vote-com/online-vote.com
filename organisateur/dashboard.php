@@ -3,7 +3,7 @@
         include '../includes/link.php'; 
         include '../config/database.php';
     
-        if(!isset($_SESSION['id_user']) || $_SESSION['role_user'] != 'organisateur'){
+        if(!isset($_SESSION['id_user']) || $_SESSION['role'] != 'organisateur'){
             header("Location: ../login.php");
             exit();
         }
