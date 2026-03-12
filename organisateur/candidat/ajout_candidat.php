@@ -20,8 +20,9 @@
                 <div class="select-wrapper">
                     <select required>
                         <option value="" disabled selected>Concours *</option>
-                        <option>Miss</option>
-                        <option>Master</option>
+                        <?php foreach($concours as $concours_item){ ?>
+                            <option value="<?= $concours_item['id_concours'] ?>"><?= $concours_item['titre'] ?></option>
+                        <?php } ?>
                     </select>
                 </div>
 
