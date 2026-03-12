@@ -12,8 +12,8 @@
 
     $mail = new PHPMailer(true);
 
-    $mail->SMTPDebug = 2;
-$mail->Debugoutput = 'html';
+   // $mail->SMTPDebug = 2;
+//$mail->Debugoutput = 'html';
     $mail->isSMTP();
     $mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;

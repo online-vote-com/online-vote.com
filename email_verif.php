@@ -1,16 +1,18 @@
 <?php 
 session_start(); 
+require 'config/database.php';
+
 
 if(isset($_GET['token'])){
     $token = $_GET['token']; 
     $verif = "SELECT * FROM users where email_token = ? LIMIT 1";
     $st = $pdo->prepare($verif);
     $st->execute([$token]);
-    $user = $st->fetchAll();
+    $user = $st->fetch(PDO::FETCH_ASSOC); 
 
     if($user){
         if($user['status_user']=="suspendu"){
-        $update = "UPDATE users SET status_user = 'actif' WHERE email_token = ? LIMIT 1"; 
+        $update = "UPDATE users SET status_user = 'actif' WHERE email_token = ?"; 
         $stm = $pdo->prepare($update); 
         $stm->execute([$token]);
 
