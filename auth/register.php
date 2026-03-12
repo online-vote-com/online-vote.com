@@ -69,13 +69,13 @@
     </p>
 
     <p style='font-size:13px; color:#0066cc; word-break:break-all;'>
-    http://localhost/formulaire/register.php/email_verif.php?token=$verif_token
+    https://online-vote.com/register.php/email_verif.php?token=$verif_token
     </p>
 
     <hr style='border:none; border-top:1px solid #eee; margin:20px 0;'>
 
     <p style='font-size:12px; color:#999;'>
-    Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
+     Merci de ne pas y répondre.
     </p>
 
     </td>
@@ -108,7 +108,7 @@
         if (!$email) {
              $_SESSION['email'] = "Email invalide";
             header("Location: register.php");
-            exit;
+            exit();
          } 
         $password = $_POST['mdp'];
 
@@ -119,13 +119,13 @@
         $check_mail = "SELECT id_user FROM users WHERE email = :email LIMIT 1"; 
          $stm = $pdo->prepare($check_mail); 
          $stm->execute([':email' => $email]);
-        $user = $stm->fetchAll();
+        $user = $stm->fetch(PDO::FETCH_ASSOC);
 
          if($user){
        
              $_SESSION['email'] = 'Cet email est déjà utilisé';
               header("Location: register.php");
-             exit;
+             exit();
 
         } else {
         $stmt = $pdo->prepare("
@@ -144,6 +144,7 @@
                 sendemail_verify("$nom", "$email", "$verif_token");
                 $_SESSION['status']="Consulte ta boite mail pour activer ton compte $email";
                 header('location: ../register.php');
+                exit();
             }
         } 
 
