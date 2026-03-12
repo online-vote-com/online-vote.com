@@ -3,17 +3,17 @@
         include '../includes/link.php'; 
         include '../config/database.php';
     
-        if(!isset($_SESSION['id_user']) || $_SESSION['role'] != 'organisateur'){
+        if(!isset($_SESSION['id_user']) || $_SESSION['role_user'] != 'organisateur'){
             header("Location: ../login.php");
             exit();
         }
-
+// Nombre de concours
         $id_org = $_SESSION['id_user'];
         $sqlCon = "SELECT COUNT(*) FROM concours WHERE id_organisateur = :id_org"; 
         $pdo_sta = $pdo->prepare($sqlCon);
         $pdo_sta->execute([':id_org' => $id_org]);
         $nbrConcours = $pdo_sta->fetchColumn();
-
+// Liste des concours
        /*
         $sql_concours = "SELECT con.*, org.nom_user 
         FROM concours con JOIN ON users org
@@ -21,16 +21,16 @@
         $sql_concours = "SELECT con.*, org.nom_user 
         FROM concours con 
         JOIN users org ON con.id_organisateur = org.id_user";
-        $pdo_concours =$pdo->prepare($sql_concours);
+        $stmt_concours  =$pdo->prepare($sql_concours);
         $stmt_concours->execute([':id_org' => $id_org]);
         $concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
-
+// Nombre de candidats
     $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
     // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
         $pdo_C = $pdo->prepare($sql);
         $pdo_C->execute([':id_org' => $id_org]);
         $nbrC = $pdo_C->fetchColumn();
-
+// Total paiements
         $sqlP = "SELECT SUM(p.montant) AS montantTotal
         FROM paiements p
         JOIN concours c ON p.id_concours = c.id_concours
@@ -40,7 +40,7 @@
         $stmt->execute(['id_org' => $id_org]);
         $total_P = $stmt->fetchColumn();
     
-
+// Candidats détaillés
         $sql_candidat = "SELECT can.*, con.titre
         FROM candidats can
         JOIN concours con ON can.id_concours = con.id_concours
@@ -65,10 +65,10 @@
             
             <div class="profile-box">
                 <div class="img-placeholder circle">
-                    <img src="<?php echo $_SESSION['photo_user'] ?? '../assets/images/default-user.png'; ?>" alt="Profil">
+                    <img src="<?php echo $_SESSION['photo'] ?? '../assets/images/default-user.png'; ?>" alt="Profil">
                     <!--<img src="../assets/images/organisateur/art.jpg" alt="Arthur Chakoualeu">-->
                 </div>
-                <h3><?php echo $_SESSION['nom_user']; ?></h3>
+                <h3><?php echo $_SESSION['nom']; ?></h3>
                 <a href="#" class="profil-link">Voir mon profil <i class="fas fa-chevron-right"></i></a>
             </div>
 
