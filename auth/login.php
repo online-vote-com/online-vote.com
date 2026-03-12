@@ -24,11 +24,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
            $_SESSION['photo'] = $user['photo_user'] ;
              $_SESSION['status'] = $user['status_user'] ;
             
-            header("Location: index");
+            header("Location: ../index.php");
             exit();
 
         } else {
-            $msg= "<p style='color:red'>Mot de passe incorrect</p>";
+            $_SESSION['user'] = "Authentification échouée, mot de passe ou email incorrect";
+            header("Location: ../login.php");
+            exit();
         }
 
     } else {

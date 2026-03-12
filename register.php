@@ -1,5 +1,7 @@
-<?php include 'includes/link.php'; 
-include 'auth/register.php';
+<?php 
+session_start();
+include 'includes/link.php'; 
+
 ?>
 <link rel="stylesheet" href="assets/css/register.css">
 <link rel="stylesheet" href="assets/css/color.css">
@@ -17,13 +19,15 @@ include 'auth/register.php';
             <h2>Rejoins l'aventure</h2>
             <hr class="divider">
 
-            <?php 
-                if(isset($msg)) {
-                    echo "<p class='error-msg'>$msg</p>";
-                }
-            ?>
-
-            <form action="register.php" 
+             <div class="alert">
+            <?php
+                    if (isset($_SESSION['status'])){
+                        echo "<h2>". $_SESSION['status']. "</h2>";
+                        unset($_SESSION['status']);
+                    }
+                ?>
+            </div>
+            <form action="auth/register.php" 
                   method="post" 
                   enctype="multipart/form-data" 
                   id="registerForm">
@@ -38,15 +42,6 @@ include 'auth/register.php';
                            required>
                 </div>
 
-                <!-- PRENOM -->
-                <div class="input-group">
-                    <label>Prénom :</label>
-                    <input type="text" 
-                           placeholder="Entrez votre prénom" 
-                           name="prenom" 
-                           required>
-                </div>
-
                 <!-- EMAIL -->
                 <div class="input-group">
                     <label>Email :</label>
@@ -55,11 +50,11 @@ include 'auth/register.php';
                            name="email" 
                            required>
                 </div>
-                                <!-- PHOTO -->
+                                <!-- PHOTO 
                 <div class="input-group">
                     <label>Photo de profil :</label>
                     <input type="file" name="photo" accept="image/*">
-                </div>
+                </div> -->
 
 
                 <!-- PASSWORD -->

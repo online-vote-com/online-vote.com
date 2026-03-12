@@ -1,7 +1,7 @@
 
 <?php 
+session_start();
 include 'includes/link.php'; 
-include 'auth/login.php';
 
 ?>
 <link rel="stylesheet" href="assets/css/register.css">
@@ -10,17 +10,19 @@ include 'auth/login.php';
     <div class="sidebar">
         <h1>Donne une nouvelle tournure à ton concours, compétition</h1>
     </div>
-  <?php 
-      if(isset($msg)) {
-        echo "<p class='error-msg'>$msg</p>";
-       }
-   ?>
-    <form class="form-section" method="post" action = "login.php">
+        <div class="alert">
+            <?php
+                    if (isset($_SESSION['user'])){
+                        echo "<h2>". $_SESSION['user']. "</h2>";
+                        unset($_SESSION['user']);
+                    }
+                ?>
+            </div>
+    <form class="form-section" method="post" action = "auth/login.php">
         <div class="form-wrapper">
             <h2>Connexion</h2>
             <hr class="divider">
 
-         
                 <div class="input-group">
                     <label>Email :</label>
                     <input type="email" placeholder="" name="email" required>
