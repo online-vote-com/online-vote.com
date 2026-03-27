@@ -10,7 +10,7 @@ require_once("../config/payment_config.php");
 
 header("Content-Type: application/json");
 
-$idVotant = $_SESSION['id_user'] ?? 0;
+$idVotant = $_SESSION['id_user'] ?? null;
 
 // Empêche l'accès direct sans POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -94,6 +94,7 @@ if (!$concours) {
 }
 
 $prixVote = (int)$concours['prix_vote'];
+
 $nbVotes = floor($montant / $prixVote);
 if ($nbVotes <= 0) {
     echo json_encode([
