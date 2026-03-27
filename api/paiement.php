@@ -45,7 +45,8 @@ if (empty($data['id_candidat']) || empty($data['id_concours']) || empty($data['m
 // Caster et nettoyer les données
 $idCandidat = (int)$data['id_candidat'];
 $idConcours = (int)$data['id_concours'];
-$montant = (int)$data['montant'];
+$montantInitial = (int)$data['montant'];
+$montant = (string)$montantInitial; // AangaraaPay attend une string
 $phone = preg_replace('/[^0-9]/', '', $data['phone']);
 
 // Si le numéro commence par 237, garder tel quel
@@ -115,7 +116,7 @@ $stmtInsert = $pdo->prepare("
 ");
 $stmtInsert->execute([
     $transaction_id,
-    $montant,
+    $montantInitial,
     $nbVotes,
     $operator,
     $phone,
