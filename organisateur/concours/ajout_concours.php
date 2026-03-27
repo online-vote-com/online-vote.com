@@ -19,7 +19,7 @@
             <div class="form-row">
                 <div class="select-wrapper">
                     <select name="type_vote" required>
-                        <option value="" disabled selected>Type de vote</option>
+                        <option value="" disabled selected name ="typeConcours">Type de vote</option>
                         <option value="gratuit">Gratuit</option>
                         <option value="payant">Payant</option>
                     </select>
