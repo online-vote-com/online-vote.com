@@ -1,17 +1,17 @@
 
     <div class="view-header">
         <div>
-            <h1>Gestion des Concours</h1>
+            <h1>Gestion des Votants</h1>
             <p>Pilotez vos compétitions et suivez les votes en temps réel</p>
         </div>
-        <button class="btn-primary" onclick="openModalConcours()"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>
+        <button class="btn-primary" onclick="openModalVotants()"><i class="fa-solid fa-plus"></i> Nouveau Votant</button>
     </div>
-
+    
     <div class="kpi-grid">
         <div class="kpi-card gradient-orange">
             <div class="kpi-header">
-                <span class="label white">Total Concours</span>
-                <div class="kpi-icon-bg"><i class="fa-solid fa-trophy"></i></div>
+                <span class="label white">Total Votants</span>
+                <div class="kpi-icon-bg"><i class="fa-solid fa-users"></i></div>
             </div>
             <div class="kpi-body">
                 <h2 class="white">24</h2>
@@ -30,8 +30,6 @@
             </div>
         </div>
 
-        
-
         <div class="kpi-card white-card border-glow">
             <div class="kpi-header">
                 <span class="label">En attente</span>
@@ -42,29 +40,6 @@
                 <p class="sub-label">Planifiés pour bientôt</p>
             </div>
         </div>
-
-         <div class="kpi-card gradient-green">
-            <div class="kpi-header">
-                <span class="label white">Moyenne votes par concours</span>
-                <div class="kpi-icon-bg"><i class="fa-solid fa-bolt"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2 class="white">08</h2>
-                <p class="sub-label white-opacity">participations</p>
-            </div>
-        </div>
-
-        <div class="kpi-card white-card border-glow">
-            <div class="kpi-header">
-                <span class="label">Concours le plus voté</span>
-                <div class="kpi-icon-bg gray"><i class="fa-regular fa-clock"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2>conours 1</h2>
-                <p class="sub-label">cameroun</p>
-            </div>
-        </div>
- 
 
         <div class="kpi-card white-card">
             <div class="kpi-header">
@@ -92,12 +67,8 @@
                     <tr>
                         <th>Concours</th>
                         <th>Statut</th>
-                        <th>Votants</th>
-                        <th>Votes</th>
-                        <th>Candidats associés</th>
-                        <th>Type</th>
-                        <th>Revenus générés</th>
-                        <th>Fin vote</th>
+                        <th>Participants</th>
+                        <th>Fin du vote</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
@@ -110,11 +81,7 @@
                             </div>
                         </td>
                         <td><span class="status-badge active">En cours</span></td>
-                        <td class="fw-600">700</td>
-                        <td class="fw-600">12450</td>
-                        <td class="fw-600">60</td>
-                        <td class="fw-600">Gratuit</td>
-                        <td class="fw-600">12000000</td>
+                        <td class="fw-600">12,450 votes</td>
                         <td>15 Mai 2026</td>
                         <td class="actions">
                             <button class="action-btn view"><i class="fa-solid fa-eye"></i></button>
@@ -127,40 +94,45 @@
         </div>
     </div>
 
-
-    <div class="modal" id="addConcoursModal">
+    <div class="modal" id="openModalVotants">
     <div class="modal-content">
 
         <div class="modal-header">
-            <h2>Nouveau concours</h2>
-            <p>Créer une nouvelle compétition</p>
+            <h2>Nouvel organisateur</h2>
+            <p>Créer un compte organisateur</p>
         </div>
 
         <form class="modal-body" method="POST">
 
-            <input type="text" name="titre" placeholder="Titre du concours" required>
-
-            <textarea name="description_concours" placeholder="Description"></textarea>
-
             <div class="form-row">
-                <select name="type_vote" required>
-                    <option value="">Type de vote</option>
-                    <option value="gratuit">Gratuit</option>
-                    <option value="payant">Payant</option>
-                </select>
-
-                <input type="number" name="prix_vote" placeholder="Prix du vote (FCFA)">
+                <input type="text" name="nom_user" placeholder="Nom" required>
+                <input type="text" name="prenom_user" placeholder="Prénom">
             </div>
 
-            <div class="form-row">
-                <input type="datetime-local" name="date_debut" required>
-                <input type="datetime-local" name="date_fin" required>
-            </div>
+            <input type="email" name="email" placeholder="Email" required>
 
-            <input type="file"accept = ".jpg, .jpeg, .png" name="photo_concours">
+            <input type="tel" name="numTel" placeholder="Téléphone">
+
+            <input type="password" name="pwd" placeholder="Mot de passe" required>
+
+             <label class="file-input">
+                <input type="file" accept = ".jpg, .jpeg, .png" name="photo_candidat" hidden>
+                📷 Ajouter une photo
+            </label>
+
+            <select name="role_user">
+                <option value="organisateur">Organisateur</option>
+                <option value="admin">Admin</option>
+                <option value="admin">Votant</option>
+            </select>
+
+            <select name="status_user">
+                <option value="actif">Actif</option>
+                <option value="suspendu">Suspendu</option>
+            </select>
 
             <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeModalConcours()">Annuler</button>
+                <button type="button" class="btn-cancel" onclick="closeModalVotants()">Annuler</button>
                 <button type="submit" class="btn-submit">Créer</button>
             </div>
 
@@ -170,17 +142,17 @@
 
 <script>
     
-    function openModalConcours() {
-        document.getElementById('addConcoursModal').style.display = 'flex';
+    function openModalVotants() {
+        document.getElementById('openModalVotants').style.display = 'flex';
     }
-    function closeModalConcours() {
-        document.getElementById('addConcoursModal').style.display = 'none';
+    function closeModalVotants() {
+        document.getElementById('openModalVotants').style.display = 'none';
     }
 
     window.onclick = function(event) {
-        const modal = document.getElementById('addConcoursModal');
+        const modal = document.getElementById('openModalVotants');
         if (event.target === modal) {
-            closeModalConcours();
+            closeModalVotants();
         }
     }
 </script>

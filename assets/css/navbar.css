@@ -1,11 +1,17 @@
+
 .main-header {
-    font-family: 'Poppins', sans-serif;
-    /* Dégradé violet conforme à l'image */
-    background: linear-gradient(to right, #8A00C4, #A044FF, #D191FF);
-    padding: 15px 40px;
-    border-bottom-left-radius: 40px; /* Arrondi caractéristique à gauche */
-    border-bottom-right-radius: 40px; /* Arrondi caractéristique à droite */
-    color: white;
+    height: 72px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .header-container {
@@ -14,67 +20,97 @@
     align-items: center;
     max-width: 1200px;
     margin: 0 auto;
+    width: 100%;
+    padding: 0 24px;
 }
 
-/* Style du Logo */
+/* LOGO : On garde tes classes mais on les rend "soft" */
 .logo {
     display: flex;
     align-items: baseline;
     font-weight: 800;
-    font-size: 24px;
-    text-transform: uppercase;
-    font-style: italic;
+    text-decoration: none;
+    letter-spacing: -0.5px;
 }
 
-.logo .online { font-size: 32px; }
-.logo .vote-tag {
-    font-size: 12px;
+.logo .online {
+    color: var(--primary);
+    font-size: 1.5rem;
+}
+
+.logo .line-text {
+    color: var(--dark);
+    font-size: 1.1rem;
     margin-left: 2px;
-    text-transform: lowercase;
 }
 
-/* Menu de Navigation */
+.logo .vote-tag {
+    font-size: 0.75rem;
+    color: var(--primary);
+    opacity: 0.6;
+    margin-left: 3px;
+    font-weight: 600;
+}
+
+/* NAV MENU */
 .nav-menu ul {
     list-style: none;
     display: flex;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
+    gap: 32px;
 }
 
 .nav-menu ul li a {
-    color: white;
     text-decoration: none;
+    color: var(--gray);
     font-weight: 600;
-    font-size: 16px;
-    text-transform: capitalize;
-    transition: opacity 0.3s;
+    font-size: 0.92rem;
+    transition: 0.2s ease;
 }
 
 .nav-menu ul li a:hover {
-    opacity: 0.8;
+    color: var(--primary);
 }
 
-/* Bouton Se Connecter */
+/* ACTIONS & BOUTONS */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
 .btn-connect {
-    background-color: white;
-    color: #8A00C4; /* Texte violet assorti au dégradé */
-    padding: 10px 25px;
-    border-radius: 12px;
     text-decoration: none;
+    color: var(--dark);
     font-weight: 700;
-    font-size: 15px;
-    transition: transform 0.2s, box-shadow 0.2s;
-    display: inline-block;
+    font-size: 0.9rem;
+    padding: 10px 15px;
+    transition: 0.2s;
 }
 
 .btn-connect:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    color: var(--primary);
 }
 
-/* Responsive pour mobile */
+/* Nouveau bouton d'appel à l'action pour équilibrer le header */
+.btn-cta {
+    background: var(--primary);
+    color: white;
+    text-decoration: none;
+    padding: 10px 22px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    box-shadow: 0 8px 20px rgba(156, 4, 218, 0.15);
+    transition: all 0.3s ease;
+}
+
+.btn-cta:hover {
+    transform: translateY(-2px);
+    background: var(--primary-hover);
+    box-shadow: 0 12px 24px rgba(156, 4, 218, 0.25);
+}
+
+/* RESPONSIVE */
 @media (max-width: 768px) {
-    .nav-menu { display: none; } /* On cache le menu sur mobile ou on utilise un burger */
-    .main-header { padding: 10px 20px; }
+    .nav-menu { display: none; }
 }

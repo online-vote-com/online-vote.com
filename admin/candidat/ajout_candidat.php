@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])){
 }
 
 ?>
-
+<!--
 <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/formulaire_nouveau.css">
 <div id="modalCandidat" class="modal">
     <div class="modal-content">
@@ -98,3 +98,68 @@ if($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter'])){
     </div>
 </div>
 
+-->
+<div class="modal" id="modalCandidat">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Gestion des Candidats</h2>
+            <p>Assigner un nouveau participant au concours sélectionné</p>
+        </div>
+        <div class="candidate-form">
+            <div class="avatar-upload">
+                <div class="preview-circle"></div>
+                <button class="btn-ghost-sm">Choisir une photo</button>
+            </div>
+            <div class="form-row">
+                <input type="text" placeholder="Nom complet du candidat">
+                <input type="text" placeholder="Code unique (ex: 01)">
+            </div>
+            <textarea placeholder="Biographie courte ou slogan..."></textarea>
+            <button class="btn-primary-sm">Enregistrer le candidat</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(15, 23, 42, 0.4); /* Fond sombre transparent */
+    backdrop-filter: blur(8px);
+    display: none; /* Masqué par défaut */
+    place-items: center; z-index: 2000;
+}
+
+.modal-content {
+    background: white;
+    width: 90%; max-width: 600px;
+    border-radius: 24px; padding: 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    animation: slideUp 0.4s ease-out;
+}
+
+.form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    margin: 24px 0;
+}
+
+.input-group label {
+    display: block; font-size: 0.85rem; font-weight: 600;
+    color: var(--gray); margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%; padding: 12px; border: 1px solid #E5E7EB;
+    border-radius: 10px; outline: none; transition: 0.3s;
+}
+
+.upload-box {
+    border: 2px dashed #E5E7EB; border-radius: 12px;
+    padding: 30px; text-align: center; color: var(--gray);
+    cursor: pointer; margin-top: 10px;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+</style>

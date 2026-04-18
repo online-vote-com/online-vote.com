@@ -1,140 +1,210 @@
-/* ==================== MODALE (FOND) ==================== */
+
+/* =========================
+   OVERLAY MODAL
+========================= */
 .modal {
     display: none;
     position: fixed;
     inset: 0;
     z-index: 9999;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(3px);
+
+    /* fond soft + blur */
+    background: rgba(15, 10, 25, 0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    /* centrage obligatoire */
+    justify-content: center;
+    align-items: center;
 }
 
-
-/* ==================== CONTENU MODALE ==================== */
+/* =========================
+   BOX MODAL
+========================= */
 .modal-content {
-    width: 90%;
-    max-width: 500px;
-    margin: 5% auto;
-    background-color: #fff;
-    border-radius: 25px;
+    width: 92%;
+    max-width: 520px;
+
+    background: #ffffff;
+    border-radius: 16px;
+
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 0.4s ease;
+
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.18);
+    border: 1px solid rgba(156, 4, 218, 0.08);
+
+    animation: modalIn 0.25s ease;
 }
 
-/* ==================== HEADER ==================== */
+/* =========================
+   HEADER
+========================= */
 .modal-header {
-    padding: 20px;
-    text-align: center;
-    color: #fff;
-    background: linear-gradient(to right, #8A00C4, #4A0080);
+    padding: 18px 22px;
+    background: linear-gradient(135deg, var(--main-purple), #7b03b0);
+    color: white;
 }
 
 .modal-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 600;
 }
 
 .modal-header p {
-    margin-top: 5px;
     font-size: 0.8rem;
-    opacity: 0.9;
+    opacity: 0.85;
+    margin-top: 4px;
 }
 
-/* ==================== FORMULAIRE ==================== */
+/* =========================
+   BODY FORM
+========================= */
 .modal-body {
+    padding: 22px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    padding: 30px;
+    gap: 14px;
 }
 
-/* Ligne double */
+/* =========================
+   INPUTS
+========================= */
+.modal-body input,
+.modal-body select,
+.modal-body textarea {
+    width: 100%;
+    padding: 12px 14px;
+
+    border-radius: 10px;
+    border: 1px solid rgba(156, 4, 218, 0.15);
+
+    font-size: 0.9rem;
+    outline: none;
+
+    transition: 0.2s ease;
+    background: #fff;
+}
+
+.modal-body input:focus,
+.modal-body select:focus,
+.modal-body textarea:focus {
+    border-color: var(--main-purple);
+    box-shadow: 0 0 0 3px rgba(156, 4, 218, 0.10);
+}
+
+/* textarea */
+.modal-body textarea {
+    min-height: 90px;
+    resize: none;
+}
+
+/* =========================
+   FORM ROW (2 COLONNES)
+========================= */
 .form-row {
     display: flex;
-    gap: 15px;
+    gap: 12px;
 }
 
-.form-row input,
-.form-row .select-wrapper,
-.form-row .file-input {
+.form-row > * {
     flex: 1;
 }
 
-/* Champs */
-input,
-select,
-textarea,
-.file-input label {
-    padding: 12px 20px;
-    font-size: 14px;
-    border: 1px solid #333;
-    border-radius: 20px;
-    outline: none;
-}
-
-.full-width {
-    width: 100%;
-}
-
-textarea {
-    height: 80px;
-    resize: none;
-    border-radius: 15px;
-}
-
-/* ==================== FILE INPUT ==================== */
-.file-input label {
+/* =========================
+   UPLOAD IMAGE
+========================= */
+.file-input {
     display: block;
+    padding: 14px;
+
     text-align: center;
     cursor: pointer;
-    background-color: #f9f9f9;
-    transition: background 0.3s ease;
+
+    border-radius: 12px;
+    border: 1px dashed rgba(156, 4, 218, 0.25);
+
+    background: rgba(231, 198, 255, 0.10);
+    color: var(--main-purple);
+
+    font-size: 0.85rem;
+    transition: 0.2s ease;
 }
 
-.file-input label:hover {
-    background-color: #eee;
+.file-input:hover {
+    background: rgba(231, 198, 255, 0.18);
 }
 
-/* ==================== FOOTER ==================== */
-.form-footer {
+/* =========================
+   FOOTER ACTIONS
+========================= */
+.modal-footer {
+    padding: 18px 22px;
+
     display: flex;
     justify-content: flex-end;
+    gap: 10px;
+
+    background: #fafafa;
+    border-top: 1px solid rgba(0,0,0,0.05);
 }
 
-/* Bouton */
+/* =========================
+   BUTTONS
+========================= */
 .btn-submit {
-    padding: 10px 40px;
+    background: var(--main-purple);
+    color: white;
+
     border: none;
-    border-radius: 25px;
-    background: linear-gradient(to right, #A000D0, #6000A0);
-    color: #fff;
-    font-weight: bold;
+    padding: 10px 18px;
+
+    border-radius: 10px;
+    font-weight: 600;
+
     cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: 0.2s ease;
 }
 
 .btn-submit:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    background: var(--dark-purple-gradient);
+    transform: translateY(-1px);
 }
 
-/* ==================== ANIMATION ==================== */
-@keyframes fadeIn {
+.btn-cancel {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.12);
+
+    padding: 10px 18px;
+    border-radius: 10px;
+
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-cancel:hover {
+    background: #f3f3f3;
+}
+
+
+.modal {
+    display: none;
+}
+
+.modal.show {
+    display: flex;
+}
+
+
+/* =========================
+   ANIMATION
+========================= */
+@keyframes modalIn {
     from {
-        transform: translateY(-40px);
+        transform: translateY(-12px);
         opacity: 0;
     }
     to {
         transform: translateY(0);
         opacity: 1;
     }
-}
-
-/* ==================== IMAGE MINIATURE ==================== */
-.mini-circle {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 1px solid var(--main-purple);
 }

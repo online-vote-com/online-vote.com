@@ -1,0 +1,201 @@
+    <?php 
+    session_start();
+        include '../includes/link.php'; 
+        include '../config/database.php';
+    
+        if(!isset($_SESSION['id_user']) || $_SESSION['role'] != 'organisateur'){
+            header("Location: ../login.php");
+            exit();
+        }
+
+
+
+// Nombre de concours
+        $id_org = $_SESSION['id_user'];
+        $sqlCon = "SELECT COUNT(*) FROM concours WHERE id_organisateur = :id_org"; 
+        $pdo_sta = $pdo->prepare($sqlCon);
+        $pdo_sta->execute([':id_org' => $id_org]);
+        $nbrConcours = $pdo_sta->fetchColumn();
+// Liste des concours
+       /*
+        $sql_concours = "SELECT con.*, org.nom_user 
+        FROM concours con JOIN ON users org
+        WHERE con.id_organisateur = org.id_user"; */
+$sql_concours = "SELECT con.*, org.nom_user
+                 FROM concours con
+                 JOIN users org ON con.id_organisateur = org.id_user
+                 WHERE con.id_organisateur = :id_org";
+
+$stmt_concours = $pdo->prepare($sql_concours);
+$stmt_concours->execute([':id_org' => $id_org]);
+$concours = $stmt_concours->fetchAll(PDO::FETCH_ASSOC);
+// Nombre de candidats
+    $sql = "SELECT COUNT(*) FROM candidats WHERE id_organisateur = :id_org"; 
+    // $sql = "SELECT *, (SELECT COUNT(*) FROM candidats) As totalCan FROM candidats";
+        $pdo_C = $pdo->prepare($sql);
+        $pdo_C->execute([':id_org' => $id_org]);
+        $nbrC = $pdo_C->fetchColumn();
+// Total paiements
+        $sqlP = "SELECT SUM(p.montant) AS montantTotal
+        FROM paiements p
+        JOIN concours c ON p.id_concours = c.id_concours
+        WHERE c.id_organisateur = :id_org
+        AND p.status_paiement = 'succes'";
+        $stmt = $pdo->prepare($sqlP);
+        $stmt->execute(['id_org' => $id_org]);
+        $total_P = $stmt->fetchColumn() ?? 0;
+    
+// Candidats détaillés
+        $sql_candidat = "SELECT can.*, con.titre
+        FROM candidats can
+        JOIN concours con ON can.id_concours = con.id_concours
+        WHERE con.id_organisateur = :id_org";
+
+        $stmt = $pdo->prepare($sql_candidat);
+        $stmt->execute(['id_org' => $id_org]);
+
+        $candidats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+    ?>
+    <link rel="stylesheet" href="../assets/css/grid-card.css">
+    <link rel="stylesheet" href="../assets/css/sidebar.css">
+    <style>
+        
+    </style>
+    <?php  if(isset($_SESSION['status']) && $_SESSION['status'] == 'suspendu'){
+        echo "<div class='alert alert-danger'>Votre compte est suspendu, veuillez contacter l'administrateur pour plus d'informations.</div>";
+                
+             } else { ?>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="brand">
+                <span class="logo-text"><i class="fas fa-vote-yea"></i> ONLINE <small>vote</small></span>
+            </div>
+            
+            <div class="profile-box">
+                <div class="img-placeholder circle">
+                    <img src="<?php echo $_SESSION['photo'] ?? '../assets/images/default-user.png'; ?>" alt="Profil">
+                    <!--<img src="../assets/images/organisateur/art.jpg" alt="Arthur Chakoualeu">-->
+                </div>
+                <h3><?php echo $_SESSION['nom']; ?></h3>
+                <a href="#" class="profil-link">Voir mon profil <i class="fas fa-chevron-right"></i></a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="section-dashboard">
+                    <i class="fas fa-chart-pie"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item" data-section="section-candidats">
+                    <i class="fas fa-users"></i> Candidats
+                </a>
+                <a href="#" class="nav-item" data-section="section-concours">
+                    <i class="fas fa-trophy"></i> Concours
+                </a>
+            </nav>
+
+            <button class="logout-btn">
+                <i class="fas fa-sign-out-alt" ></i>
+                <a href="../auth/logout"> <i class="" ></i> Déconnexion</a>
+            </button>
+        </aside>
+
+        <main class="main-content">
+            
+            <div id="section-dashboard" class="content-section">
+        <header class="top-header">
+            <div class="header-text">
+                <h1>Tableau de Bord</h1>
+                <p class="date-now">Content de vous revoir !</p>
+            </div>
+            <a href="../index" class="btn-home-circle" title="Retour à l'accueil">
+                <i class="fas fa-home"></i>
+            </a>
+        </header>
+
+        <section class="welcome-banner">
+            <div class="welcome-content">
+                <h2>Salut, <span>Arthur Chakoualeu !</span> </h2>
+                <p>Prêt à gérer vos votes aujourd'hui ? Voici un résumé de votre activité.</p>
+            </div>
+        </section>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon-bg purple-light"><i class="fas fa-flag"></i></div>
+                <div class="stat-info">
+                    <strong><?php echo $nbrConcours; ?></strong>
+                    <p>Concours</p>
+                </div>
+            </div>
+            <div class="stat-card purple-solid">
+                <div class="stat-icon-bg white-alpha"><i class="fas fa-user-friends"></i></div>
+                <div class="stat-info">
+                    <strong><?php echo $nbrC; ?></strong>
+                    <p>Candidats</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-bg yellow-light"><i class="fas fa-wallet"></i></div>
+                <div class="stat-info">
+                    <strong><?php echo  $total_P; ?></strong>
+                    <p>FCFA récoltés</p>
+                </div>
+            </div>
+            <div class="stat-card purple-solid">
+                <div class="stat-icon-bg white-alpha"><i class="fas fa-chart-line"></i></div>
+                <div class="stat-info">
+                    <strong>Boost</strong>
+                    <p>D'impact</p>
+                </div>
+            </div>
+        </div>
+
+       <!-- <div class="section-header">
+            <h3 class="section-title">Concours récents</h3>
+            <button class="btn-text-only">Tout voir <i class="fas fa-arrow-right"></i></button>
+        </div> -->
+
+        
+    </div>
+            <?php
+
+                    include 'candidat/liste_candidats.php';
+
+                    include 'concours/liste_concours.php';
+
+                    include 'concours/stats_concours.php';
+
+            ?>
+        </main>
+    </div>
+   <?php } ?>
+        <script>
+        // Sélectionne tous les éléments ayant la classe 'nav-item' (les liens de la sidebar)
+    document.querySelectorAll('.nav-item').forEach(link => {
+
+        // Pour chaque lien, on ajoute un écouteur d'événement au clic
+        link.addEventListener('click', () => {
+
+            // Récupère l'ID de la section à afficher depuis l'attribut data-section du lien
+            const sectionId = link.dataset.section;
+
+            // Masque toutes les sections ayant la classe 'content-section'
+            document.querySelectorAll('.content-section').forEach(sec => sec.style.display = 'none');
+
+            // Affiche uniquement la section correspondant au lien cliqué
+            document.getElementById(sectionId).style.display = 'block';
+
+            // Supprime la classe 'active' de tous les liens pour désactiver l'état actif
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            // Ajoute la classe 'active' au lien cliqué pour indiquer qu'il est sélectionné
+            link.classList.add('active');
+        });
+
+    });
+
+
+        </script>
+    </body>
+    </html>
