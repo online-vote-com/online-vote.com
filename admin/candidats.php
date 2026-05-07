@@ -55,30 +55,30 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Candidat</th>
                         <th>Concours</th>
-                        <th>Statut</th>
-                        <th>Participants</th>
-                        <th>Fin du vote</th>
+                        <th>Rank</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach($candidats as $c){ ?>
                     <tr>
                         <td>
                             <div class="contest-cell">
                                 <div class="img-placeholder"><i class="fa-solid fa-crown"></i></div>
-                                <span class="contest-name">Miss Cameroun 2026</span>
+                                <span class="contest-name"><?= htmlspecialchars($c['nom_candidat']) ?> <?= htmlspecialchars($c['prenom_candidat']) ?></span>
                             </div>
                         </td>
-                        <td><span class="status-badge active">En cours</span></td>
-                        <td class="fw-600">12,450 votes</td>
-                        <td>15 Mai 2026</td>
+                        <td><span class="status-badge active"><?= htmlspecialchars($c['titre']) ?></span></td>
+                        <td class="fw-600"> </td>
                         <td class="actions">
                             <button class="action-btn view"><i class="fa-solid fa-eye"></i></button>
                             <button class="action-btn edit"><i class="fa-solid fa-pen"></i></button>
                             <button class="action-btn delete"><i class="fa-solid fa-trash"></i></button>
                         </td>
                     </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
@@ -145,7 +145,6 @@
 
 <script>
 
-
     function openModal() {
         document.getElementById('addCandidatModal').style.display = 'flex';
     }
@@ -159,7 +158,6 @@
             closeModal();
         }
     }
-
 
 </script>
 

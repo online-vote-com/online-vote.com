@@ -28,95 +28,95 @@
     $mail->isHTML(true);
     $mail->Subject = "Verification Email";
 
-   $mail_template = "
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset='UTF-8'>
-<title>Activation de votre compte</title>
-</head>
+        $mail_template = "
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <meta charset='UTF-8'>
+        <title>Activation de votre compte</title>
+        </head>
 
-<body style='margin:0;padding:0;background-color:#F8F9FA;font-family:Arial,Helvetica,sans-serif;'>
+        <body style='margin:0;padding:0;background-color:#F8F9FA;font-family:Arial,Helvetica,sans-serif;'>
 
-<table width='100%' cellpadding='0' cellspacing='0'>
-<tr>
-<td align='center'>
+        <table width='100%' cellpadding='0' cellspacing='0'>
+        <tr>
+        <td align='center'>
 
-<table width='520' cellpadding='0' cellspacing='0' style='background:#FFFFFF;margin-top:40px;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);'>
+        <table width='520' cellpadding='0' cellspacing='0' style='background:#FFFFFF;margin-top:40px;border-radius:10px;overflow:hidden;box-shadow:0 4px 15px rgba(0,0,0,0.08);'>
 
-<tr>
-<td style='background:#9C04DA;padding:25px;text-align:center;'>
+        <tr>
+        <td style='background:#9C04DA;padding:25px;text-align:center;'>
 
-<h2 style='color:#FFFFFF;margin:0;font-size:24px;'>
-Bienvenue $nom 🎉
-</h2>
+        <h2 style='color:#FFFFFF;margin:0;font-size:24px;'>
+        Bienvenue $nom 
+        </h2>
 
-<p style='color:#E7C6FF;margin-top:8px;font-size:14px;'>
-Activation de votre compte
-</p>
+        <p style='color:#E7C6FF;margin-top:8px;font-size:14px;'>
+        Activation de votre compte
+        </p>
 
-</td>
-</tr>
+        </td>
+        </tr>
 
-<tr>
-<td style='padding:35px;text-align:center;'>
+        <tr>
+        <td style='padding:35px;text-align:center;'>
 
-<p style='font-size:16px;color:#333;margin-top:0;'>
-Votre inscription a été enregistrée avec succès.
-</p>
+        <p style='font-size:16px;color:#333;margin-top:0;'>
+        Votre inscription a été enregistrée avec succès.
+        </p>
 
-<p style='font-size:15px;color:#555;'>
-Cliquez sur le bouton ci-dessous pour activer votre compte.
-</p>
+        <p style='font-size:15px;color:#555;'>
+        Cliquez sur le bouton ci-dessous pour activer votre compte.
+        </p>
 
-<br>
+        <br>
 
-<a href='https://online-vote.com/email_verif?token=$verif_token'
-style='background:#9C04DA;color:#FFFFFF;padding:14px 30px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;'>
-Activer mon compte
-</a>
+        <a href='https://online-vote.com/email_verif?token=$verif_token'
+        style='background:#9C04DA;color:#FFFFFF;padding:14px 30px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;'>
+        Activer mon compte
+        </a>
 
-<br><br>
+        <br><br>
 
-<p style='font-size:13px;color:#777;'>
-Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
-</p>
+        <p style='font-size:13px;color:#777;'>
+        Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :
+        </p>
 
-<p style='font-size:13px;color:#9C04DA;word-break:break-all;'>
-https://online-vote.com/email_verif?token=$verif_token
-</p>
+        <p style='font-size:13px;color:#9C04DA;word-break:break-all;'>
+        https://online-vote.com/email_verif?token=$verif_token
+        </p>
 
-<hr style='border:none;border-top:1px solid #EEEEEE;margin:25px 0;'>
+        <hr style='border:none;border-top:1px solid #EEEEEE;margin:25px 0;'>
 
-<p style='font-size:12px;color:#999;margin:0;'>
-Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
-</p>
+        <p style='font-size:12px;color:#999;margin:0;'>
+        Cet email a été envoyé automatiquement. Merci de ne pas y répondre.
+        </p>
 
-<p style='font-size:12px;color:#BBBBBB;margin-top:6px;'>
-© 2026 Online Vote
-</p>
+        <p style='font-size:12px;color:#BBBBBB;margin-top:6px;'>
+        © 2026 Online Vote
+        </p>
 
-</td>
-</tr>
+        </td>
+        </tr>
 
-</table>
+        </table>
 
-</td>
-</tr>
-</table>
+        </td>
+        </tr>
+        </table>
 
-</body>
-</html>
-";
-  $mail->Body = $mail_template;
+        </body>
+        </html>
+        ";
+        $mail->Body = $mail_template;
 
-try {
-    $mail->send();
-} catch (Exception $e) {
-    echo "Erreur Mail : {$mail->ErrorInfo}";
-}
+        try {
+            $mail->send();
+        } catch (Exception $e) {
+            echo "Erreur Mail : {$mail->ErrorInfo}";
+        }
 
-    }
+            }
 
 
 
@@ -135,7 +135,7 @@ try {
 
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
         // $verif_token = md5(rand());
-        $verif_token = bin2hex(random_bytes(16));
+        $verif_token = bin2hex(random_bytes(32));
 
         $check_mail = "SELECT id_user FROM users WHERE email = :email LIMIT 1"; 
          $stm = $pdo->prepare($check_mail); 
@@ -144,7 +144,9 @@ try {
 
          if($user){
        
-             $_SESSION['email'] = 'Cet email est déjà utilisé';
+             $_SESSION['status'] = '<div style="padding:15px; background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; border-radius:4px; margin-bottom:20px; font-family:sans-serif;">
+                                     Cet email est déjà utilisé !
+                                   </div>';
               header("Location: register.php");
              exit();
 
@@ -163,7 +165,9 @@ try {
 
             if($stmt){
                 sendemail_verify($nom, $email, $verif_token);
-                $_SESSION['status']="Consulte ta boite mail pour activer ton compte $email";
+                $_SESSION['status']='<div style="padding:15px; background:#d4edda; color:#155724; border:1px solid #c3e6cb; border-radius:4px; margin-bottom:20px; font-family:sans-serif;">
+                                   Consulte ta boite mail pour activer ton email . "!" 
+                                    </div>';
                 header('location: register.php');
                 exit();
             }

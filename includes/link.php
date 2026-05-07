@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/color.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/tableau.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/sidebar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/grid-card.css">
+   <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/formulaire_nouveau.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/navbar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">

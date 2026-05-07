@@ -1,49 +1,74 @@
 <?php
-
+ob_start();
 session_start();
 require 'config/database.php';
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){ 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $mail = $_POST['email'];
+    // Nettoyage basique des entrées
+    $mail = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
     $mdp  = $_POST['mdp'];
 
-     if(!$mail){
-        $_SESSION['status'] = "Email invalide";
-        header("Location: login.php");
+    if (!$mail || !filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+        $_SESSION['status'] = '<div class="alert-box error">Format d\'email invalide</div>';
+        header("Location: login");
         exit();
     }
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :mail");
     $stmt->execute([':mail' => $mail]);
-
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if($user){
+    if ($user) {
+        if (password_verify($mdp, $user['pwd'])) {
+            
+            // Stockage des infos en session
+            $_SESSION['id_user']       = $user['id_user'];
+            $_SESSION['nom']          = $user['nom_user'];
+            $_SESSION['role']         = $user['role_user'];
+            $_SESSION['prenom']       = $user['prenom_user'];
+            $_SESSION['mail']         = $user['email'];
+            $_SESSION['photo']        = $user['photo_user'];
+            $_SESSION['email_verifie'] = $user['email_verifie'];
 
-        if(password_verify($mdp, $user['pwd'])){
- 
-            $_SESSION['id_user'] = $user['id_user'];
-            $_SESSION['nom'] =$user['nom_user'];
-            $_SESSION['role'] = $user['role_user'];
-           $_SESSION['prenom'] = $user['prenom_user'];
-           $_SESSION['mail'] = $user['email'] ;
-           $_SESSION['photo'] = $user['photo_user'] ;
-             $_SESSION['status'] = $user['status_user'] ;
+            if ($_SESSION['email_verifie'] == 0) {
+                $_SESSION['status'] = '
+                    <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
+                        Presque fini ! Veuillez activer votre compte via l\'email envoyé.
+                    </div>';
+                header("Location: login");
+                exit();
+            } 
+                // 1. On prépare d'abord le message
+                $_SESSION['status'] = '
+                    <div style="padding: 16px; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.95rem; text-align: center;">
+                        Connexion réussie, bienvenue ' . htmlspecialchars($_SESSION['nom']) . ' !
+                    </div>';
+                
+                // 2. On redirige
+                header("Location: admin/dash");
+                
+                // 3. On arrête TOUT de suite l'exécution
+                exit();
           
-            header("Location: organisateur/dashboard.php");
-            exit();
 
         } else {
-            $_SESSION['status'] = "Authentification échouée, mot de passe ou email incorrect";
-            header("Location: login.php");
+            // Mot de passe incorrect
+            $_SESSION['status'] = '
+                <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
+                    Identifiants incorrects. Veuillez réessayer.
+                </div>';
+            header("Location: login");
             exit();
         }
-
     } else {
-           $_SESSION['status'] = "Email incorrect";
-    header("Location: login.php");
-    exit();
+        // Email inexistant
+        $_SESSION['status'] = '
+            <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
+                Aucun compte trouvé avec cet email.
+            </div>';
+        header("Location: login");
+        exit();
     }
 }
 ?>

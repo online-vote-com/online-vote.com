@@ -20,9 +20,9 @@
     */
 
 ?>
-<link rel="stylesheet" href="assets/css/concours_detail.css">
+
 <link rel="stylesheet" href="assets/css/color.css">
-<link rel="stylesheet" href="assets/css/grid-card.css">
+<link rel="stylesheet" href="assets/css/grid-card-concours.css">
 
 <main class="container">
     <h1 class="main-title">Liste De Tous Les Concours</h1>
@@ -35,28 +35,47 @@
 <div class="contest-list">
 
     <?php foreach ($concours as $c) { ?>
-        <div class="contest-item">
+<div class="contest-item <?= $c['type_vote'] ?>">
 
-            <div class="contest-cover">
-                <span class="contest-tag">
-                    <?php echo $c['type_vote']; ?>
-                </span>
-            </div>
+    <!-- IMAGE HERO -->
+    <div class="contest-cover">
 
-            <div class="contest-body">
-                <h3 class="contest-title">
-                    <?php echo $c['titre']; ?>
-                </h3>
+        <img src="<?= 'uploads/concours/' . htmlspecialchars($c['photo_concours']); ?>" alt="concours">
 
-                <a
-                    href="concours_detail.php?id_concours=<?php echo $c['id_concours']; ?>"
-                    class="contest-action"
-                >
-                    Gérer le concours
-                </a>
-            </div>
-
+        <div class="contest-overlay">
+            <span class="contest-icon"></span>
         </div>
+
+    </div>
+
+    <!-- BODY -->
+    <div class="contest-body">
+
+        <!-- TITRE -->
+        <h3 class="contest-title">
+            <?= htmlspecialchars($c['titre']); ?>
+        </h3>
+
+        <!-- ORGANISATEUR -->
+      <!--  <p class="contest-organizer">
+            organisé par <b><?= htmlspecialchars($c['nom_user']); ?></b>
+        </p>
+-->
+
+        <!-- TYPE VOTE (IMPORTANT : SOUS TITRE) -->
+        <div class="contest-type <?= $c['type_vote'] ?>">
+            <?= $c['type_vote'] === 'payant' ? ' Vote payant' : ' Vote gratuit' ?>
+        </div>
+
+        <!-- CTA -->
+        <a href="concours_detail.php?id_concours=<?= $c['id_concours']; ?>"
+           class="contest-action">
+            Participer au concours
+        </a>
+
+    </div>
+
+</div>
     <?php } ?>
 
 </div>

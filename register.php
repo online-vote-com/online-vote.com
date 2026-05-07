@@ -23,7 +23,7 @@ include 'includes/link.php';
              <div class="alert">
             <?php
                     if (isset($_SESSION['status'])){
-                        echo "<h2>". $_SESSION['status']. "</h2>";
+                        echo "<h3>". $_SESSION['status']. "</h3>";
                         unset($_SESSION['status']);
                     }
                 ?>
@@ -77,7 +77,7 @@ include 'includes/link.php';
                            name="cmdp" 
                            required>
                 </div>
-            <input type="radio" required>Vous acceptez nos <a href="#">Politique de confidentialités</a>
+                 <input type="radio" required>Vous acceptez nos <a href="#">Politique de confidentialités</a>
 
                 <button type="submit" class="btn-submit">
                     Créer mon compte

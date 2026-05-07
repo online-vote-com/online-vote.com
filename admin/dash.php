@@ -1,4 +1,6 @@
-    <?php include '../includes/link.php'; ?>
+    <?php 
+        include 'requetteDash.php';
+    ?>
  
 
     <!DOCTYPE html>
@@ -6,7 +8,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Online Vote - Tableau de Bord</title>
+        <title>Online Vote|Tableau de Bord</title>
         
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,8 +29,11 @@
                 <div class="logo">
                     <div class="logo-square"><i class="fas fa-check-double"></i></div>
                     <span class="logo-text">Online Vote</span>
+                  
                 </div>
+                
                 <button class="toggle-btn" id="toggleSidebar"><i class="fas fa-bars-staggered"></i></button>
+                
             </div>
 
             <nav class="sidebar-nav">
@@ -40,11 +45,14 @@
                 </div>
 
                 <div class="nav-group">
+                    
                     <span class="group-title">Gestion</span>
                     <a href="#" class="menu-item" data-section="concours" title="Concours"><i class="fa-solid fa-trophy"></i> <span>Concours</span></a>
-                    <a href="#" class="menu-item" data-section="candidats" title="Candidats"><i class="fa-solid fa-users"></i> <span>Candidats</span></a>
+                    <!--<a href="#" class="menu-item" data-section="candidats" title="Candidats"><i class="fa-solid fa-users"></i> <span>Candidats</span></a>-->
                     <a href="#" class="menu-item" data-section="votants" title="Votants"><i class="fa-solid fa-id-card"></i> <span>Votants</span></a>
+                    <?php if($_SESSION['role'] == 'admin'){ ?>
                     <a href="#" class="menu-item" data-section="oragnisateurs" title="Oragnisateurs"><i class="fa-solid fa-id-card"></i> <span>Oragnisateurs</span></a>
+                    <?php } ?>
                 </div>
 
                 <div class="nav-group">
@@ -56,6 +64,7 @@
                 <div class="nav-group">
                     <span class="group-title">Système</span>
                     <a href="#" class="menu-item" data-section="paramètres" title="Parametres"> <i class="fa-solid fa-sliders"></i> <span>Paramètres</span></a>
+                    
                 </div>
             </nav>
 
@@ -77,16 +86,26 @@
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Rechercher un concours, un candidat...">
+                    <div class="alert">
+                        <?php
+                            if (isset($_SESSION['message'])){
+                                echo "<h4>". $_SESSION['message']. "</h4>";
+                                unset($_SESSION['message']);
+                            }
+                            ?>
                     </div>
+                    </div>
+                                <!-- Affichage des alertes -->
+
                     <div class="top-actions">
                         <button class="icon-btn"><i class="fa-regular fa-bell"></i><span class="dot"></span></button>
                        <!-- <button class="btn-primary"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>-->
                         <div class="sidebar-footer">
                             <div class="user-info">
-                                <img src="https://ui-avatars.com/api/?name=Arthur+Junior&background=9C04DA&color=fff" alt="Avatar">
+                                <img src="<?php echo $_SESSION['photo']; ?>" alt="Avatar">
                                 <div class="details">
-                                    <p class="name">Arthur Junior</p>
-                                    <p class="role">Organisateur</p>
+                                    <p class="name"><?php echo $_SESSION['nom']; ?></p>
+                                    <p class="role"><?php echo $_SESSION['role']; ?></p>
                                 </div>
                          </div>
                      </div>
@@ -112,7 +131,7 @@
                                 <div class="icon purple"><i class="fa-solid fa-flag"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>14</h2>
+                                <h2><?php echo  $nbrConcours; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +2</span>
                             </div>
                         </div>
@@ -122,7 +141,7 @@
                                 <div class="icon blue"><i class="fa-solid fa-check-to-slot"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>8,432</h2>
+                                <h2><?php echo $totalVotes; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +12%</span>
                             </div>
                         </div>
@@ -132,7 +151,7 @@
                                 <div class="icon yellow"><i class="fa-solid fa-wallet"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>420,500</h2>
+                                <h2><?php echo $stats['revenus_nets']; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +8%</span>
                             </div>
                         </div>
@@ -143,7 +162,7 @@
                                 <div class="icon purple"><i class="fa-solid fa-user-tie"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>250</h2>
+                                <h2><?php echo $stats['votants_actifs']; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +8%</span>
                             </div>
                         </div>
@@ -154,7 +173,7 @@
                                 <div class="icon purple"><i class="fa-solid fa-check-to-slot"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>250</h2>
+                                <h2><?php echo $stats['votes_aujourdhui']; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +8%</span>
                             </div>
                         </div>
@@ -165,7 +184,7 @@
                                 <div class="icon green"><i class="fa-solid fa-user-tie"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2>156</h2>
+                                <h2><?php echo $nbrC; ?></h2>
                                 <span class="trend neutral">0%</span>
                             </div>
                         </div>
@@ -197,18 +216,15 @@
                                 <p class="goal-text">Objectif : 10,000 votes</p>
                             </div>
                             <hr class="divider">
-                            <h4>Top Candidats</h4>
+                            <h4>Top Concours</h4>
                             <ul class="top-list">
+                                <?php   foreach($topConcours  as $tcon){ ?>
                                 <li>
-                                    <span class="rank">1</span>
-                                    <span class="name">Amina Bella</span>
-                                    <span class="val">2.4k</span>
+                                    <span class="rank"><?php echo $tcon['rang']; ?></span>
+                                    <span class="name"><?php echo $tcon['titre']; ?></span>
+                                    <span class="val">Votes : <?php echo $tcon['total_votes']; ?></span>
                                 </li>
-                                <li>
-                                    <span class="rank">2</span>
-                                    <span class="name">Marcelle K.</span>
-                                    <span class="val">1.8k</span>
-                                </li>
+                                <?php } ?>
                             </ul>
                         </div>
                     </div>
@@ -260,7 +276,7 @@
                 </div>
             </section>
 
-            <section id="concours" class="content-section">  <?php  include 'concours.php'; ?> </section>
+            <section id="concours" class="content-section">  <?php  include 'concours/concours.php'; ?> </section>
             <section id="candidats" class="content-section"> <?php  include 'candidats.php'; ?> </section>
             <section id="votants" class="content-section"> <?php  include 'votants.php'; ?> </section>
             <section id="oragnisateur" class="content-section"> <?php  include 'oragnisateur.php'; ?> </section>

@@ -7,14 +7,14 @@
         <button class="btn-primary" onclick="openModalConcours()"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>
     </div>
 
-    <div class="kpi-grid">
+ <div class="kpi-grid">
         <div class="kpi-card gradient-orange">
             <div class="kpi-header">
                 <span class="label white">Total Concours</span>
                 <div class="kpi-icon-bg"><i class="fa-solid fa-trophy"></i></div>
             </div>
             <div class="kpi-body">
-                <h2 class="white">24</h2>
+                <h2 class="white"><?php echo $nbrConcours; ?></h2>
                 <p class="sub-label white-opacity">Toutes catégories confondues</p>
             </div>
         </div>
@@ -92,39 +92,52 @@
                     <tr>
                         <th>Concours</th>
                         <th>Statut</th>
-                        <th>Votants</th>
-                        <th>Votes</th>
-                        <th>Candidats associés</th>
-                        <th>Type</th>
-                        <th>Revenus générés</th>
-                        <th>Fin vote</th>
+                        <th class="text-center">Votes</th>
+                        <th>Revenus (Net)</th>
+                        <th>Fin</th>
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <?php foreach ($concours as $con): ?>
                     <tr>
                         <td>
                             <div class="contest-cell">
-                                <div class="img-placeholder"><i class="fa-solid fa-crown"></i></div>
-                                <span class="contest-name">Miss Cameroun 2026</span>
+                                <div class="img-placeholder"><i class="fa-solid fa-trophy"></i></div>
+                                <span class="contest-name"><?= htmlspecialchars($con['titre']); ?></span>
                             </div>
                         </td>
-                        <td><span class="status-badge active">En cours</span></td>
-                        <td class="fw-600">700</td>
-                        <td class="fw-600">12450</td>
-                        <td class="fw-600">60</td>
-                        <td class="fw-600">Gratuit</td>
-                        <td class="fw-600">12000000</td>
-                        <td>15 Mai 2026</td>
+                        <!-- Statut dynamique -->
+                        <td>
+                            <span class="status-badge <?= $con['status_concours']; ?>">
+                                <?= ucfirst($con['status_concours']); ?>
+                            </span>
+                        </td>
+                        <!-- Score total des votes -->
+                        <td class="text-center fw-600">
+                            <?= number_format($con['votes_count'] ?? 0); ?>
+                        </td>
+                        <!-- Revenus calculés -->
+                        <td class="fw-600 color-purple">
+                            <?= number_format($con['revenus_generes'] ?? 0, 0, ',', ' '); ?> <small>FCFA</small>
+                        </td>
+                        <!-- Date de fin simplifiée -->
+                        <td><?= date('d/m/y', strtotime($con['date_fin'])); ?></td>
                         <td class="actions">
-                            <button class="action-btn view"><i class="fa-solid fa-eye"></i></button>
-                            <button class="action-btn edit"><i class="fa-solid fa-pen"></i></button>
-                            <button class="action-btn delete"><i class="fa-solid fa-trash"></i></button>
+                            <a href="concours/concours_detail.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn view">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="concours/concours_edit.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <a class="action-btn delete"><i class="fa-solid fa-trash"></i></a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>
             </table>
         </div>
+
     </div>
 
 
@@ -136,15 +149,15 @@
             <p>Créer une nouvelle compétition</p>
         </div>
 
-        <form class="modal-body" method="POST">
+        <form class="modal-body" action="concours/addConcours.php" enctype="multipart/form-data" method="POST">
 
             <input type="text" name="titre" placeholder="Titre du concours" required>
 
             <textarea name="description_concours" placeholder="Description"></textarea>
 
             <div class="form-row">
-                <select name="type_vote" required>
-                    <option value="">Type de vote</option>
+                <select name="type_vote" required placeholder="Type de vote">
+                  
                     <option value="gratuit">Gratuit</option>
                     <option value="payant">Payant</option>
                 </select>
@@ -153,7 +166,9 @@
             </div>
 
             <div class="form-row">
-                <input type="datetime-local" name="date_debut" required>
+                <label for="date_debut"> Date de début</label>
+                <input type="datetime-local" name="date_debut"  required>
+                <label for="date_fin"> Date de fin</label>
                 <input type="datetime-local" name="date_fin" required>
             </div>
 
@@ -161,7 +176,7 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn-cancel" onclick="closeModalConcours()">Annuler</button>
-                <button type="submit" class="btn-submit">Créer</button>
+                <button type="submit" class="btn-submit" name="submit_concours">Créer</button>
             </div>
 
         </form>

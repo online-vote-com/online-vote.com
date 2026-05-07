@@ -231,7 +231,7 @@ if (form) {
 
             const data = await response.json(); //attend la réponse du serveur et la converti en json
 
-            if (data.status !== "success") { //si succès est différent de success alors affiche le message d'erreur
+            if (data.status !== "success") { //si status est différent de success alors affiche le message d'erreur
                 messageBox.innerHTML =
                     "<span style='color:red'>" + data.message + "</span>";
                 return;

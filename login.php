@@ -23,7 +23,7 @@ include 'includes/link.php';
             <div class="alert">
                 <?php
                 if (isset($_SESSION['status'])){
-                    echo "<h2>". $_SESSION['status']. "</h2>";
+                    echo "<h4>". $_SESSION['status']. "</h4>";
                     unset($_SESSION['status']);
                 }
                 ?>
