@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['photo']        = $user['photo_user'];
             $_SESSION['email_verifie'] = $user['email_verifie'];
 
-            if ($_SESSION['email_verifie'] !== 0) {
+            if ($_SESSION['email_verifie'] !== "0") {
                 // 1. On prépare d'abord le message
                 $_SESSION['status'] = '
                     <div style="padding: 16px; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.95rem; text-align: center;">
