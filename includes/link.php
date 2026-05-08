@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/color.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/tableau.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/sidebar.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/newsidebar.css">
    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/formulaire_nouveau.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/navbar.css">
-    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin-detailconcours.css">
 
     <!-- JS -->
     <script src="<?= BASE_URL ?>assets/js/modal.js"></script>

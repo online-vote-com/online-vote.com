@@ -10,9 +10,9 @@
       $pdo =Null;
    }*/
 
-  $dsn = "mysql:host=localhost;port=3306;dbname=u636319906_online_votep";
+   $dsn = "mysql:host=localhost;port=3306;dbname=u636319906_online_votep";
 
- try{
+   try{
       $pdo = new PDO($dsn, "u636319906_adminP", "So_lo@.12");
    // echo "<h1>Succès lors de la connexion</h1>";
    }catch(PDOException $e){
@@ -20,8 +20,8 @@
       $pdo =Null;
    }
    
-
- /*    $dsn = "mysql:host=localhost;port=3307;dbname=online_vote";
+/*
+   $dsn = "mysql:host=localhost;port=3307;dbname=online_vote";
 
    try{
       $pdo = new PDO($dsn, "root", "So_lo@.12");
