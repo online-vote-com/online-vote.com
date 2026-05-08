@@ -31,14 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION['photo']        = $user['photo_user'];
             $_SESSION['email_verifie'] = $user['email_verifie'];
 
-            if ($_SESSION['email_verifie'] == 0) {
-                $_SESSION['status'] = '
-                    <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
-                        Presque fini ! Veuillez activer votre compte via l\'email envoyé.
-                    </div>';
-                header("Location: login");
-                exit();
-            } 
+            if ($_SESSION['email_verifie'] !== 0) {
                 // 1. On prépare d'abord le message
                 $_SESSION['status'] = '
                     <div style="padding: 16px; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.95rem; text-align: center;">
@@ -50,8 +43,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 // 3. On arrête TOUT de suite l'exécution
                 exit();
-          
+            } 
 
+          
+                $_SESSION['status'] = '
+                    <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
+                        Presque fini ! Veuillez activer votre compte via l\'email envoyé.
+                    </div>';
+                header("Location: login");
+                exit();
         } else {
             // Mot de passe incorrect
             $_SESSION['status'] = '
