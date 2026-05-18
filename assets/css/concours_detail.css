@@ -1,0 +1,222 @@
+/* ==========================================================================
+   1. VARIABLES & SYSTÈME DESIGN
+   ========================================================================== */
+:root {
+    --main-purple: #9C04DA;
+    --light-purple-bg: #E7C6FF;
+    --light-purple: #E7C6FF;
+    --dark-purple-gradient: #530274;
+    --accent-yellow: #FFEB3B;
+    --white: #FFFFFF;
+    --bg-light: #F8F9FA;
+    --text-dark: #000000;
+    --gray-border: #E0E0E0;
+    
+    --shadow-sm: 0 4px 20px rgba(156, 4, 218, 0.03);
+    --shadow-md: 0 20px 45px rgba(83, 2, 116, 0.08);
+    --shadow-lg: 0 35px 70px rgba(156, 4, 218, 0.16);
+}
+
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 24px;
+}
+
+/* ==========================================================================
+   2. EN-TÊTE
+   ========================================================================== */
+.header-zone {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.main-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text-dark);
+}
+.main-title span {
+    background: linear-gradient(135deg, var(--main-purple), var(--dark-purple-gradient));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+/* ==========================================================================
+   3. DROPDOWN DE RECHERCHE PILULE
+   ========================================================================== */
+.select-container {
+    position: relative;
+    max-width: 520px;
+    margin: 0 auto 54px auto;
+}
+.select-trigger-wrapper {
+    position: relative;
+    width: 100%;
+}
+.search-icon-left {
+    position: absolute; left: 22px; top: 50%; transform: translateY(-50%); font-size: 0.95rem; opacity: 0.45;
+}
+input.select-trigger {
+    width: 100%;
+    padding: 18px 75px 18px 52px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    background-color: var(--white);
+    border: 2px solid rgba(156, 4, 218, 0.08);
+    border-radius: 100px;
+    outline: none;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+input.select-trigger:focus {
+    border-color: var(--main-purple);
+    box-shadow: 0 10px 30px rgba(156, 4, 218, 0.12);
+}
+.clear-btn {
+    position: absolute; right: 48px; top: 50%; transform: translateY(-50%); background: transparent; border: none; font-size: 1.4rem; color: #94a3b8; cursor: pointer; z-index: 5;
+}
+.clear-btn:hover { color: var(--text-dark); }
+
+.select-trigger-wrapper::after {
+    content: ""; position: absolute; right: 24px; top: 50%; width: 8px; height: 8px; border-right: 2px solid var(--main-purple); border-bottom: 2px solid var(--main-purple); transform: translateY(-70%) rotate(45deg); pointer-events: none; transition: transform 0.3s ease;
+}
+.select-container.is-open .select-trigger-wrapper::after { transform: translateY(-30%) rotate(225deg); }
+
+/* Menu flottant */
+.select-options-menu {
+    position: absolute; top: calc(100% + 12px); left: 0; right: 0; background: rgba(255, 255, 255, 0.98); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(156, 4, 218, 0.12); border-radius: 24px; box-shadow: var(--shadow-md); z-index: 100; max-height: 280px; overflow-y: auto; opacity: 0; transform: translateY(-10px); pointer-events: none; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); padding: 8px;
+}
+.select-container.is-open .select-options-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.option-item { padding: 14px 20px; font-size: 0.95rem; font-weight: 500; border-radius: 14px; cursor: pointer; color: #333333; transition: all 0.2s ease; }
+.option-item:hover { background-color: var(--light-purple-bg); color: var(--dark-purple-gradient); font-weight: 600; }
+.all-option { color: var(--main-purple); font-weight: 700; background: rgba(156, 4, 218, 0.04); }
+.dropdown-divider { border: none; border-top: 1px solid rgba(156, 4, 218, 0.08); margin: 6px 0; }
+.no-result-item { padding: 20px; font-size: 0.95rem; color: #64748b; font-style: italic; text-align: center; }
+
+/* ==========================================================================
+   4. ZONE D'AFFICHAGE & CONFIGURATION DE LA GRILLE
+   ========================================================================== */
+.display-zone {
+    min-height: 400px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.competitions-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    width: 100%;
+    justify-content: center;
+}
+
+/* Grille multi-colonnes en mode "Tout afficher" */
+.competitions-grid.multi-mode {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+/* ==========================================================================
+   5. CARTE CANDIDAT (PLUS COMPACTE ET ÉPURÉE)
+   ========================================================================== */
+.candidate-card {
+    background: var(--white);
+    border-radius: 24px; /* Coins adoucis ajustés */
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    display: none;
+    opacity: 0;
+    transform: scale(0.96) translateY(15px);
+    width: 100%;
+    max-width: 320px; /* Largeur diminuée pour un aspect plus équilibré au centre */
+    margin: 0 auto;
+}
+
+.competitions-grid.multi-mode .candidate-card {
+    max-width: 100%;
+}
+
+.candidate-card.active {
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+.candidate-card:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+    border-color: rgba(156, 4, 218, 0.15);
+}
+
+/* Zone Image du candidat raccourcie */
+.card-image-container {
+    position: relative;
+    height: 240px; /* Hauteur diminuée pour éviter les cartes trop longues */
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+.card-img {
+    width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;
+}
+.candidate-card:hover .card-img { transform: scale(1.04); }
+
+/* Informations de contenu de la carte */
+.candidate-info {
+    padding: 24px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.candidate-info h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-dark);
+}
+
+.rank-badge {
+    font-size: 0.8rem; font-weight: 600; color: var(--dark-purple-gradient); background: var(--light-purple-bg); padding: 6px 14px; border-radius: 100px; width: fit-content; margin: 0 auto;
+}
+.rank-badge strong { font-weight: 800; }
+
+.btn-action-solid {
+    display: block; text-align: center; padding: 12px; border-radius: 14px; font-weight: 700; font-size: 0.85rem; color: var(--main-purple); text-decoration: none; background: transparent; border: 2px solid rgba(156, 4, 218, 0.15); transition: all 0.2s ease; margin-top: 4px;
+}
+.btn-action-solid:hover {
+    background: linear-gradient(135deg, var(--main-purple), var(--dark-purple-gradient)); color: var(--white); border-color: transparent; box-shadow: 0 8px 20px rgba(156, 4, 218, 0.15);
+}
+
+/* ==========================================================================
+   6. ÉTATS VIDES
+   ========================================================================== */
+.empty-placeholder, .empty-state {
+    max-width: 500px; margin: 40px auto; text-align: center; border: 2px dashed rgba(156, 4, 218, 0.15); border-radius: 24px; padding: 50px 24px; background: rgba(231, 198, 255, 0.02); color: #64748b; font-size: 0.95rem;
+}
+.empty-state h2, .empty-placeholder h2 { font-size: 1.35rem; font-weight: 700; color: var(--text-dark); margin-bottom: 10px; }
+.btn-return { display: inline-block; padding: 12px 24px; background: var(--text-dark); color: var(--white); text-decoration: none; font-weight: 600; border-radius: 12px; transition: opacity 0.2s; }
+.btn-return:hover { opacity: 0.9; }
+
+/* ==========================================================================
+   7. RESPONSIVE MEDIA QUERIES
+   ========================================================================== */
+@media (max-width: 768px) {
+    .main-title { font-size: 2rem; }
+    .candidate-card { max-width: 100%; }
+    .empty-placeholder { padding: 40px 20px; }
+}

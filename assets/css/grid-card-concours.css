@@ -1,175 +1,327 @@
-
-/* =========================
-   GRID
-========================= */
-
-.contest-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 22px;
+/* ==========================================================================
+   1. VARIABLES & SYSTÈME DESIGN (CHIC / VIOLET RÉTINA)
+   ========================================================================== */
+:root {
+    --main-purple: #9C04DA;
+    --light-purple-bg: #E7C6FF;
+    --light-purple: #E7C6FF;
+    --dark-purple-gradient: #530274;
+    --accent-yellow: #FFEB3B;
+    --white: #FFFFFF;
+    --bg-light: #F8F9FA;
+    --text-dark: #000000;
+    --gray-border: #E0E0E0;
+    
+    /* Élévations chics (Ombres douces) */
+    --shadow-sm: 0 4px 20px rgba(156, 4, 218, 0.03);
+    --shadow-md: 0 20px 40px rgba(83, 2, 116, 0.06);
+    --shadow-lg: 0 30px 60px rgba(156, 4, 218, 0.12);
 }
 
-/* =========================
-   CARD
-========================= */
+/* Base de la page */
+body {
+    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-.contest-item {
-    background: #fff;
-    border-radius: 18px;
-    overflow: hidden;
+.chic-wrapper {
+    max-width: 580px;
+    margin: 80px auto;
+    padding: 0 24px;
+    text-align: center;
+}
 
-    border: 1px solid rgba(0,0,0,0.06);
+/* ==========================================================================
+   2. EN-TÊTE DE L'APPLICATION
+   ========================================================================== */
+.header-zone {
+    margin-bottom: 40px;
+}
 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+.main-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    line-height: 1.2;
+}
 
-    transition: 0.25s ease;
+.main-title span {
+    background: linear-gradient(135deg, var(--main-purple), var(--dark-purple-gradient));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
+.subtitle {
+    font-size: 0.95rem;
+    color: #555555;
+    font-weight: 400;
+}
+
+/* ==========================================================================
+   3. BARRE DE RECHERCHE HYBRIDE & DROPDOWN SÉLECTEUR
+   ========================================================================== */
+.select-container {
     position: relative;
+    text-align: left;
+    margin-bottom: 48px;
 }
 
-.contest-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-}
-
-/* =========================
-   IMAGE HERO
-========================= */
-
-.contest-cover {
+.select-trigger-wrapper {
     position: relative;
-    height: 180px;
-    overflow: hidden;
+    width: 100%;
+    display: flex;
+    align-items: center;
 }
 
-.contest-cover img {
+/* Champ d'entrée texte style pilule */
+input.select-trigger {
+    width: 100%;
+    padding: 18px 75px 18px 48px; /* Espaces pour Loupe, Croix et Flèche */
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: inherit;
+    color: var(--text-dark);
+    background-color: var(--white);
+    border: 2px solid rgba(156, 4, 218, 0.08);
+    border-radius: 100px;
+    outline: none;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+input.select-trigger:focus,
+input.select-trigger:hover {
+    border-color: var(--main-purple);
+    box-shadow: 0 10px 30px rgba(156, 4, 218, 0.12);
+}
+
+/* Icône Loupe (gauche) */
+.search-icon-left {
+    position: absolute;
+    left: 20px;
+    font-size: 0.95rem;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+/* Bouton Croix d'effacement rapide (droite) */
+.clear-btn {
+    position: absolute;
+    right: 48px;
+    background: transparent;
+    border: none;
+    font-size: 1.4rem;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 0 5px;
+    line-height: 1;
+    transition: color 0.2s ease;
+    z-index: 5;
+}
+
+.clear-btn:hover {
+    color: var(--text-dark);
+}
+
+/* Indicateur Flèche Droite Ajustée (Utilisation d'un chevron CSS pur sans texte '↓') */
+.select-trigger-wrapper::after {
+    content: "";
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--main-purple);
+    border-bottom: 2px solid var(--main-purple);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Animation fluide du chevron à l'ouverture du menu */
+.select-container.is-open .select-trigger-wrapper::after {
+    transform: translateY(-30%) rotate(225deg);
+}
+
+/* ==========================================================================
+   4. INTERFACE DU MENU DES PROPOSITIONS (DROPDOWN OVERLAY)
+   ========================================================================== */
+.select-options-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(156, 4, 218, 0.12);
+    border-radius: 24px;
+    box-shadow: var(--shadow-md);
+    z-index: 100;
+    max-height: 300px;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    padding: 10px;
+}
+
+/* Déploiement de la boîte via la classe JS */
+.select-container.is-open .select-options-menu {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Éléments de ligne individuels */
+.option-item {
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 14px;
+    cursor: pointer;
+    color: #333333;
+    transition: all 0.2s ease;
+}
+
+.option-item:hover {
+    background-color: var(--light-purple-bg);
+    color: var(--dark-purple-gradient);
+    font-weight: 600;
+}
+
+/* Ligne Alerte recherche infructueuse */
+.no-result-item {
+    padding: 20px;
+    font-size: 0.95rem;
+    color: #64748b;
+    font-style: italic;
+    text-align: center;
+}
+
+/* ==========================================================================
+   5. ZONE D'AFFICHAGE ET CARTE DE CONCOURS HAUTE COUTURE
+   ========================================================================== */
+.display-zone {
+    min-height: 250px;
+}
+
+/* État initial d'attente neutre */
+.empty-placeholder {
+    border: 2px dashed rgba(156, 4, 218, 0.15);
+    border-radius: 24px;
+    padding: 60px 20px;
+    color: #777777;
+    font-size: 0.95rem;
+    font-weight: 400;
+    background: rgba(231, 198, 255, 0.04);
+}
+
+/* Conteneur principal de la carte de concours (cachée par défaut) */
+.contest-card {
+    display: none;
+    opacity: 0;
+    transform: scale(0.96) translateY(12px);
+    width: 100%;
+    background: var(--white);
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid var(--gray-border);
+    box-shadow: var(--shadow-md);
+    text-align: left;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Animation d'injection active */
+.contest-card.active {
+    display: block;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+}
+
+/* Section visuelle supérieure */
+.card-hero {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    background-color: #f1f5f9;
+}
+
+.card-hero img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* effet spotlight concours */
-.contest-overlay {
+.card-overlay {
     position: absolute;
     inset: 0;
-
-    background: linear-gradient(to top, rgba(0,0,0,0.35), transparent);
-
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-
-    padding: 10px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
 }
 
-/* icône concours */
-.contest-icon {
-    font-size: 1.2rem;
-    background: rgba(255,255,255,0.2);
-    padding: 6px 10px;
-    border-radius: 10px;
-    backdrop-filter: blur(6px);
-}
-
-/* =========================
-   BODY
-========================= */
-
-.contest-body {
-    padding: 14px;
+/* Corps éditorial inférieur de la carte */
+.card-content {
+    padding: 32px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
 }
 
-/* =========================
-   TITLE (CONCOURS STYLE)
-========================= */
-
-.contest-title {
-    font-size: 1.1rem;
-    font-weight: 900;
-    color: #111827;
-    line-height: 1.3;
-
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-}
-
-/* =========================
-   ORGANISATEUR
-========================= */
-
-.contest-organizer {
-    font-size: 0.85rem;
-    color: #6b7280;
-}
-
-/* =========================
-   TYPE VOTE (SOUS TITRE)
-========================= */
-
-.contest-type {
-    font-size: 0.8rem;
+/* Badges catégoriels de tarification */
+.badge-type {
+    font-size: 0.75rem;
     font-weight: 700;
-
-    padding: 6px 10px;
-    border-radius: 999px;
-
-    display: inline-flex;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 6px 14px;
+    border-radius: 100px;
     width: fit-content;
 }
 
-/* GRATUIT */
-.contest-type.gratuit {
-    background: rgba(34,197,94,0.12);
-    color: #16a34a;
-    border: 1px solid rgba(34,197,94,0.25);
+.badge-type.gratuit {
+    background: #E8F5E9;
+    color: #2E7D32;
+    border: 1px solid rgba(46, 125, 50, 0.15);
 }
 
-/* PAYANT */
-.contest-type.payant {
-    background: rgba(237, 58, 58, 0.12);
-    color: #940000;
-    border: 1px solid rgba(237, 58, 58, 0.25);
+.badge-type.payant {
+    background: #FFEBEE;
+    color: #C62828;
+    border: 1px solid rgba(198, 40, 40, 0.15);
 }
 
-/* =========================
-   CTA (CONCOURS ACTION)
-========================= */
-
-.contest-action {
-    margin-top: 8px;
-
-    text-align: center;
-    padding: 11px;
-
-    border-radius: 12px;
-
+.card-title {
+    font-size: 1.45rem;
     font-weight: 800;
-    font-size: 0.85rem;
+    color: var(--text-dark);
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+}
 
-    color: white;
+/* Bouton d'action à grand impact */
+.btn-action {
+    display: block;
+    text-align: center;
+    padding: 16px;
+    margin-top: 8px;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--white);
     text-decoration: none;
-
-    background: linear-gradient(135deg, #7c3aed, #a855f7);
-
-    transition: 0.2s ease;
+    background: linear-gradient(135deg, var(--main-purple), var(--dark-purple-gradient));
+    box-shadow: 0 8px 25px rgba(156, 4, 218, 0.2);
+    transition: all 0.3s ease;
 }
 
-.contest-action:hover {
+.btn-action:hover {
     transform: translateY(-2px);
-    filter: brightness(1.1);
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 768px) {
-    .contest-list {
-        grid-template-columns: 1fr;
-    }
+    box-shadow: 0 12px 30px rgba(83, 2, 116, 0.35);
+    filter: brightness(1.08);
 }

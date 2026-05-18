@@ -1,4 +1,5 @@
 <?php 
+session_start();
     include 'includes/link.php';
     
     include 'accueil.php';
@@ -36,7 +37,7 @@
             <div class="header-actions">
                 <a href="profil_user" class="btn-connect">Mon Profil</a>
          <?php } else { ?>
-                <a href="login" class="btn-connect">Se connecter</a>
+                <a href="logout" class="btn-connect">Se connecter</a>
          <?php } ?>
         </div>
     </div>

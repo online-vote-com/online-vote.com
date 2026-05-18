@@ -4,7 +4,7 @@ include 'includes/navbar.php';
 include 'config/database.php';
 
 if (!isset($_GET['id_concours']) || empty($_GET['id_concours'])) {
-    echo "<div class='empty-state'><h2>Concours introuvable</h2></div>";
+    echo "<div class='container'><div class='empty-state'><h2>Concours introuvable</h2></div></div>";
     include 'includes/footer.php';
     exit;
 }
@@ -22,7 +22,7 @@ $stmt = $pdo->prepare($sqlCandidats);
 $stmt->execute(['id_concours' => $idConcours]);
 $candidats = $stmt->fetchAll();
 
-$titreConcours =  $candidats[1]['titre'] ?? "Concours";
+$titreConcours = $candidats[0]['titre'] ?? "Concours";
 
 /*  RÉCUPÉRATION RANGS */
 $sqlRanks = "
@@ -42,77 +42,89 @@ foreach ($ranks as $r) {
 }
 ?>
 
-<link rel="stylesheet" href="assets/css/concours_detail.css">
+
 <link rel="stylesheet" href="assets/css/color.css">
+<link rel="stylesheet" href="assets/css/concours_detail.css">
+
 <main class="container">
 
-    <h1 class="main-title">
-        Candidats du concours : 
-        <?php echo htmlspecialchars($titreConcours); ?>
-    </h1>
+    <div class="header-zone">
+        <h1 class="main-title">
+            Candidats du concours : 
+            <span><?php echo htmlspecialchars($titreConcours); ?></span>
+        </h1>
+    </div>
 
     <?php if (empty($candidats)) : ?>
 
         <div class="empty-state">
-            <div class="empty-icon"></div>
             <h2>Aucun candidat pour le moment</h2>
-            <p>
-                Les inscriptions sont peut-être encore en cours.<br>
-                Revenez bientôt pour découvrir les participants.
-            </p>
-
-            <a href="concours" class="btn-return">
-                Voir les autres concours
-            </a>
+            <p>Les inscriptions sont en cours. Revenez bientôt découvrir les participants.</p>
+            <a href="concours" class="btn-return">Voir les autres concours</a>
         </div>
 
     <?php else : ?>
 
-        <!--   BARRE DE RECHERCHE -->
-
-        <div class="search-container">
-            <input type="text" placeholder="Recherche ..." class="search-input">
-            <button class="btn-search">Rechercher</button>
+        <!-- BARRE DE RECHERCHE HYBRIDE -->
+        <div class="select-container" id="customDropdown">
+            <div class="select-trigger-wrapper">
+                <span class="search-icon-left"></span>
+                <input type="text" 
+                       id="dropdownSearchInput" 
+                       class="select-trigger" 
+                       placeholder="Saisissez un nom ou cliquez pour choisir..." 
+                       autocomplete="off">
+                <button type="button" id="clearSearchBtn" class="clear-btn" style="display: none;">&times;</button>
+            </div>
+            
+            <div class="select-options-menu" id="optionsMenu">
+                <div class="option-item all-option" data-value="all">Tout afficher (Tous les candidats)</div>
+                <hr class="dropdown-divider">
+                <?php foreach ($candidats as $can) { ?>
+                    <div class="option-item" data-value="candidate-<?= $can['id_candidat']; ?>">
+                        <?= htmlspecialchars($can['nom_candidat']); ?>
+                    </div>
+                <?php } ?>
+                <div class="no-result-item" style="display: none;">Aucun candidat trouvé</div>
+            </div>
         </div>
 
-        <!--  GRILLE CANDIDATS -->
+        <!-- ZONE D'AFFICHAGE -->
+        <div class="display-zone">
+            
+            <div id="defaultPlaceholder" class="empty-placeholder">
+                Sélectionnez un candidat ou choisissez "Tout afficher" pour lancer l'affichage.
+            </div>
 
-        <div class="competitions-grid">
-            <?php foreach ($candidats as $can) { ?>
-                <div class="candidate-card">
-
-                    <div class="card-image-container">
-                        <img src="<?php echo htmlspecialchars($can['photo_candidat'] ?: 'assets/images/default.jpg'); ?>" 
-                             alt="<?php echo htmlspecialchars($can['nom_candidat']); ?>" 
-                             class="card-img">
-                    </div>
-
-                    <div class="candidate-info">
-                        <h3>
-                            <?php echo htmlspecialchars($can['nom_candidat']); ?>
-                        </h3>
-
-                        <div class="rank-badge">
-                            Rang : 
-                            <strong>
-                                <?php echo $rangsAssoc[$can['id_candidat']] ?? '-'; ?>
-                            </strong>
+            <div class="competitions-grid" id="competitionsGrid">
+                <?php foreach ($candidats as $can) { ?>
+                    
+                    <div id="candidate-<?= $can['id_candidat']; ?>" class="candidate-card">
+                        <div class="card-image-container">
+                            <img src="<?php echo htmlspecialchars($can['photo_candidat'] ?: 'assets/images/default.jpg'); ?>" 
+                                 alt="<?php echo htmlspecialchars($can['nom_candidat']); ?>" 
+                                 class="card-img">
                         </div>
 
-                        <div class="card-actions">
-                            <a href="profil_candidats.php?id_candidat=<?php echo $can['id_candidat']; ?>" 
-                               class="btn-action-solid">
-                                Voir profil
-                            </a>
+                        <div class="candidate-info">
+                            <h3><?php echo htmlspecialchars($can['nom_candidat']); ?></h3>
+                            <div class="rank-badge">Rang : <strong>#<?php echo $rangsAssoc[$can['id_candidat']] ?? '-'; ?></strong></div>
+                            <div class="card-actions">
+                                <a href="profil_candidats.php?id_candidat=<?php echo $can['id_candidat']; ?>" class="btn-action-solid">
+                                    Voir profil & Voter
+                                </a>
+                            </div>
                         </div>
                     </div>
 
-                </div>
-            <?php } ?>
+                <?php } ?>
+            </div>
+            
         </div>
 
     <?php endif; ?>
 
 </main>
 
+<script src="assets/js/concours_detail.js"></script>
 <?php include 'includes/footer.php'; ?>
