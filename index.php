@@ -6,9 +6,9 @@ session_start();
 <html lang="fr">
 
 <head>
-
+ <?php include 'includes/link.php'; ?>
     <?php include 'includes/header.php'; ?>
-     <?php include 'includes/link.php'; ?>
+    
 
 </head>
 
