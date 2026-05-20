@@ -18,7 +18,7 @@ session_start();
 
     <?php include 'includes/hero.php'; ?>
 
-    <?php include 'includes/features.php'; ?>
+    
 
     <?php include 'includes/footer.php'; ?>
 

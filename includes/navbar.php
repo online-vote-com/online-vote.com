@@ -1,4 +1,4 @@
-
+<link rel="stylesheet" href="assets/css/navbar.css">
 <header class="navbar">
     <div class="navbar-container">
 
