@@ -144,9 +144,7 @@
 
          if($user){
        
-             $_SESSION['status'] = '<div style="padding:15px; background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; border-radius:4px; margin-bottom:20px; font-family:sans-serif;">
-                                     Cet email est déjà utilisé !
-                                   </div>';
+             $_SESSION['status'] = 'Cet email est déjà utilisé !';
               header("Location: register.php");
              exit();
 
@@ -165,9 +163,11 @@
 
             if($stmt){
                 sendemail_verify($nom, $email, $verif_token);
-                $_SESSION['status']='<div style="padding:15px; background:#d4edda; color:#155724; border:1px solid #c3e6cb; border-radius:4px; margin-bottom:20px; font-family:sans-serif;">
+               /* $_SESSION['status']='<div style="padding:15px; background:#d4edda; color:#155724; border:1px solid #c3e6cb; border-radius:4px; margin-bottom:20px; font-family:sans-serif;">
                                    Consulte ta boite mail pour activer ton email . "!" 
-                                    </div>';
+                                    </div>'; 
+                */
+                $_SESSION['status']='Consulte ta boite mail pour activer ton email . "!" ';
                 header('location: register.php');
                 exit();
             }

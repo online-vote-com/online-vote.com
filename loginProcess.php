@@ -33,11 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if ($_SESSION['email_verifie'] !== "0") {
                 // 1. On prépare d'abord le message
-                $_SESSION['status'] = '
+             /*   $_SESSION['status'] = '
                     <div style="padding: 16px; background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.95rem; text-align: center;">
                         Connexion réussie, bienvenue ' . htmlspecialchars($_SESSION['nom']) . ' !
                     </div>';
-                
+               */
+                    $_SESSION['status'] = ' Connexion réussie, bienvenue ' . htmlspecialchars($_SESSION['nom']) . ' ! ';
+                 
                 // 2. On redirige
                 header("Location: admin/dash");
                 
@@ -46,27 +48,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } 
 
           
-                $_SESSION['status'] = '
-                    <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
-                        Presque fini ! Veuillez activer votre compte via l\'email envoyé.
-                    </div>';
+                $_SESSION['status'] = ' Presque fini ! Veuillez activer votre compte via l\'email envoyé. ';
                 header("Location: login");
                 exit();
         } else {
             // Mot de passe incorrect
-            $_SESSION['status'] = '
-                <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
-                    Identifiants incorrects. Veuillez réessayer.
-                </div>';
+            $_SESSION['status'] = ' Identifiants incorrects. Veuillez réessayer.';
             header("Location: login");
             exit();
         }
     } else {
         // Email inexistant
-        $_SESSION['status'] = '
-            <div style="padding: 16px; background: #FFF5F5; color: #C53030; border: 1px solid #FEB2B2; border-radius: 12px; margin-bottom: 24px; font-family: \'Inter\', sans-serif; font-weight: 500; font-size: 0.9rem; text-align: center;">
-                Aucun compte trouvé avec cet email.
-            </div>';
+        $_SESSION['status'] = 'Aucun compte trouvé avec cet email.';
         header("Location: login");
         exit();
     }

@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include 'includes/link.php';
     include 'includes/navbar.php';
     include 'config/database.php';

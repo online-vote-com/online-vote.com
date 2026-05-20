@@ -89,6 +89,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote_gratuit'])) {
         $voteCount++;
     }
 }
+
+$photo = !empty($candidat['photo_candidat'])
+    ? "uploads/candidats/" . $candidat['photo_candidat']
+    : "assets/images/default-user.jpg";
 ?>
     <?php include 'includes/link.php'; ?>
 
@@ -97,103 +101,156 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote_gratuit'])) {
 <link rel="stylesheet" href="assets/css/profile_candidat.css">
 <link rel="stylesheet" href="assets/css/color.css">
 
-<main class="candidate-wrapper">
 
-    <div class="candidate-card">
+<main class="candidate-page">
+
+    <section class="profile-card">
 
         <!-- IMAGE -->
-        <div class="candidate-media">
-            <img src="uploads/candidats/<?= htmlspecialchars($candidat['photo_candidat'] ?? 'uploads/12.png') ?>" 
-                 alt="<?= htmlspecialchars($candidat['nom_candidat']) ?>">
-                  <img src="uploads/12.png" >
+        <div class="profile-image-area">
+
+            <img src="<?= htmlspecialchars($photo) ?>"
+                 alt="<?= htmlspecialchars($candidat['nom_candidat']) ?>"
+                 class="profile-image">
+
+            <div class="image-overlay"></div>
+
+            <div class="floating-badge">
+                <?= htmlspecialchars($candidat['titre']) ?>
+            </div>
+
         </div>
 
-        <!-- contennu -->
-        <div class="candidate-info">
+        <!-- CONTENT -->
+        <div class="profile-content">
 
-            <div class="candidate-header">
+            <!-- HEADER -->
+            <div class="profile-header">
+
+                <span class="profile-label">
+                    Candidat officiel
+                </span>
+
                 <h1>
                     <?= htmlspecialchars($candidat['nom_candidat']) ?>
                     <?= htmlspecialchars($candidat['prenom_candidat']) ?>
                 </h1>
 
-                <span class="contest-name">
-                    <?= htmlspecialchars($candidat['titre']) ?>
-                </span>
+                <p class="profile-bio">
+                    <?= nl2br(htmlspecialchars($candidat['biography'])) ?>
+                </p>
+
             </div>
 
-            <p class="candidate-bio">
-                <?= nl2br(htmlspecialchars($candidat['biography'])) ?>
-            </p>
+            <!-- STATS -->
+            <div class="stats-row">
 
-            <div class="vote-box">
+     
+        <span class="votes-count"><strong><?= $voteCount ?></strong> Votes</span>
 
-                <div class="vote-meta">
-                    <span class="votes-count">
-                        <?= $voteCount ?> votes
-                    </span>
-  <!-- payant -->
-                    <?php if ($candidat['type_vote'] === 'payant'): ?>
-                        <span class="vote-price">
-                            <?= number_format($candidat['prix_vote'],0,',',' ') ?> FCFA
+
+                <?php if ($candidat['type_vote'] === 'payant'): ?>
+
+                    <div class="accent">
+                      <!--  <div class="stat-card accent">-->
+                        <span class="stat-number small">
+                            <?= number_format($candidat['prix_vote'],0,',',' ') ?>
                         </span>
-                    <?php else: ?>
-                        <span class="vote-free">Vote gratuit</span>
-                    <?php endif; ?>
+
+                        <span class="stat-label">
+                            FCFA / vote
+                        </span>
+                    </div>
+
+                <?php else: ?>
+
+                    <div class="stat-card success">
+                        <span class="stat-label only">
+                            Vote gratuit
+                        </span>
+                    </div>
+
+                <?php endif; ?>
+
+            </div>
+
+            <!-- MESSAGE -->
+            <?php if (!empty($message)): ?>
+                <div class="message-box">
+                    <?= $message ?>
                 </div>
+            <?php endif; ?>
 
-                <?= $message ?>
+            <!-- ACTIONS -->
+            <div class="action-zone">
 
-  <!-- gratuit -->
+                <!-- GRATUIT -->
                 <?php if ($candidat['type_vote'] === 'gratuit'): ?>
 
                     <?php if (isset($_SESSION['id_user'])): ?>
+
                         <form method="POST">
-                            <button class="btn-vote" name="vote_gratuit">
-                                Voter
+                            <button class="btn-primary" name="vote_gratuit">
+                                Voter maintenant
                             </button>
                         </form>
+
                     <?php else: ?>
-                        <a href="login" class="btn-vote-outline">
+
+                        <a href="login" class="btn-secondary">
                             Se connecter pour voter
                         </a>
+
                     <?php endif; ?>
 
                 <?php endif; ?>
 
+
+                <!-- PAYANT -->
                 <?php if ($candidat['type_vote'] === 'payant'): ?>
 
-                    <form id="payForm" class="pay-form" >
+                    <form id="payForm" class="payment-form">
 
-                        <input type="number"
-                               name="montant"
-                               placeholder="Montant"
-                               min="<?= $candidat['prix_vote'] ?>"
-                               required>
+                        <div class="form-grid">
 
-                        <input type="tel"
-                               name="telephone"
-                               placeholder="Téléphone"
-                               required>
+                            <input type="number"
+                                   name="montant"
+                                   placeholder="Montant"
+                                   min="<?= $candidat['prix_vote'] ?>"
+                                   required>
 
-                        <select name="operator" required>
-                            <option value="Orange_Cameroon">Orange Money</option>
-                            <option value="MTN_Cameroon">MTN MoMo</option>
-                        </select>
+                            <input type="tel"
+                                   name="telephone"
+                                   placeholder="Téléphone"
+                                   required>
 
-                        <button type="submit" class="btn-vote">
+                            <select name="operator" required>
+                                <option value="">Opérateur</option>
+                                <option value="Orange_Cameroon">
+                                    Orange Money
+                                </option>
+                                <option value="MTN_Cameroon">
+                                    MTN MoMo
+                                </option>
+                            </select>
+
+                        </div>
+
+                        <button type="submit" class="btn-primary full">
                             Payer & voter
                         </button>
 
                     </form>
+
                     <div id="paymentMessage"></div>
+
                 <?php endif; ?>
 
             </div>
 
         </div>
 
-    </div>
+    </section>
 
 </main>
 

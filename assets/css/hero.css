@@ -1,0 +1,268 @@
+/* ==========================================================================
+   STRUCTURE GÉNÉRALE
+   ========================================================================== */
+.hero-section {
+    width: 100%;
+    min-height: calc(100vh - 80px);
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+}
+
+.hero-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 48px;
+    align-items: center;
+}
+
+/* ==========================================================================
+   BLOC TEXTE & TITRES (GAUCHE)
+   ========================================================================== */
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-trust-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #FAF5FF;
+    border: 1px solid #F3E8FF;
+    color: var(--main-purple);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 24px;
+}
+
+.pulse-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--main-purple);
+    border-radius: 50%;
+    animation: badgePulse 2s infinite;
+}
+
+@keyframes badgePulse {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(156, 4, 218, 0.6); }
+    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(156, 4, 218, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(156, 4, 218, 0); }
+}
+
+.hero-content h1 {
+    font-size: 3.4rem;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--text-dark);
+    letter-spacing: -0.04em;
+    margin-bottom: 20px;
+}
+
+.hero-content h1 span {
+    color: var(--main-purple);
+}
+
+.hero-subtitle {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: var(--text-muted);
+    margin-bottom: 32px;
+}
+
+/* ==========================================================================
+   BOUTONS & ARGUMENTS (CTA)
+   ========================================================================== */
+.hero-cta-hub {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+.btn-hero-primary,
+.btn-hero-secondary {
+    height: 54px;
+    padding: 0 24px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.btn-hero-primary {
+    background: var(--text-dark);
+    color: var(--white);
+}
+
+.btn-hero-primary:hover {
+    background: var(--main-purple);
+    transform: translateY(-2px);
+}
+
+.btn-hero-secondary {
+    background: transparent;
+    color: var(--text-dark);
+    border: 1.5px solid var(--text-dark);
+}
+
+.btn-hero-secondary:hover {
+    background: var(--bg-light-gray);
+    transform: translateY(-2px);
+}
+
+.btn-hero-primary:active,
+.btn-hero-secondary:active {
+    transform: scale(0.98);
+}
+
+.hero-features-line {
+    display: flex;
+    gap: 24px;
+    border-top: 1px solid var(--gray-border);
+    padding-top: 24px;
+    width: 100%;
+}
+
+.hero-mini-feature {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dark);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.hero-mini-feature i {
+    color: var(--main-purple);
+}
+
+/* ==========================================================================
+   BLOC VISUEL ANIMÉ (DROITE)
+   ========================================================================== */
+.hero-visual {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, rgba(231, 198, 255, 0.3) 0%, transparent 70%);
+    padding: 20px;
+}
+
+.urn-img-float {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    object-fit: contain;
+    animation: floatUrn 5s ease-in-out infinite;
+}
+
+@keyframes floatUrn {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* WIDGET CARD FLOATING */
+.floating-ui-card {
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    background: var(--white);
+    padding: 12px 18px;
+    border-radius: 14px;
+    border: 1px solid var(--gray-border);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.04);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    animation: floatWidget 4s ease-in-out infinite;
+}
+
+.widget-icon {
+    color: var(--main-purple);
+    background: rgba(156, 4, 218, 0.06);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.widget-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.widget-text strong {
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.widget-text span {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+}
+
+@keyframes floatWidget {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* ==========================================================================
+   RESPONSIVE (MOBILE-FIRST)
+   ========================================================================== */
+@media (max-width: 992px) {
+    .hero-container {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        text-align: center;
+    }
+
+    .hero-content {
+        align-items: center;
+    }
+
+    .hero-content h1 {
+        font-size: 2.4rem;
+    }
+
+    .hero-cta-hub {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-hero-primary,
+    .btn-hero-secondary {
+        width: 100%;
+    }
+
+    .hero-features-line {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .urn-img-float {
+        max-width: 260px;
+    }
+
+    .floating-ui-card {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: -10px;
+        animation: none;
+    }
+}

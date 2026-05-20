@@ -2,15 +2,7 @@
    1. VARIABLES & SYSTÈME DESIGN (CHIC / VIOLET RÉTINA)
    ========================================================================== */
 :root {
-    --main-purple: #9C04DA;
-    --light-purple-bg: #E7C6FF;
-    --light-purple: #E7C6FF;
-    --dark-purple-gradient: #530274;
-    --accent-yellow: #FFEB3B;
-    --white: #FFFFFF;
-    --bg-light: #F8F9FA;
-    --text-dark: #000000;
-    --gray-border: #E0E0E0;
+
     
     /* Élévations chics (Ombres douces) */
     --shadow-sm: 0 4px 20px rgba(156, 4, 218, 0.03);
@@ -19,13 +11,6 @@
 }
 
 /* Base de la page */
-body {
-    background-color: var(--bg-light);
-    font-family: 'Inter', sans-serif;
-    color: var(--text-dark);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
 
 .chic-wrapper {
     max-width: 580px;

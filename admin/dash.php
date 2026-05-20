@@ -28,9 +28,10 @@
             <div class="sidebar-header">
                 <div class="logo">
                     <div class="logo-square"><i class="fas fa-check-double"></i></div>
+                <!--    <img src="../assets/images/logo.png" alt="Online Vote" class="logo-img"> -->
                     <span class="logo-text">Online Vote</span>
                   
-                </div>
+                </div> 
                 
                 <button class="toggle-btn" id="toggleSidebar"><i class="fas fa-bars-staggered"></i></button>
                 
