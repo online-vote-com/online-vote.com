@@ -1,5 +1,4 @@
-<!-- Sécurisation de l'inclusion de la feuille de style du pied de page -->
-<link rel="stylesheet" href="<?= BASE_URL ?>assets/css/footer.css">
+<link rel="stylesheet" href="assets/css/footer.css">
 
 <footer class="footer">
 
@@ -7,12 +6,11 @@
     <div class="footer-main">
         <div class="footer-grid">
 
-            <!-- BRAND COLUMN (Harmonisé avec la Navbar et sécurisé) -->
+            <!-- BRAND COLUMN (Harmonisé avec la Navbar) -->
             <div class="footer-brand">
-                <a href="<?= BASE_URL ?>index.php" class="footer-logo">
+                <a href="index.php" class="footer-logo">
                     <div class="footer-logo-wrapper">
-                        <!-- Sécurisation absolue de l'image du logo -->
-                        <img src="<?= BASE_URL ?>assets/images/logo.png" alt="Online Vote" class="footer-logo-img">
+                        <img src="assets/images/logo.png" alt="Online Vote" class="footer-logo-img">
                         <span class="footer-brand-name">Online Vote</span>
                     </div>
                 </a>
@@ -21,11 +19,11 @@
                 </p>
             </div>
 
-            <!-- COLUMN 1 : NAVIGATION SECURISEE -->
+            <!-- COLUMN 1 : NAVIGATION -->
             <div class="footer-column">
                 <h4>Navigation</h4>
-                <a href="<?= BASE_URL ?>index.php" class="footer-link">Accueil</a>
-                <a href="<?= BASE_URL ?>concours.php" class="footer-link">Concours</a>
+                <a href="index.php" class="footer-link">Accueil</a>
+                <a href="concours.php" class="footer-link">Concours</a>
                 <a href="#" class="footer-link">À propos</a>
                 <a href="#" class="footer-link">Contact</a>
             </div>
@@ -38,7 +36,7 @@
                 <span class="footer-info-text"><i class="fas fa-envelope"></i> contact@online-vote.com</span>
             </div>
 
-            <!-- COLUMN 3 : NEWSLETTER -->
+            <!-- COLUMN 3 : NEWSLETTER (Correction des balises coupées) -->
             <div class="footer-column">
                 <h4>Rester informé</h4>
                 <p class="footer-news-text">Inscrivez-vous pour suivre l'actualité des scrutins et l'ouverture des prochains concours.</p>
