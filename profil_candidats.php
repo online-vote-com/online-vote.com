@@ -287,7 +287,7 @@ if (form) {
                 // format de données {"id_candidat": 10,"id_concours": 2,"montant": 500,"phone": "699112233","operator": "MTN"}
 
             const data = await response.json(); //attend la réponse du serveur et la converti en json
-
+console.log(data);
             if (data.status !== "success") { //si status est différent de success alors affiche le message d'erreur
                 messageBox.innerHTML =
                     "<span style='color:red'>" + data.message + "</span>";
