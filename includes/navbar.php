@@ -47,8 +47,8 @@
         <?php if(isset($_SESSION['id_user'])): ?>
             <a href="profil_user.php" class="mobile-btn primary">Mon Profil</a>
         <?php else: ?>
-            <a href="login.php" class="mobile-btn secondary">Connexion</a>
-            <a href="signup.php" class="mobile-btn primary">Commencer</a>
+            <a href="login" class="mobile-btn secondary">Connexion</a>
+           <!-- <a href="signup.php" class="mobile-btn primary">Commencer</a>-->
         <?php endif; ?>
     </div>
 </div>

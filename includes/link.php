@@ -15,6 +15,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/color.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/tableau.css">
+    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/footer.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/sidebar.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/newsidebar.css">
    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">
