@@ -1,11 +1,11 @@
-<link rel="stylesheet" href="assets/css/navbar.css">
+<link rel="stylesheet" href="/assets/css/navbar.css">
 <header class="navbar">
     <div class="navbar-container">
 
         <!-- BRAND LOGO (ICÔNE + TEXTE ALIGNÉS) -->
         <a href="index.php" class="logo">
             <div class="logo-wrapper">
-                <img src="assets/images/logo.png" alt="Online Vote" class="logo-img"> 
+                <img src="/assets/images/logo.png" alt="Online Vote" class="logo-img"> 
                 <span class="logo-brand-name">Online Vote</span>
             </div>
         </a>
