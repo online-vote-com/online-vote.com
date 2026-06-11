@@ -104,7 +104,8 @@
                         <td>
                             <div class="contest-cell">
                                 <div class="img-placeholder"><i class="fa-solid fa-trophy"></i></div>
-                                <span class="contest-name"><?= htmlspecialchars($con['titre']); ?></span>
+                                <div class=""><?= htmlspecialchars($con['titre']); ?></div>
+                                <!--<span class="contest-name"><?= htmlspecialchars($con['titre']); ?></span>-->
                             </div>
                         </td>
                         <!-- Statut dynamique -->
@@ -123,15 +124,37 @@
                         </td>
                         <!-- Date de fin simplifiée -->
                         <td><?= date('d/m/y', strtotime($con['date_fin'])); ?></td>
-                        <td class="actions">
-                            <a href="concours/concours_detail.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn view">
-                                <i class="fa-solid fa-eye"></i>
-                            </a>
-                            <a href="concours/concours_edit.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn edit">
-                                <i class="fa-solid fa-pen"></i>
-                            </a>
-                            <a class="action-btn delete"><i class="fa-solid fa-trash"></i></a>
-                        </td>
+<td class="actions">
+
+    <a href="concours/concours_detail.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn view">
+        <i class="fa-solid fa-eye"></i>
+    </a>
+
+    <button
+        class="action-btn edit"
+        onclick="editConcours(
+            <?= $con['id_concours']; ?>,
+            '<?= htmlspecialchars(addslashes($con['titre'])); ?>',
+            '<?= htmlspecialchars(addslashes($con['description_concours'])); ?>',
+            '<?= $con['type_vote']; ?>',
+            '<?= $con['prix_vote']; ?>',
+            '<?= date('Y-m-d\TH:i', strtotime($con['date_debut'])); ?>',
+            '<?= date('Y-m-d\TH:i', strtotime($con['date_fin'])); ?>'
+        )">
+
+        <i class="fa-solid fa-pen"></i>
+
+    </button>
+
+    <button
+        class="action-btn delete"
+        onclick="deleteConcours(<?= $con['id_concours']; ?>)">
+
+        <i class="fa-solid fa-trash"></i>
+
+    </button>
+
+</td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
@@ -141,61 +164,204 @@
     </div>
 
 
-    <div class="modal" id="addConcoursModal">
+   <div class="modal" id="addConcoursModal">
+
     <div class="modal-content">
 
         <div class="modal-header">
-            <h2>Nouveau concours</h2>
-            <p>Créer une nouvelle compétition</p>
+            <h2 id="modalTitle">Nouveau concours</h2>
+            <p id="modalSubTitle">Créer une nouvelle compétition</p>
         </div>
 
-        <form class="modal-body" action="concours/addConcours.php" enctype="multipart/form-data" method="POST">
+       <form
+    id="concoursForm"
+    class="modal-body"
+    action="concours/gestionConcours.php"
+    method="POST"
+    enctype="multipart/form-data">
 
-            <input type="text" name="titre" placeholder="Titre du concours" required>
+    <!-- IMPORTANT -->
+    <input type="hidden" name="action" id="formAction" value="add">
 
-            <textarea name="description_concours" placeholder="Description"></textarea>
+    <input type="hidden" name="id_concours" id="id_concours">
 
-            <div class="form-row">
-                <select name="type_vote" required placeholder="Type de vote">
-                  
-                    <option value="gratuit">Gratuit</option>
-                    <option value="payant">Payant</option>
-                </select>
+    <input
+        type="text"
+        name="titre"
+        id="titre"
+        placeholder="Titre du concours"
+        required>
 
-                <input type="number" name="prix_vote" placeholder="Prix du vote (FCFA)">
-            </div>
+    <textarea
+        name="description_concours"
+        id="description_concours"
+        placeholder="Description"></textarea>
 
-            <div class="form-row">
-                <label for="date_debut"> Date de début</label>
-                <input type="datetime-local" name="date_debut"  required>
-                <label for="date_fin"> Date de fin</label>
-                <input type="datetime-local" name="date_fin" required>
-            </div>
+    <div class="form-row">
 
-            <input type="file"accept = ".jpg, .jpeg, .png" name="photo_concours">
+        <select name="type_vote" id="type_vote">
+            <option value="gratuit">Gratuit</option>
+            <option value="payant">Payant</option>
+        </select>
 
-            <div class="modal-footer">
-                <button type="button" class="btn-cancel" onclick="closeModalConcours()">Annuler</button>
-                <button type="submit" class="btn-submit" name="submit_concours">Créer</button>
-            </div>
+        <input
+            type="number"
+            name="prix_vote"
+            id="prix_vote"
+            placeholder="Prix du vote">
 
-        </form>
     </div>
+
+    <div class="form-row">
+
+        <div>
+            <label>Date début</label>
+            <input
+                type="datetime-local"
+                name="date_debut"
+                id="date_debut"
+                required>
+        </div>
+
+        <div>
+            <label>Date fin</label>
+            <input
+                type="datetime-local"
+                name="date_fin"
+                id="date_fin"
+                required>
+        </div>
+
+    </div>
+
+    <input
+        type="file"
+        name="photo_concours"
+        accept=".jpg,.jpeg,.png">
+
+    <div class="modal-footer">
+
+        <button
+            type="button"
+            class="btn-cancel"
+            onclick="closeModalConcours()">
+
+            Annuler
+
+        </button>
+
+        <button
+            type="submit"
+            id="submitBtn"
+            class="btn-submit">
+
+            Créer
+
+        </button>
+
+    </div>
+
+</form>
+
+    </div>
+
+</div>
 </div>
 
 <script>
-    
-    function openModalConcours() {
-        document.getElementById('addConcoursModal').style.display = 'flex';
-    }
-    function closeModalConcours() {
-        document.getElementById('addConcoursModal').style.display = 'none';
-    }
 
-    window.onclick = function(event) {
-        const modal = document.getElementById('addConcoursModal');
-        if (event.target === modal) {
-            closeModalConcours();
-        }
+function openModalConcours() {
+
+    document.getElementById("modalTitle").innerHTML =
+        "Nouveau concours";
+
+    document.getElementById("modalSubTitle").innerHTML =
+        "Créer une nouvelle compétition";
+
+    document.getElementById("submitBtn").innerHTML =
+        "Créer";
+
+    document.getElementById("formAction").value =
+        "add";
+
+    document.getElementById("id_concours").value =
+        "";
+
+    document.getElementById("concoursForm").reset();
+
+    document.getElementById("addConcoursModal").style.display =
+        "flex";
+}
+
+function editConcours(
+    id,
+    titre,
+    description,
+    type_vote,
+    prix_vote,
+    date_debut,
+    date_fin
+) {
+
+    document.getElementById("modalTitle").innerHTML =
+        "Modifier concours";
+
+    document.getElementById("modalSubTitle").innerHTML =
+        "Mettre à jour les informations";
+
+    document.getElementById("submitBtn").innerHTML =
+        "Mettre à jour";
+
+    document.getElementById("formAction").value =
+        "edit";
+
+    document.getElementById("id_concours").value =
+        id;
+
+    document.getElementById("titre").value =
+        titre;
+
+    document.getElementById("description_concours").value =
+        description;
+
+    document.getElementById("type_vote").value =
+        type_vote;
+
+    document.getElementById("prix_vote").value =
+        prix_vote;
+
+    document.getElementById("date_debut").value =
+        date_debut;
+
+    document.getElementById("date_fin").value =
+        date_fin;
+
+    document.getElementById("addConcoursModal").style.display =
+        "flex";
+}
+
+function deleteConcours(id) {
+
+    if (confirm("Supprimer ce concours ?")) {
+
+        window.location.href =
+            "concours/gestionConcours.php?action=delete&id=" + id;
     }
+}
+
+function closeModalConcours() {
+
+    document.getElementById("addConcoursModal").style.display =
+        "none";
+}
+
+window.onclick = function(event) {
+
+    const modal =
+        document.getElementById("addConcoursModal");
+
+    if (event.target === modal) {
+        closeModalConcours();
+    }
+}
 </script>

@@ -81,18 +81,22 @@ $stmt->execute([':id_organisateur' => $id_org]);
 $stats = $stmt->fetch(PDO::FETCH_ASSOC);
 
 //top conours 
-    $queryTC = "SELECT 
+   $queryTC = "SELECT 
     c.id_concours,
     c.titre,
     COUNT(v.id_vote) AS total_votes,
     ROW_NUMBER() OVER (ORDER BY COUNT(v.id_vote) DESC) AS rang
 FROM concours c
 LEFT JOIN votes v ON v.id_concours = c.id_concours
+WHERE c.id_organisateur = ?
 GROUP BY c.id_concours, c.titre
-ORDER BY total_votes DESC LIMIT 5";
+ORDER BY total_votes DESC
+LIMIT 5
+";
 
-    $result = $pdo->query($queryTC);
-    $topConcours = $result->fetchAll(PDO::FETCH_ASSOC);
+$stmt = $pdo->prepare($queryTC);
+$stmt->execute([$id_org]);
+$topConcours = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 ?>

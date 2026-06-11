@@ -49,8 +49,8 @@
                     
                     <span class="group-title">Gestion</span>
                     <a href="#" class="menu-item" data-section="concours" title="Concours"><i class="fa-solid fa-trophy"></i> <span>Concours</span></a>
-                    <!--<a href="#" class="menu-item" data-section="candidats" title="Candidats"><i class="fa-solid fa-users"></i> <span>Candidats</span></a>-->
-                    <a href="#" class="menu-item" data-section="votants" title="Votants"><i class="fa-solid fa-id-card"></i> <span>Votants</span></a>
+                    <!--<a href="#" class="menu-item" data-section="candidats" title="Candidats"><i class="fa-solid fa-users"></i> <span>Candidats</span></a>
+                    <a href="#" class="menu-item" data-section="votants" title="Votants"><i class="fa-solid fa-id-card"></i> <span>Votants</span></a>-->
                     <?php if($_SESSION['role'] == 'admin'){ ?>
                     <a href="#" class="menu-item" data-section="oragnisateurs" title="Oragnisateurs"><i class="fa-solid fa-id-card"></i> <span>Oragnisateurs</span></a>
                     <?php } ?>
@@ -84,17 +84,16 @@
         <main class="main-content">
 
             <header class="top-bar">
+                <!--css dans slide-->
+                    <?php if (isset($_SESSION['message'])): ?>
+        <div class="session-alert">
+            <?= $_SESSION['message']; ?>
+        </div>
+        <?php unset($_SESSION['message']); ?>
+    <?php endif; ?>
                 <div class="search-box">
                     <i class="fa-solid fa-magnifying-glass"></i>
                     <input type="text" placeholder="Rechercher un concours, un candidat...">
-                    <div class="alert">
-                        <?php
-                            if (isset($_SESSION['message'])){
-                                echo "<h4>". $_SESSION['message']. "</h4>";
-                                unset($_SESSION['message']);
-                            }
-                            ?>
-                    </div>
                     </div>
                                 <!-- Affichage des alertes -->
 
@@ -111,6 +110,7 @@
                          </div>
                      </div>
                 </div>
+                
             </header>
 
             <section id="dashboard" class="content-section active">
@@ -230,7 +230,7 @@
                         </div>
                     </div>
 
-                    <div class="table-container">
+                 <!--   <div class="table-container">
                         <div class="table-header">
                             <h3>Concours récents</h3>
                             <button class="btn-ghost">Voir tout</button>
@@ -273,7 +273,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>  -->
                 </div>
             </section>
 
