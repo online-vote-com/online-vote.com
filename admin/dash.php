@@ -102,11 +102,17 @@
                        <!-- <button class="btn-primary"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>-->
                         <div class="sidebar-footer">
                             <div class="user-info">
-                                <img src="<?php echo $_SESSION['photo']; ?>" alt="Avatar">
+                                <img src="../uploads/organisateurs/<?php echo $_SESSION['photo'] ?: '../uploads/12.png'; ?>" alt="Avatar">
                                 <div class="details">
                                     <p class="name"><?php echo $_SESSION['nom']; ?></p>
                                     <p class="role"><?php echo $_SESSION['role']; ?></p>
                                 </div>
+                                <a href="../logout.php" class="logout-btn" title="Déconnexion">
+                                    <i class="fa-solid fa-right-from-bracket"></i>
+                                </a>
+                                <a href="../index.php" class="home-btn" title="Accueil">
+                                    <i class="fa-solid fa-house"></i>
+                                </a>
                          </div>
                      </div>
                 </div>
@@ -157,17 +163,17 @@
                             </div>
                         </div>
 
-                        <div class="kpi-card">
+                        <!--<div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="label">Votants actifs</span>
                                 <div class="icon purple"><i class="fa-solid fa-user-tie"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2><?php echo $stats['votants_actifs']; ?></h2>
+                                <h2><?php echo $nbrVotants; ?></h2>
                                 <span class="trend up"><i class="fa-solid fa-arrow-up"></i> +8%</span>
                             </div>
                         </div>
-                        
+                    -->
                         <div class="kpi-card">
                             <div class="kpi-header">
                                 <span class="label">Vote d'aujourd'hui</span>
@@ -185,7 +191,7 @@
                                 <div class="icon green"><i class="fa-solid fa-user-tie"></i></div>
                             </div>
                             <div class="kpi-body">
-                                <h2><?php echo $nbrC; ?></h2>
+                                <h2><?php echo $nbrC ; ?></h2>
                                 <span class="trend neutral">0%</span>
                             </div>
                         </div>
@@ -204,7 +210,7 @@
                         </div>
 
                         <div class="chart-container side-card">
-                            <h3>Objectif Concours Star</h3>
+                           <!-- <h3>Objectif Concours Star</h3>
                             <p class="sub">Miss Cameroun 2026</p>
                             <div class="progress-box">
                                 <div class="progress-labels">
@@ -215,13 +221,13 @@
                                     <div class="progress-fill" style="width: 78%;"></div>
                                 </div>
                                 <p class="goal-text">Objectif : 10,000 votes</p>
-                            </div>
+                            </div>-->
                             <hr class="divider">
                             <h4>Top Concours</h4>
                             <ul class="top-list">
                                 <?php   foreach($topConcours  as $tcon){ ?>
                                 <li>
-                                    <span class="rank"><?php echo $tcon['rang']; ?></span>
+                                   <!-- <span class="rank"><?= $tcon['rang']; ?></span>-->
                                     <span class="name"><?php echo $tcon['titre']; ?></span>
                                     <span class="val">Votes : <?php echo $tcon['total_votes']; ?></span>
                                 </li>

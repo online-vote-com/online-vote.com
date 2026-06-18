@@ -1,4 +1,6 @@
 <?php
+
+session_start();
 include __DIR__ . '/../../config/database.php';
 include __DIR__ . '/../../includes/link.php';
 
@@ -46,28 +48,65 @@ $stats = $stmt->fetch(PDO::FETCH_ASSOC);
    CANDIDATS + VOTES + PHOTO
 ========================= */
 $sqlC = "SELECT 
-            c.*,
-            COUNT(v.id_vote) AS votes
-        FROM candidats c
-        LEFT JOIN votes v ON v.id_candidat = c.id_candidat
-        WHERE c.id_concours = ?
-        GROUP BY c.id_candidat";
+    c.*,
+    COUNT(v.id_vote) AS votes,
+
+    -- pourcentage
+    ROUND(
+        (COUNT(v.id_vote) / NULLIF(t.total_votes, 0)) * 100, 
+        2
+    ) AS pourcentage
+
+FROM candidats c
+
+LEFT JOIN votes v 
+    ON v.id_candidat = c.id_candidat
+
+LEFT JOIN (
+    SELECT id_concours, COUNT(*) AS total_votes
+    FROM votes
+    WHERE id_concours = ?
+    GROUP BY id_concours
+) t ON t.id_concours = c.id_concours
+
+WHERE c.id_concours = ?
+
+GROUP BY c.id_candidat
+
+ORDER BY votes DESC";
 
 $stmt = $pdo->prepare($sqlC);
-$stmt->execute([$id]);
+$stmt->execute([$id, $id]);
 $candidats = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /* =========================
    VOTANTS
 ========================= */
-$sqlV = "SELECT 
-            u.nom_user,
-            u.email,
-            COUNT(v.id_vote) AS nb_votes
-        FROM votes v
-        JOIN users u ON u.id_user = v.id_votant
-        WHERE v.id_concours = ?
-        GROUP BY v.id_votant";
+$sqlV = "
+SELECT 
+    u.id_user,
+    u.nom_user,
+    u.email,
+
+    -- nombre de votes donnés
+    COUNT(v.id_vote) AS nb_votes,
+
+    -- statut vote
+    CASE 
+        WHEN COUNT(v.id_vote) > 0 THEN 'Déjà voté'
+        ELSE 'Pas encore voté'
+    END AS statut_vote
+
+FROM concours_votants cv
+JOIN users u ON u.id_user = cv.id_votant
+LEFT JOIN votes v 
+    ON v.id_votant = u.id_user 
+    AND v.id_concours = cv.id_concours
+
+WHERE cv.id_concours = ?
+
+GROUP BY u.id_user
+";
 
 $stmt = $pdo->prepare($sqlV);
 $stmt->execute([$id]);
@@ -82,6 +121,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <link rel="stylesheet" href="../../assets/css/admin-detailconcours.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body>
@@ -105,17 +145,22 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <i class="fa fa-chart-line"></i> Statistiques
         </button>
 
-        <?php if ($concours['type_vote'] === 'gratuit'): ?>
+      
 
         <button class="btn-export" onclick="openModal('modalCandidat')">
             <i class="fa fa-user-plus"></i> Ajouter candidat
         </button>
-
-        <button class="btn-export" onclick="openModal('modalVotant')">
-            <i class="fa fa-user"></i> Ajouter votant
-        </button>
-
-        <?php endif; ?>
+            <?php if ($concours['type_vote'] === 'gratuit'): ?>
+                <button class="btn-export" onclick="openModal('modalVotant')">
+                    <i class="fa fa-user"></i> Ajouter votant
+                </button>
+            <?php endif; ?>
+            <?php if (isset($_SESSION['message'])): ?>
+    <div class="alert-success">
+        <?= $_SESSION['message']; ?>
+    </div>
+    <?php unset($_SESSION['message']); ?>
+<?php endif; ?>
     </div>
 </div>
 
@@ -139,7 +184,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="stat-value"><?= $stats['total_votants'] ?? 0 ?></div>
         <div class="stat-sub">Utilisateurs actifs</div>
     </div>
-
+<?php if ($concours['type_vote'] !== 'gratuit'): ?>
     <div class="stat-card">
         <div class="stat-title">Revenus</div>
         <div class="stat-value">
@@ -147,6 +192,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
         </div>
         <div class="stat-sub">Total généré</div>
     </div>
+    <?php endif; ?>
 
 </div>
 
@@ -164,6 +210,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th>Nom</th>
                 <th>Votes</th>
                 <th>Rank</th>
+                <th>%</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -186,18 +233,15 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 <!-- RANK -->
                 <td>#<?= $c['rank'] ?? '-' ?></td>
+                <td><?= $c['pourcentage'] ?? 0 ?> %</td>
 
                 <!-- ACTION -->
                 <td>
-                    <a href="../candidats/candidat_detail.php?id_candidat=<?= $c['id_candidat']; ?>"
-                       class="action-btn view">
-                        <i class="fa-solid fa-eye"></i>
-                    </a>
-
-                    <a href="../candidats/candidat_edit.php?id_candidat=<?= $c['id_candidat']; ?>"
-                       class="action-btn edit">
-                        <i class="fa-solid fa-pen"></i>
-                    </a>
+<a href="javascript:void(0)"
+   onclick='editCandidat(<?= htmlspecialchars(json_encode($c), ENT_QUOTES, "UTF-8") ?>)'
+   class="action-btn view">
+   <i class="fa fa-eye"></i>
+</a>
 
                     <a class="action-btn delete">
                         <i class="fa-solid fa-trash"></i>
@@ -232,7 +276,13 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <tr>
                 <td><?= htmlspecialchars($v['nom_user']) ?></td>
                 <td><?= htmlspecialchars($v['email']) ?></td>
-                <td><?= $v['nb_votes'] ?? 0 ?></td>
+                <td>
+    <?php if ($v['statut_vote'] === 'Déjà voté'): ?>
+        <span style="color:green;font-weight:bold;">Déjà voté</span>
+    <?php else: ?>
+        <span style="color:red;font-weight:bold;">0</span>
+    <?php endif; ?>
+</td>
             </tr>
         <?php endforeach; ?>
         </tbody>
@@ -244,29 +294,25 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="modal-content">
 
         <div class="modal-header">
-            <h2>Ajouter un candidat</h2>
-            <p>Remplissez les informations du candidat</p>
+            <h2 id="candidat_title">Ajouter un candidat</h2>
         </div>
 
-        <form id="formCandidat" enctype="multipart/form-data">
+        <form id="formCandidat" action="add_candidat.php" method="POST" enctype="multipart/form-data">
+
+            <input type="hidden" name="id_candidat" id="id_candidat">
+            <input type="hidden" name="id_concours" value="<?= $concours['id_concours'] ?>">
 
             <div class="modal-body">
 
-                <input type="hidden" name="id_concours" value="<?= $concours['id_concours'] ?>">
+                <input type="text" name="nom_candidat" id="nom_candidat" placeholder="Nom" required>
+                <input type="text" name="prenom_candidat" id="prenom_candidat" placeholder="Prénom" required>
+                <input type="email" name="email_candidat" id="email_candidat" placeholder="Email">
+                
+                <textarea name="biography" id="biography" placeholder="Biographie"></textarea>
 
-                <div class="form-row">
-                    <input type="text" name="nom_candidat" placeholder="Nom" required>
-                    <input type="text" name="prenom_candidat" placeholder="Prénom" required>
-                </div>
-
-                <input type="email" name="email_candidat" placeholder="Email">
-
-                <textarea name="biography" placeholder="Biographie"></textarea>
-
-                <!-- PHOTO -->
                 <label class="file-input">
-                    Choisir une photo
-                    <input type="file" name="photo_candidat" accept="image/*" hidden required>
+                    Photo
+                    <input type="file" name="photo_candidat" id="photo_candidat">
                 </label>
 
             </div>
@@ -275,7 +321,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <button type="button" class="btn-cancel" onclick="closeModal('modalCandidat')">
                     Annuler
                 </button>
-                <button type="submit" class="btn-submit">
+                <button type="submit" id="submit_btn" class="btn-submit">
                     Ajouter
                 </button>
             </div>
@@ -284,7 +330,6 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     </div>
 </div>
-
 
 <!-- ================= MODAL VOTANT ================= -->
 <div id="modalVotant" class="modal">
@@ -295,7 +340,9 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <p>Créer un nouvel utilisateur votant</p>
         </div>
 
-        <form id="formVotant">
+        <form id="formVotant" action="add_votant.php" method="POST">
+
+            <input type="hidden" name="id_concours" value="<?= $concours['id_concours'] ?>">
 
             <div class="modal-body">
 
@@ -326,25 +373,57 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </div>
 
 <script>
-function openModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) {
-        modal.classList.add("show");
-    }
-}
+document.addEventListener("DOMContentLoaded", () => {
 
-function closeModal(id) {
-    const modal = document.getElementById(id);
-    if (modal) {
-        modal.classList.remove("show");
-    }
-}
+    window.openModal = function(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.add("show");
+    };
 
-/* BONUS : fermer en cliquant sur l’overlay */
-document.addEventListener("click", function (e) {
-    if (e.target.classList.contains("modal")) {
-        e.target.classList.remove("show");
-    }
+    window.closeModal = function(id) {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.remove("show");
+    };
+
+    // fermer clic extérieur
+    document.querySelectorAll(".modal").forEach(modal => {
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) modal.classList.remove("show");
+        });
+    });
+
+    // RESET / OPEN ADD
+    window.openCandidat = function() {
+
+        openModal("modalCandidat");
+
+        document.getElementById("candidat_title").innerText = "Ajouter un candidat";
+
+        document.getElementById("formCandidat").action = "add_candidat.php";
+
+        document.getElementById("id_candidat").value = "";
+        document.getElementById("nom_candidat").value = "";
+        document.getElementById("prenom_candidat").value = "";
+        document.getElementById("email_candidat").value = "";
+        document.getElementById("biography").value = "";
+    };
+
+    // EDIT + PREFILL
+    window.editCandidat = function(data) {
+
+        openModal("modalCandidat");
+
+        document.getElementById("candidat_title").innerText = "Modifier candidat";
+
+        document.getElementById("formCandidat").action = "update_candidat.php";
+
+        document.getElementById("id_candidat").value = data.id_candidat;
+        document.getElementById("nom_candidat").value = data.nom_candidat;
+        document.getElementById("prenom_candidat").value = data.prenom_candidat;
+        document.getElementById("email_candidat").value = data.email_candidat;
+        document.getElementById("biography").value = data.biography;
+    };
+
 });
 </script>
 </main>

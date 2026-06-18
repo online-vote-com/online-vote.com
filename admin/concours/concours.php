@@ -7,76 +7,77 @@
         <button class="btn-primary" onclick="openModalConcours()"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>
     </div>
 
- <div class="kpi-grid">
-        <div class="kpi-card gradient-orange">
-            <div class="kpi-header">
-                <span class="label white">Total Concours</span>
-                <div class="kpi-icon-bg"><i class="fa-solid fa-trophy"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2 class="white"><?php echo $nbrConcours; ?></h2>
-                <p class="sub-label white-opacity">Toutes catégories confondues</p>
-            </div>
+<div class="kpi-grid">
+
+    <div class="kpi-card gradient-orange">
+        <div class="kpi-header">
+            <span class="label white">Concours actifs</span>
+            <div class="kpi-icon-bg"><i class="fa-solid fa-bolt"></i></div>
         </div>
-
-        <div class="kpi-card gradient-green">
-            <div class="kpi-header">
-                <span class="label white">En cours</span>
-                <div class="kpi-icon-bg"><i class="fa-solid fa-bolt"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2 class="white">08</h2>
-                <p class="sub-label white-opacity">Votes ouverts actuellement</p>
-            </div>
-        </div>
-
-        
-
-        <div class="kpi-card white-card border-glow">
-            <div class="kpi-header">
-                <span class="label">En attente</span>
-                <div class="kpi-icon-bg gray"><i class="fa-regular fa-clock"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2>03</h2>
-                <p class="sub-label">Planifiés pour bientôt</p>
-            </div>
-        </div>
-
-         <div class="kpi-card gradient-green">
-            <div class="kpi-header">
-                <span class="label white">Moyenne votes par concours</span>
-                <div class="kpi-icon-bg"><i class="fa-solid fa-bolt"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2 class="white">08</h2>
-                <p class="sub-label white-opacity">participations</p>
-            </div>
-        </div>
-
-        <div class="kpi-card white-card border-glow">
-            <div class="kpi-header">
-                <span class="label">Concours le plus voté</span>
-                <div class="kpi-icon-bg gray"><i class="fa-regular fa-clock"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2>conours 1</h2>
-                <p class="sub-label">cameroun</p>
-            </div>
-        </div>
- 
-
-        <div class="kpi-card white-card">
-            <div class="kpi-header">
-                <span class="label">Terminés</span>
-                <div class="kpi-icon-bg green-soft"><i class="fa-solid fa-check"></i></div>
-            </div>
-            <div class="kpi-body">
-                <h2>13</h2>
-                <p class="sub-label">Résultats archivés</p>
-            </div>
+        <div class="kpi-body">
+            <h2 class="white"><?= $kpi_status['ouverts'] ?? 0; ?></h2>
+            <p class="sub-label white-opacity">En cours de vote</p>
         </div>
     </div>
+
+    <div class="kpi-card white-card">
+        <div class="kpi-header">
+            <span class="label">En attente</span>
+            <div class="kpi-icon-bg gray"><i class="fa-regular fa-clock"></i></div>
+        </div>
+        <div class="kpi-body">
+            <h2><?= $kpi_status['attente'] ?? 0; ?></h2>
+            <p class="sub-label">Planifiés</p>
+        </div>
+    </div>
+
+    <div class="kpi-card white-card">
+        <div class="kpi-header">
+            <span class="label">Terminés</span>
+            <div class="kpi-icon-bg green-soft"><i class="fa-solid fa-check"></i></div>
+        </div>
+        <div class="kpi-body">
+            <h2><?= $kpi_status['fermes'] ?? 0; ?></h2>
+            <p class="sub-label">Clôturés</p>
+        </div>
+    </div>
+
+    <div class="kpi-card gradient-green">
+        <div class="kpi-header">
+            <span class="label white">Votes total</span>
+            <div class="kpi-icon-bg"><i class="fa-solid fa-users"></i></div>
+        </div>
+        <div class="kpi-body">
+            <h2 class="white"><?= number_format($totalVotes); ?></h2>
+            <p class="sub-label white-opacity">Toutes compétitions</p>
+        </div>
+    </div>
+
+    <div class="kpi-card white-card border-glow">
+        <div class="kpi-header">
+            <span class="label">Revenus nets</span>
+        </div>
+        <div class="kpi-body">
+            <h2>
+                <?= number_format($stats['revenus_nets'] ?? 0, 0, ',', ' '); ?> FCFA
+            </h2>
+            <p class="sub-label">Commission 5%</p>
+        </div>
+    
+
+</div>
+
+  <!--  <div class="kpi-card white-card">
+        <div class="kpi-header">
+            <span class="label">Moyenne votes</span>
+        </div>
+        <div class="kpi-body">
+            <h2><?= $moyenneVotes; ?></h2>
+            <p class="sub-label">par concours</p>
+        </div>
+    </div>
+-->
+</div>
 
     <div class="table-container">
         <div class="table-header">
@@ -98,66 +99,81 @@
                         <th class="text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <?php foreach ($concours as $con): ?>
-                    <tr>
-                        <td>
-                            <div class="contest-cell">
-                                <div class="img-placeholder"><i class="fa-solid fa-trophy"></i></div>
-                                <div class=""><?= htmlspecialchars($con['titre']); ?></div>
-                                <!--<span class="contest-name"><?= htmlspecialchars($con['titre']); ?></span>-->
-                            </div>
-                        </td>
-                        <!-- Statut dynamique -->
-                        <td>
-                            <span class="status-badge <?= $con['status_concours']; ?>">
-                                <?= ucfirst($con['status_concours']); ?>
-                            </span>
-                        </td>
-                        <!-- Score total des votes -->
-                        <td class="text-center fw-600">
-                            <?= number_format($con['votes_count'] ?? 0); ?>
-                        </td>
-                        <!-- Revenus calculés -->
-                        <td class="fw-600 color-purple">
-                            <?= number_format($con['revenus_generes'] ?? 0, 0, ',', ' '); ?> <small>FCFA</small>
-                        </td>
-                        <!-- Date de fin simplifiée -->
-                        <td><?= date('d/m/y', strtotime($con['date_fin'])); ?></td>
-<td class="actions">
+               <tbody>
+<?php foreach ($concours as $con): ?>
+<tr>
 
-    <a href="concours/concours_detail.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn view">
-        <i class="fa-solid fa-eye"></i>
-    </a>
+    <td>
+        <div class="img-placeholder">
+            <?php if (!empty($con['photo_concours'])): ?>
+                <img src="../uploads/concours/<?= htmlspecialchars($con['photo_concours']); ?>" 
+                    style="width:40px;height:40px;border-radius:8px;object-fit:cover;">
+            <?php else: ?>
+                <i class="fa-solid fa-trophy"></i>
+            <?php endif; ?>
+        </div>
+    </td>
 
-    <button
-        class="action-btn edit"
-        onclick="editConcours(
-            <?= $con['id_concours']; ?>,
-            '<?= htmlspecialchars(addslashes($con['titre'])); ?>',
-            '<?= htmlspecialchars(addslashes($con['description_concours'])); ?>',
-            '<?= $con['type_vote']; ?>',
-            '<?= $con['prix_vote']; ?>',
-            '<?= date('Y-m-d\TH:i', strtotime($con['date_debut'])); ?>',
-            '<?= date('Y-m-d\TH:i', strtotime($con['date_fin'])); ?>'
-        )">
+    <!-- STATUS -->
+    <td>
+        <span class="status-badge <?= htmlspecialchars($con['status_concours']); ?>">
+            <?= ucfirst($con['status_concours']); ?>
+        </span>
+    </td>
 
-        <i class="fa-solid fa-pen"></i>
+    <!-- VOTES -->
+    <td class="text-center fw-600">
+        <?= number_format($con['votes_count'] ?? 0); ?>
+    </td>
 
-    </button>
-
-    <button
-        class="action-btn delete"
-        onclick="deleteConcours(<?= $con['id_concours']; ?>)">
-
-        <i class="fa-solid fa-trash"></i>
-
-    </button>
-
+    <!-- REVENUS -->
+<td class="fw-600 color-purple">
+    <?php if (($con['type_vote'] ?? '') === 'gratuit'): ?>
+        Gratuit
+    <?php else: ?>
+        <?= number_format($con['revenus_generes'] ?? 0, 0, ',', ' '); ?>
+        <small>FCFA</small>
+    <?php endif; ?>
 </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
+    <!-- DATE FIN -->
+    <td>
+        <?= !empty($con['date_fin']) 
+            ? date('d/m/Y', strtotime($con['date_fin'])) 
+            : '-' ?>
+    </td>
+
+    <!-- ACTIONS -->
+    <td class="actions">
+
+        <a href="concours/concours_detail.php?id_concours=<?= $con['id_concours']; ?>" class="action-btn view">
+            <i class="fa-solid fa-eye"></i>
+        </a>
+
+        <button class="action-btn edit"
+            onclick="editConcours(
+                <?= $con['id_concours']; ?>,
+                '<?= htmlspecialchars(addslashes($con['titre'])); ?>',
+                '<?= htmlspecialchars(addslashes($con['description_concours'])); ?>',
+                '<?= $con['type_vote']; ?>',
+                '<?= $con['prix_vote']; ?>',
+                '<?= $con['status_concours']; ?>',
+                '<?= date('Y-m-d\TH:i', strtotime($con['date_debut'])); ?>',
+                '<?= date('Y-m-d\TH:i', strtotime($con['date_fin'])); ?>'
+            )">
+
+            <i class="fa-solid fa-pen"></i>
+        </button>
+
+        <button class="action-btn delete"
+            onclick="deleteConcours(<?= $con['id_concours']; ?>)">
+            <i class="fa-solid fa-trash"></i>
+        </button>
+
+    </td>
+
+</tr>
+<?php endforeach; ?>
+</tbody>
             </table>
         </div>
 
@@ -211,7 +227,11 @@
             placeholder="Prix du vote">
 
     </div>
-
+<select name="status_concours" id="status_concours">
+    <option value="attente">Attente</option>
+    <option value="ouvert">Ouvert</option>
+    <option value="ferme">Fermé</option>
+</select>
     <div class="form-row">
 
         <div>
@@ -234,10 +254,10 @@
 
     </div>
 
-    <input
-        type="file"
-        name="photo_concours"
-        accept=".jpg,.jpeg,.png">
+<input
+    type="file"
+    name="photo_concours"
+    accept=".jpg,.jpeg,.png,.webp">
 
     <div class="modal-footer">
 
@@ -269,7 +289,6 @@
 </div>
 
 <script>
-
 function openModalConcours() {
 
     document.getElementById("modalTitle").innerHTML =
@@ -284,10 +303,18 @@ function openModalConcours() {
     document.getElementById("formAction").value =
         "add";
 
-    document.getElementById("id_concours").value =
-        "";
+    document.getElementById("id_concours").value = "";
 
+    // RESET FORM COMPLET
     document.getElementById("concoursForm").reset();
+
+    // RESET ENUMS (important pour éviter valeurs null)
+    document.getElementById("type_vote").value = "gratuit";
+    document.getElementById("status_concours").value = "attente";
+
+    // RESET FILE INPUT (évite bug navigateur)
+    const fileInput = document.querySelector('input[name="photo_concours"]');
+    if (fileInput) fileInput.value = "";
 
     document.getElementById("addConcoursModal").style.display =
         "flex";
@@ -299,6 +326,7 @@ function editConcours(
     description,
     type_vote,
     prix_vote,
+    status_concours,
     date_debut,
     date_fin
 ) {
@@ -330,6 +358,9 @@ function editConcours(
     document.getElementById("prix_vote").value =
         prix_vote;
 
+    document.getElementById("status_concours").value =
+        status_concours;
+
     document.getElementById("date_debut").value =
         date_debut;
 
@@ -357,11 +388,10 @@ function closeModalConcours() {
 
 window.onclick = function(event) {
 
-    const modal =
-        document.getElementById("addConcoursModal");
+    const modal = document.getElementById("addConcoursModal");
 
     if (event.target === modal) {
         closeModalConcours();
     }
-}
+};
 </script>

@@ -102,7 +102,7 @@ foreach ($ranks as $r) {
                     
                     <div id="candidate-<?= $can['id_candidat']; ?>" class="candidate-card">
                         <div class="card-image-container">
-                            <img src="<?php echo htmlspecialchars($can['photo_candidat'] ?: 'assets/images/default.jpg'); ?>" 
+                            <img src="uploads/candidats/<?php echo htmlspecialchars($can['photo_candidat'] ?: 'assets/images/default.jpg'); ?>" 
                                  alt="<?php echo htmlspecialchars($can['nom_candidat']); ?>" 
                                  class="card-img">
                         </div>

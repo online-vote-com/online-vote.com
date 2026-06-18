@@ -13,6 +13,22 @@ body {
 .main-content {
     padding: 20px;
 }
+.alert-success{
+    background:#d4edda;
+    color:#155724;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
+.alert-error{
+    background:#f8d7da;
+    color:#721c24;
+    padding:12px;
+    border-radius:8px;
+    margin-bottom:15px;
+}
+
 
 /* =========================
    HEADER ACTIONS

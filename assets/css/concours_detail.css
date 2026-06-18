@@ -17,6 +17,7 @@
     --shadow-lg: 0 35px 70px rgba(156, 4, 218, 0.16);
 }
 
+
 body {
     background-color: var(--bg-light);
     font-family: 'Inter', sans-serif;
