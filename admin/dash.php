@@ -287,10 +287,10 @@
             <section id="candidats" class="content-section"> <?php  include 'candidats.php'; ?> </section>
             <section id="votants" class="content-section"> <?php  include 'votants.php'; ?> </section>
             <section id="oragnisateur" class="content-section"> <?php  include 'oragnisateur.php'; ?> </section>
-            <section id="transactions" class="content-section"> <?php  include 'transactions.php'; ?> </section>
+            <section id="transactions" class="content-section"> <?php  include 'transactions/transactions.php'; ?> </section>
             <section id="retraits" class="content-section"> <?php  include 'retraits.php'; ?> </section>
             <section id="paramètres" class="content-section"> <?php  include 'parametres.php'; ?> </section>
-        </main>
+        </main> 
     </div>
 
     <script src="script.js"></script>
@@ -329,35 +329,26 @@
     //transition entre les sections 
   
 document.querySelectorAll('.menu-item').forEach(button => {
-
     button.addEventListener('click', (e) => {
-
         e.preventDefault();
 
         const idPointe = button.getAttribute('data-section');
 
-        // Active menu
         document.querySelectorAll('.menu-item').forEach(btn =>
             btn.classList.remove('active')
         );
         button.classList.add('active');
 
-        // Cache toutes les sections
         document.querySelectorAll('.content-section').forEach(section => {
             section.classList.remove('active');
         });
 
-        // Affiche la bonne section
         const target = document.getElementById(idPointe);
 
         if (target) {
             target.classList.add('active');
-        } else {
-            console.error("Section introuvable :", idPointe);
         }
-
     });
-
 });
 
 /*Ouverture fermeture du sidebar */

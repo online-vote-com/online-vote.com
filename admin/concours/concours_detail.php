@@ -1,6 +1,11 @@
 <?php
+ session_start();
 
-session_start();
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../../login.php");
+    exit;
+}
+
 include __DIR__ . '/../../config/database.php';
 include __DIR__ . '/../../includes/link.php';
 
@@ -8,6 +13,14 @@ $id = $_GET['id_concours'] ?? null;
 
 if (!$id) {
     die("Concours introuvable");
+}
+
+$id_user = $_SESSION['id_user'];
+$role = $_SESSION['role'];
+
+if($role === 'votant'){
+    header("Location: ../../profil_user.php");
+    exit;
 }
 
 /* =========================
@@ -120,6 +133,7 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <title>Détail Concours</title>
 
 <link rel="stylesheet" href="../../assets/css/admin-detailconcours.css">
+<link rel="stylesheet" href="../../assets/css/color.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 </head>
@@ -129,7 +143,11 @@ $votants = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <main class="main-content">
 
 <!-- ================= HERO ================= -->
-<div class="concours-hero">
+<div class="concours-hero" style="background-image:
+        linear-gradient(135deg,
+            rgba(83,2,116,.92),
+            rgba(156,4,218,.78)),
+        url('uploads/concours/<?= htmlspecialchars($concours['photo_concours']) ?>');">
     <h1><?= htmlspecialchars($concours['titre']) ?></h1>
     <p>
         Organisé par <?= htmlspecialchars($concours['nom_user']) ?> • 

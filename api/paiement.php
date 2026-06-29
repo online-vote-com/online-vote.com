@@ -46,7 +46,12 @@ if (empty($data['id_candidat']) || empty($data['id_concours']) || empty($data['m
 $idCandidat = (int)$data['id_candidat'];
 $idConcours = (int)$data['id_concours'];
 $montantInitial = (int)$data['montant'];
-$montant = (string)$montantInitial; // AangaraaPay attend une string
+$commissionRate = 0.02;
+$commission = $montantInitial * $commissionRate;
+// montant total payé par l'utilisateur
+$montantTotal = $montantInitial + $commission;
+
+$montant = (string)$montantTotal; // AangaraaPay attend une string
 $phone = preg_replace('/[^0-9]/', '', $data['phone']);
 
 // Si le numéro commence par 237, garder tel quel
@@ -96,7 +101,7 @@ if (!$concours) {
 
 $prixVote = (int)$concours['prix_vote'];
 
-$nbVotes = floor($montant / $prixVote);
+$nbVotes = floor($montantInitial / $prixVote);
 if ($nbVotes <= 0) {
     echo json_encode([
         "status" => "error",

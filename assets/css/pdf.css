@@ -1,0 +1,107 @@
+
+@page {
+    margin: 40px 30px;
+}
+
+body {
+    font-family: DejaVu Sans;
+    background: #fff;
+    color: #222;
+    font-size: 12px;
+}
+
+/* HEADER */
+.header {
+    text-align: center;
+    border-bottom: 3px solid #9C04DA;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.logo {
+    font-size: 18px;
+    font-weight: bold;
+    color: #9C04DA;
+}
+
+.subtitle {
+    font-size: 10px;
+    color: #666;
+}
+
+/* HERO */
+.hero {
+    background: linear-gradient(135deg,#9C04DA,#530274);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 18px;
+}
+
+/* CARDS */
+.grid {
+    display: flex;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.card {
+    flex: 1;
+    background: #f7f7f7;
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.card h2 {
+    color: #9C04DA;
+    margin: 0;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #9C04DA;
+    color: white;
+    padding: 8px;
+}
+
+td {
+    border-bottom: 1px solid #eee;
+    padding: 8px;
+}
+
+/* PODIUM */
+.podium {
+    margin-top: 20px;
+}
+
+.bar {
+    height: 10px;
+    background: #9C04DA;
+    border-radius: 5px;
+}
+
+/* FOOTER */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 10px;
+    color: #777;
+    border-top: 1px solid #eee;
+    padding-top: 5px;
+}
+

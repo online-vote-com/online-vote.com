@@ -327,7 +327,8 @@ body.no-scroll {
         <!-- BRAND LOGO (ICÔNE + TEXTE ALIGNÉS) -->
         <a href="index.php" class="logo">
             <div class="logo-wrapper">
-                <img src="assets/images/logo.png" alt="Online Vote" class="logo-img"> 
+                <div class="logo-square"><i class="fas fa-check-double"></i></div>
+             <!--   <img src="assets/images/logo.png" alt="Online Vote" class="logo-img"> -->
                 
                 <span class="logo-brand-name">Online Vote</span>
             </div>

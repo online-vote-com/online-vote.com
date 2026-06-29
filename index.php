@@ -13,14 +13,13 @@ session_start();
 </head>
 
 <body>
+    <?php include "chatbot/chatbot.php"; ?>
 
     <?php include 'includes/navbar.php'; ?>
-
     <?php include 'includes/hero.php'; ?>
-
-    
-
     <?php include 'includes/footer.php'; ?>
 
+    
+<script src="assets/js/chatbot.js"></script>
 </body>
 </html>

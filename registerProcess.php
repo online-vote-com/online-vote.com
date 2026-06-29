@@ -15,7 +15,8 @@
    // $mail->SMTPDebug = 2;
 //$mail->Debugoutput = 'html';
     $mail->isSMTP();
-    $mail->Host       = 'smtp.gmail.com';
+    $mail->Host       = 'smtp.hostinger.com';
+    //$mail->Host       = 'smtp.gmail.com';
     $mail->SMTPAuth   = true;
     $mail->Username   = SMTP_USER;
     $mail->Password   = SMTP_PASS;

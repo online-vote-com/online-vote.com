@@ -84,7 +84,7 @@ try {
 
 } catch (PDOException $e) {
 
-    // 🔥 gestion propre des erreurs SQL (ex: contrainte UNIQUE)
+    // gestion propre des erreurs SQL (ex: contrainte UNIQUE)
     if ($e->getCode() == 23000) {
         $_SESSION['message'] = "Ce candidat existe déjà (contrainte base de données)";
     } else {

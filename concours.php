@@ -4,11 +4,69 @@
     include 'includes/navbar.php';
     include 'config/database.php';
 
-    $sql_concours = "SELECT con.*, org.nom_user 
-    FROM concours con, users org
-    WHERE con.id_organisateur = org.id_user";
-    $pdo_concours = $pdo->query($sql_concours);
-    $concours = $pdo_concours->fetchAll();
+
+    $sql = "SELECT con.*, org.nom_user 
+    FROM concours con
+    JOIN users org ON con.id_organisateur = org.id_user
+    WHERE con.suprime = 0 ";
+
+    $now = date('Y-m-d H:i:s');
+
+    $concours = $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+
+    $idUser = $_SESSION['id_user'] ?? null;
+    $role = $_SESSION['role_user'] ?? null;
+    if (!isset($_SESSION['role_user'])) {
+    $_SESSION['role_user'] = 'votant';
+}
+
+   $filtered = [];
+
+foreach ($concours as $c) {
+
+
+    $c['etat'] = $c['status_concours'];
+
+    /*/  ne pas afficher les concours fermés
+    if ($c['etat'] === 'ferme') {
+        continue;
+    }*/
+
+    if ($role === 'admin') {
+        $filtered[] = $c;
+        continue;
+    }
+
+    if ($role === 'organisateur') {
+
+        if ($c['id_organisateur'] == $idUser) {
+            $filtered[] = $c;
+        }
+        continue;
+    }
+
+    if ($role === 'votant') {
+
+        if ($c['type_vote'] === 'payant') {
+            $filtered[] = $c;
+            continue;
+        }
+
+        $stmt = $pdo->prepare("
+            SELECT COUNT(*) 
+            FROM votant_concours
+            WHERE id_votant = ? 
+            AND id_concours = ?
+        ");
+
+        $stmt->execute([$idUser, $c['id_concours']]);
+        $isAllowed = $stmt->fetchColumn();
+
+        if ($isAllowed > 0) {
+            $filtered[] = $c;
+        }
+    }
+}
 ?>
 
 <!-- Liaisons des styles et scripts externes -->
@@ -56,7 +114,7 @@
             En attente de votre sélection pour afficher les détails du scrutin.
         </div>
 
-        <?php foreach ($concours as $c) { ?>
+        <?php foreach ($filtered as $c) { ?>
             <div id="contest-<?= $c['id_concours']; ?>" class="contest-card">
                 
                 <div class="card-hero">
@@ -64,19 +122,52 @@
                     <div class="card-overlay"></div>
                 </div>
                 
-                <div class="card-content">
-                    <div class="badge-type <?= $c['type_vote'] ?>">
-                        <?= $c['type_vote'] === 'payant' ? 'Vote Payant' : 'Vote Gratuit' ?>
-                    </div>
-                    
-                    <h3 class="card-title">
-                        <?= htmlspecialchars($c['titre']); ?>
-                    </h3>
-                    
-                    <a href="concours_detail.php?id_concours=<?= $c['id_concours']; ?>" class="btn-action">
-                        Participer & Voter
-                    </a>
-                </div>
+<div class="card-content">
+
+    <!-- Badge type vote -->
+    <div class="badge-type <?= $c['type_vote'] ?>">
+        <?= $c['type_vote'] === 'payant' ? 'Vote Payant' : 'Vote Gratuit' ?>
+    </div>
+
+    <!-- Titre -->
+    <h3 class="card-title">
+        <?= htmlspecialchars($c['titre']); ?>
+    </h3>
+
+    <!-- Description -->
+    <p class="card-description">
+        <?= htmlspecialchars($c['description_concours']); ?>
+    </p>
+
+    <!-- État du concours -->
+    <div class="card-status">
+<?php if ($c['etat'] === 'ouvert'): ?>
+
+    <a href="concours_detail.php?id_concours=<?= $c['id_concours']; ?>" class="btn-action">
+        Participer & Voter
+    </a>
+
+<?php elseif ($c['etat'] === 'attente'): ?>
+
+    <span class="btn-action disabled">
+        Bientôt disponible
+    </span>
+
+<?php else: ?>
+
+    <span class="btn-action disabled">
+        Concours terminé
+    </span>
+
+<?php endif; ?>
+    </div>
+
+    <!-- Action 
+    <a href="concours_detail.php?id_concours=<?= $c['id_concours']; ?>" class="btn-action">
+        Participer & Voter
+    </a>-->
+
+</div>
 
             </div>
         <?php } ?>

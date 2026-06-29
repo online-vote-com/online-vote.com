@@ -226,7 +226,7 @@
             <div class="footer-brand">
                 <a href="index.php" class="footer-logo">
                     <div class="footer-logo-wrapper">
-                        <img src="assets/images/logo.png" alt="Online Vote" class="footer-logo-img">
+                        <div class="logo-square"><i class="fas fa-check-double"></i></div>
                         <span class="footer-brand-name">Online Vote</span>
                     </div>
                 </a>

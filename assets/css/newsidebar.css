@@ -23,7 +23,7 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: var(--bg-light);
     color: var(--text-dark);
     -webkit-font-smoothing: antialiased;
@@ -304,6 +304,14 @@ body {
 }
 
 /* --- HEADERS & TEXT --- */
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
 .view-header {
     margin-bottom: 32px;
 }

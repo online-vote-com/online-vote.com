@@ -1,16 +1,22 @@
 <?php
 session_start();
 
+if (!isset($_SESSION['id_user'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
 include '../includes/link.php'; 
 include '../config/database.php';
 
-if(!isset($_SESSION['id_user'])){
-    header("Location: ../login.php");
-    exit();
-}
 
 $id_user = $_SESSION['id_user'];
 $role = $_SESSION['role'];
+
+if($role === 'votant'){
+    header("Location: ../profil_user.php");
+    exit;
+}
 
 $isAdmin = ($role === 'admin');
 $isOrg   = ($role === 'organisateur');
@@ -211,7 +217,7 @@ SELECT
     COUNT(p.id_paiement) AS total_transactions,
     COALESCE(SUM(p.montant),0) AS total_montant,
     SUM(p.status_paiement = 'succes') AS succes,
-    SUM(p.status_paiement = 'echoue') AS echoue
+    SUM(p.status_paiement = 'echec') AS echoue
 FROM paiements p
 JOIN concours c ON p.id_concours = c.id_concours
 $wherePaiements
