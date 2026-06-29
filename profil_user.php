@@ -5,19 +5,19 @@ if (!isset($_SESSION['id_user'])) {
     header("Location: login.php");
     exit;
 }
-
+/* Vérification du rôle */
+if (
+    !isset($_SESSION['role_user']) ||
+    $_SESSION['role_user'] !== 'votant'
+) {
+    header("Location: admin/dash/");
+    exit;
+}
 $role = $_SESSION['role_user'] ?? 'votant';
 $success = $_SESSION['success'] ?? null;
 $error = $_SESSION['error'] ?? null;
 
 unset($_SESSION['success'], $_SESSION['error']);
-/*
-    ROUTAGE DES DASHBOARDS
-*/
-if ($role !== 'votant') {
-    header("Location: admin/dash");
-    exit;
-}
 
 include 'includes/link.php';
 include 'includes/navbar.php';
