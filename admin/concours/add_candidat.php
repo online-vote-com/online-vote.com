@@ -25,7 +25,7 @@ try {
     $nom = mb_strtoupper($nom);
     $prenom = mb_strtoupper($prenom);
 
-    //  CHECK DOUBLON
+  /*  //  CHECK DOUBLON
     $check = $pdo->prepare("
         SELECT 1 
         FROM candidats 
@@ -42,6 +42,7 @@ try {
         header("Location: ../concours/concours_detail.php?id_concours=" . $id_concours);
         exit;
     }
+        */
 
     //  PHOTO
     $photoName = null;
