@@ -14,7 +14,7 @@ unset($_SESSION['success'], $_SESSION['error']);
 /*
     ROUTAGE DES DASHBOARDS
 */
-if ($role === 'admin' || $role === 'organisateur') {
+if ($role !== 'votant') {
     header("Location: admin/dash");
     exit;
 }
