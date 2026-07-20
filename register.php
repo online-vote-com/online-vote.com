@@ -26,10 +26,7 @@ include 'includes/link.php';
         <section class="login-form-side">
             <div class="login-box">
                 
-                <header class="login-header">
-                    <h1>Rejoins l'aventure</h1>
-                    <p>Créez votre compte en quelques secondes.</p>
-                </header>
+
 
                 <!-- Message d'erreur PHP -->
                 <?php if (isset($_SESSION['status'])): ?>
