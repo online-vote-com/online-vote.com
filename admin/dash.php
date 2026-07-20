@@ -102,7 +102,7 @@
                        <!-- <button class="btn-primary"><i class="fa-solid fa-plus"></i> Nouveau Concours</button>-->
                         <div class="sidebar-footer">
                             <div class="user-info">
-                                <img src="../uploads/organisateurs/<?php echo $_SESSION['photo'] ?: '../uploads/12.png'; ?>" alt="Avatar">
+                                <img src="../uploads/<?= htmlspecialchars($_SESSION['photo'] ?? 'default.png') ?>'; ?>" alt="Avatar">
                                 <div class="details">
                                     <p class="name"><?php echo $_SESSION['nom']; ?></p>
                                     <p class="role"><?php echo $_SESSION['role']; ?></p>

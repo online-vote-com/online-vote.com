@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online-Vote | La Révolution Numérique du Vote Sécurisé</title>
+    <!-- Google Fonts & Lucide Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <style>
+        /* --- SYSTEME DE DESIGN MIS À JOUR AVEC VOS COULEURS ET POLICES --- */
+        :root {
+            --main-purple: #9C04DA;
+            --light-purple-bg: #E7C6FF;
+            --light-purple: #E7C6FF;
+            --dark-purple-gradient: #530274;
+            --accent-yellow: #FFEB3B;
+            --white: #FFFFFF;
+            --bg-light: #F8F9FA;
+            --text-dark: #000000;
+            --gray-border: #E0E0E0;
+            --radius-sm: 8px;
+            --radius-md: 20px;
+            --transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            --max-width: 1200px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-weight: 700;
+            line-height: 1.25;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- COMPOSANTS DE STRUCTURE --- */
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--main-purple);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-purple-gradient);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(156, 4, 218, 0.25);
+        }
+
+        .btn-secondary {
+            background-color: var(--white);
+            color: var(--main-purple);
+            border: 2px solid var(--main-purple);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--light-purple-bg);
+            color: var(--dark-purple-gradient);
+            transform: translateY(-2px);
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--main-purple);
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: inline-block;
+            background-color: var(--light-purple-bg);
+            padding: 4px 12px;
+            border-radius: 50px;
+        }
+
+        .section-title {
+            font-size: 2.6rem;
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            color: #555;
+            max-width: 600px;
+            margin-bottom: 48px;
+            font-size: 1.1rem;
+        }
+
+        /* Motifs de lignes fins croisés discrets style africain moderne */
+        .african-line-pattern {
+            background-image: linear-gradient(45deg, var(--light-purple-bg) 25%, transparent 25%), 
+                              linear-gradient(-45deg, var(--light-purple-bg) 25%, transparent 25%);
+            background-size: 60px 60px;
+            opacity: 0.15;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* --- 1. HEADER & INTERACTION --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 80px;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--main-purple);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo span {
+            color: var(--accent-yellow);
+            -webkit-text-stroke: 1px var(--main-purple);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-weight: 600;
+            color: #444;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--main-purple);
+        }
+
+        /* --- 2. HERO SECTION --- */
+        #hero {
+            padding: 160px 0 100px 0;
+            position: relative;
+            background: linear-gradient(135deg, var(--white) 60%, var(--light-purple-bg) 100%);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 64px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-content h1 {
+            font-size: 3.6rem;
+            margin-bottom: 24px;
+            color: var(--text-dark);
+        }
+
+        .hero-content h1 span {
+            color: var(--main-purple);
+            background: linear-gradient(to right, var(--main-purple), var(--dark-purple-gradient));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 40px;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 16px;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            border: 4px solid var(--white);
+            box-shadow: 0 30px 60px rgba(83, 2, 116, 0.15);
+        }
+
+        /* --- 3. COMMENT CA MARCHE --- */
+        #how-it-works {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .step-card {
+            padding: 32px;
+            background-color: var(--bg-light);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-border);
+            position: relative;
+        }
+
+        .step-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-sm);
+            background-color: var(--light-purple-bg);
+            color: var(--dark-purple-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        /* --- 4. SECTION VIDÉO AJOUTÉE (STANDARD INTERNATIONAL) --- */
+        #demo-video {
+            padding: 100px 0;
+            background: linear-gradient(180deg, var(--white) 0%, var(--bg-light) 100%);
+            position: relative;
+        }
+
+        .video-container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(83, 2, 116, 0.18);
+            border: 6px solid var(--white);
+        }
+
+        .video-container video {
+            width: 100%;
+            display: block;
+        }
+
+        /* Overlay esthétique avant lecture */
+        .video-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(83, 2, 116, 0.4);
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .play-btn {
+            width: 90px;
+            height: 90px;
+            background-color: var(--accent-yellow);
+            color: var(--dark-purple-gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 0 0 rgba(255, 235, 59, 0.5);
+            animation: pulse 2s infinite;
+            transition: var(--transition);
+        }
+
+        .play-btn i {
+            width: 36px;
+            height: 36px;
+            fill: var(--dark-purple-gradient);
+            margin-left: 6px;
+        }
+
+        .video-overlay:hover .play-btn {
+            transform: scale(1.1);
+            background-color: var(--white);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(255, 235, 59, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(255, 235, 59, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 235, 59, 0); }
+        }
+
+        /* --- 5. CONTACT SECTION --- */
+        #contact {
+            padding: 100px 0;
+            background-color: var(--white);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .contact-form {
+            background-color: var(--bg-light);
+            padding: 48px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-border);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: var(--main-purple);
+            box-shadow: 0 0 0 3px rgba(156, 4, 218, 0.15);
+        }
+
+        /* --- 6. FOOTER --- */
+        footer {
+            background-color: var(--dark-purple-gradient);
+            color: var(--light-purple-bg);
+            padding: 40px 0;
+            text-align: center;
+            font-size: 0.95rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 992px) {
+            .hero-grid, .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .hero-content h1 { font-size: 2.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- INTERFACE HEADER -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo"><i data-lucide="vote"></i> Online-Vote<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#hero">Accueil</a></li>
+                <li><a href="#how-it-works">Fonctionnement</a></li>
+                <li><a href="#demo-video">Démo Vidéo</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <a href="#contact" class="btn btn-primary" style="padding: 10px 20px;">Lancer un vote</a>
+        </div>
+    </header>
+
+    <!-- SECTION HERO -->
+    <section id="hero">
+        <div class="african-line-pattern"></div>
+        <div class="container hero-grid">
+            <div class="hero-content">
+                <span class="section-tag">Technologie Électorale</span>
+                <h1>Des scrutins transparents, une sécurité <span>infaillible</span>.</h1>
+                <p>Organisez vos élections associatives, universitaires ou d'entreprise en toute sérénité grâce aux meilleurs standards cryptographiques du marché mondial.</p>
+                <div class="hero-btns">
+                    <a href="#contact" class="btn btn-primary">Créer mon scrutin</a>
+                    <a href="#demo-video" class="btn btn-secondary"><i data-lucide="play-circle"></i> Voir la démo</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1571844307880-751c6d86f3f3?auto=format&fit=crop&w=800&q=80" alt="Vote numérique illustré" class="hero-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- COMMENT CA MARCHE -->
+    <section id="how-it-works">
+        <div class="container">
+            <center>
+                <span class="section-tag">Simplicité</span>
+                <h2 class="section-title">Comment se passe le vote ?</h2>
+                <p class="section-desc">Une architecture fluide pensée pour maximiser la participation sans compromettre la sécurité.</p>
+            </center>
+            
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-icon"><i data-lucide="shield-alert"></i></div>
+                    <h3>1. Liaison Sécurisée</h3>
+                    <p>Chaque membre reçoit un code à usage unique et chiffré pour s'authentifier de manière stricte.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i data-lucide="check-square"></i></div>
+                    <h3>2. Vote anonyme</h3>
+                    <p>L'électeur fait son choix en un clic. Le bulletin est scellé sans laisser d'empreinte d'identité.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-icon"><i data-lucide="bar-chart-big"></i></div>
+                    <h3>3. Audit en temps réel</h3>
+                    <p>Dès la clôture, les résultats validés s'affichent automatiquement sous contrôle d'un protocole transparent.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NOUVELLE SECTION VIDÉO INTÉGRÉE -->
+    <section id="demo-video">
+        <div class="container">
+            <center>
+                <span class="section-tag">Démonstration en Direct</span>
+                <h2 class="section-title">Découvrez la plateforme en action</h2>
+                <p class="section-desc">Voyez à quel point il est simple et intuitif de voter ou de gérer une élection depuis votre smartphone.</p>
+            </center>
+
+            <div class="video-container" id="video-wrapper">
+                <!-- Overlay de couverture (Premium UX) -->
+                <div class="video-overlay" id="video-play-overlay">
+                    <div class="play-btn">
+                        <i data-lucide="play"></i>
+                    </div>
+                </div>
+                <!-- Vidéo claire et explicative (Placeholder de qualité, remplaçable facilement) -->
+                <video id="main-demo-video" controls poster="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80">
+                    <source src="https://assets.mixkit.co/videos/preview/mixkit-dashboard-of-a-financial-app-on-a-screen-43254-large.mp4" type="video/mp4">
+                    Votre navigateur ne supporte pas la lecture de cette vidéo.
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- FORMULAIRE DE CONTACT -->
+    <section id="contact">
+        <div class="container contact-grid">
+            <div>
+                <span class="section-tag">Une question ?</span>
+                <h2 class="section-title">Créons votre espace électoral</h2>
+                <p class="section-desc">Nos experts configurateurs configurent votre premier scrutin en quelques minutes. Demandez conseil ou un devis sur-mesure.</p>
+            </div>
+            <div>
+                <form class="contact-form" id="landing-contact">
+                    <div class="form-group">
+                        <label for="name">Votre nom / Organisation</label>
+                        <input type="text" id="name" required placeholder="Ex: Comité des Étudiants / Entreprise">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Adresse Email</label>
+                        <input type="email" id="email" required placeholder="nom@domaine.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="msg">Détaillez vos besoins</label>
+                        <textarea id="msg" rows="4" required placeholder="Nombre d'électeurs attendus, date limite..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                        Envoyer ma demande <i data-lucide="send"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Online-Vote. Conçu selon les exigences technologiques globales.</p>
+        </div>
+    </footer>
+
+    <!-- LOGIQUE JAVASCRIPT -->
+    <script>
+        // Lancement des icônes Lucide
+        lucide.createIcons();
+
+        // Gestion ergonomique du lecteur vidéo interactif
+        const overlay = document.getElementById('video-play-overlay');
+        const video = document.getElementById('main-demo-video');
+
+        overlay.addEventListener('click', () => {
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            video.play();
+        });
+
+        // Feedback au clic du formulaire
+        document.getElementById('landing-contact').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Votre message a été bien pris en compte ! Notre équipe vous recontacte sous 24h.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>

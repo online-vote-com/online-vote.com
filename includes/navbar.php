@@ -330,7 +330,7 @@ body.no-scroll {
                 <div class="logo-square"><i class="fas fa-check-double"></i></div>
              <!--   <img src="assets/images/logo.png" alt="Online Vote" class="logo-img"> -->
                 
-                <span class="logo-brand-name">Online Vote</span>
+                <span class="logo-brand-name">ONLINE VOTE</span>
             </div>
         </a>
 

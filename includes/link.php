@@ -25,6 +25,9 @@ define('BASE_URL', 'https://online-vote.com/'); ?>
    <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/concours_detail.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/formulaire_nouveau.css">
     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/admin-detailconcours.css">
+     <link rel="stylesheet" href="<?= BASE_URL ?>assets/css/landing.css">
+    
+
 
     <!-- JS -->
     <script src="<?= BASE_URL ?>assets/js/modal.js"></script>

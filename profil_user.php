@@ -10,7 +10,7 @@ if (
     !isset($_SESSION['role_user']) ||
     $_SESSION['role_user'] !== 'votant'
 ) {
-    header("Location: admin/dash/");
+    header("Location: admin/dash");
     exit;
 }
 $role = $_SESSION['role_user'] ?? 'votant';
@@ -103,7 +103,17 @@ $stmt->execute([
         </div>
 
         <div class="contest-list">
+<?php if(
+    $_SESSION['role_user'] == 'votant' || 
+    $_SESSION['role_user'] == 'organisateur'
+): ?>
 
+<a href="admin/dash" class="btn-soft">
+    <i class="fa-solid fa-chart-line"></i>
+    Tableau de bord
+</a>
+
+<?php endif; ?>
             <?php if (empty($mesConcours)): ?>
                 <div class="empty-state">
                     Aucun concours rejoint

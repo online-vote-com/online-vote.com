@@ -4,7 +4,7 @@
 <title>Online Vote</title>
 
 
-
+<link rel="icon" href="assets/images/favicon.png" type="image/png">
 <link rel="stylesheet" href="assets/css/style.css">
 
 <link rel="stylesheet" href="assets/css/hero.css">

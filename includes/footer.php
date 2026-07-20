@@ -269,9 +269,9 @@
         <div class="footer-bottom">
             <p class="copyright-text">&copy; <?= date('Y') ?> Online Vote. Tous droits réservés.</p>
             <div class="footer-bottom-links">
-                <a href="#">Mentions légales</a>
-                <a href="#">Politique de confidentialité</a>
-                <a href="#">CGU</a>
+                <a href="pages/mentions.php">Mentions légales</a>
+                <a href="pages/confidentialite.php">Politique de confidentialité</a>
+                <a href="pages/cgu.php">CGU</a>
             </div>
         </div>
     </div>
